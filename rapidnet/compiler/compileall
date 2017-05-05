@@ -1,0 +1,34 @@
+./rapidnet/compiler/compile src/applications/discovery
+./rapidnet/compiler/compile src/applications/discovery-epidemic
+
+./rapidnet/compiler/compile src/applications/pingpong
+./rapidnet/compiler/compile src/applications/reachable
+./rapidnet/compiler/compile src/applications/pathvector
+
+./rapidnet/compiler/compile src/applications/sim-ls-periodic --base src/applications/discovery
+./rapidnet/compiler/compile src/applications/sim-ls-triggered --base src/applications/discovery
+./rapidnet/compiler/compile src/applications/sim-hsls-periodic --base src/applications/discovery
+./rapidnet/compiler/compile src/applications/sim-hsls-triggered --base src/applications/discovery
+
+./rapidnet/compiler/compile src/applications/emu-ls-periodic
+./rapidnet/compiler/compile src/applications/emu-ls-triggered
+./rapidnet/compiler/compile src/applications/emu-hsls-periodic
+./rapidnet/compiler/compile src/applications/emu-hsls-triggered
+
+./rapidnet/compiler/compile src/applications/dsr --base src/applications/discovery
+
+./rapidnet/compiler/compile src/applications/epidemic --base src/applications/discovery-epidemic
+
+./rapidnet/compiler/compile src/applications/chord
+
+./rapidnet/compiler/compile src/applications/secure-pingpong
+./rapidnet/compiler/compile src/applications/secure-pathvector
+./rapidnet/compiler/compile src/applications/secure-simple-bgp
+
+./rapidnet/compiler/compile src/applications/pathvector-prov --provenance
+./rapidnet/compiler/compile src/applications/mincost-prov --provenance
+./rapidnet/compiler/compile src/applications/pktfwd-prov --provenance
+
+./rapidnet/compiler/compile src/applications/mincost-query
+
+./waf

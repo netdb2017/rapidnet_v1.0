@@ -1,0 +1,17 @@
+#!/bin/bash
+
+./waf --check
+
+./waf --run pingpong-test 2> rapidnet/output/pingpong-test.out
+echo "Please check rapidnet/output/pingpong-test.out manually."
+
+./rapidnet/tests/run_test reachable-test
+./rapidnet/tests/run_test pathvector-test
+./rapidnet/tests/run_test secure-pathvector-test
+./rapidnet/tests/run_test secure-simple-bgp-test
+
+./rapidnet/tests/provenance_tests
+./rapidnet/tests/run_test mincost-prov-test
+./rapidnet/tests/run_test pathvector-prov-test
+./rapidnet/tests/run_test mincost-query-test
+

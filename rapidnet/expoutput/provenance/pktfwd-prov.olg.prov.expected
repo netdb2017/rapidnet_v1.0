@@ -1,0 +1,60 @@
+materialize(bestPath, -1, 0, keys(1, 2)
+materialize(link, -1, 0, keys(1, 2)
+materialize(pQList, -1, 0, keys(1, 2)
+materialize(pResultTmp, -1, 0, keys(1, 2)
+materialize(path, -1, 0, keys(4)
+materialize(prov, -1, 0, keys(1, 2, 3)
+materialize(rQList, -1, 0, keys(1, 2)
+materialize(rResultTmp, -1, 0, keys(1, 2)
+materialize(ruleExec, -1, 0, keys(1, 2)
+materialize(status, -1, 0, keys(1)
+materialize(table, -1, 0, keys(1, 2)
+prov_p1_1 epathTemp(@RLOC, X, Y, C, P, N, RID, R, List) :- link(@X, Y, C), PID1 := f_sha1(((link+ X)+ Y)+ C), List := f_append(PID1), P1 := f_append(X), P2 := f_append(Y), P := f_concat(P1, P2), N := Y, RLOC := X, R := p1, RID := f_sha1((R+ RLOC)+ List).
+prov_p1_2 ruleExec(@RLOC, RID, R, List) :- epathTemp(@RLOC, X, Y, C, P, N, RID, R, List).
+prov_p1_3 epath(@X, Y, C, P, N, RID, RLOC) :- epathTemp(@RLOC, X, Y, C, P, N, RID, R, List).
+prov_p1_4 path(@X, Y, C, P, N) :- epath(@X, Y, C, P, N, RID, RLOC).
+prov_p1_5 prov(@X, VID, RID, RLOC) :- epath(@X, Y, C, P, N, RID, RLOC), VID := f_sha1(((((path+ X)+ Y)+ C)+ P)+ N).
+prov_p2_1 epathTemp(@RLOC, Z, Y, C, P, N, RID, R, List) :- link(@X, Z, C1), PID1 := f_sha1(((link+ X)+ Z)+ C1), List := f_append(PID1), bestPath(@X, Y, C2, P2, N1), PID2 := f_sha1(((((bestPath+ X)+ Y)+ C2)+ P2)+ N1), List2 := f_append(PID2), List := f_concat(List, List2), C := C1+ C2, f_member(P2, Z) == 0, P1 := f_append(Z), P := f_concat(P1, P2), N := X, RLOC := X, R := p2, RID := f_sha1((R+ RLOC)+ List).
+prov_p3_1 ebestPathTemp(@RLOC, X, Y, C, P, N, RID, R, List) :- bestPath(@X, Y, C, P, N), PID1 := f_sha1(((((path+ X)+ Y)+ C)+ P)+ N), List := f_append(PID1), RLOC := X, R := p3, RID := f_sha1((R+ RLOC)+ List).
+prov_p3_2 ruleExec(@RLOC, RID, R, List) :- ebestPathTemp(@RLOC, X, Y, C, P, N, RID, R, List).
+prov_p3_3 ebestPath(@X, Y, C, P, N, RID, RLOC) :- ebestPathTemp(@RLOC, X, Y, C, P, N, RID, R, List).
+p3 bestPath(@X, Y, MIN< C >, P, N) :- path(@X, Y, C, P, N).
+prov_p3_5 prov(@X, VID, RID, RLOC) :- ebestPath(@X, Y, C, P, N, RID, RLOC), VID := f_sha1(((((bestPath+ X)+ Y)+ C)+ P)+ N).
+prov_i0_1 einitTemp(@RLOC, X, Ind, RID, R, List) :- periodic(@X, E, 0.01, 9000), PID1 := f_sha1((((periodic+ X)+ E)+ 0.01)+ 9000), List := f_append(PID1), status(@X), PID2 := f_sha1(status+ X), List2 := f_append(PID2), List := f_concat(List, List2), Ind := f_rand(), RLOC := X, R := i0, RID := f_sha1((R+ RLOC)+ List).
+prov_i0_2 ruleExec(@RLOC, RID, R, List) :- einitTemp(@RLOC, X, Ind, RID, R, List).
+prov_i0_3 einit(@X, Ind, RID, RLOC) :- einitTemp(@RLOC, X, Ind, RID, R, List).
+prov_i0_4 init(@X, Ind) :- einit(@X, Ind, RID, RLOC).
+prov_i0_5 prov(@X, VID, RID, RLOC) :- einit(@X, Ind, RID, RLOC), VID := f_sha1((init+ X)+ Ind).
+prov_i1_1 eeSendTemp(@RLOC, X, D, RID, R, List) :- init(@X, Ind), PID1 := f_sha1((init+ X)+ Ind), List := f_append(PID1), table(@X, Ind, D), PID2 := f_sha1(((table+ X)+ Ind)+ D), List2 := f_append(PID2), List := f_concat(List, List2), RLOC := X, R := i1, RID := f_sha1((R+ RLOC)+ List).
+prov_i1_2 ruleExec(@RLOC, RID, R, List) :- eeSendTemp(@RLOC, X, D, RID, R, List).
+prov_i1_3 eeSend(@X, D, RID, RLOC) :- eeSendTemp(@RLOC, X, D, RID, R, List).
+prov_i1_4 eSend(@X, D) :- eeSend(@X, D, RID, RLOC).
+prov_i1_5 prov(@X, VID, RID, RLOC) :- eeSend(@X, D, RID, RLOC), VID := f_sha1((eSend+ X)+ D).
+prov_r0_1 epacketTemp(@RLOC, X, D, PID, Data, RID, R, List) :- eSend(@X, D), PID1 := f_sha1((eSend+ X)+ D), List := f_append(PID1), Time := f_now(), PID := f_sha1(+ Time), Data := 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef, RLOC := X, R := r0, RID := f_sha1((R+ RLOC)+ List).
+prov_r0_2 ruleExec(@RLOC, RID, R, List) :- epacketTemp(@RLOC, X, D, PID, Data, RID, R, List).
+prov_r0_3 epacket(@X, D, PID, Data, RID, RLOC) :- epacketTemp(@RLOC, X, D, PID, Data, RID, R, List).
+prov_r0_4 packet(@X, D, PID, Data) :- epacket(@X, D, PID, Data, RID, RLOC).
+prov_r0_5 prov(@X, VID, RID, RLOC) :- epacket(@X, D, PID, Data, RID, RLOC), VID := f_sha1((((packet+ X)+ D)+ PID)+ Data).
+prov_r1_1 epacketTemp(@RLOC, N, D, PID, Data, RID, R, List) :- packet(@X, D, PID, Data), PID1 := f_sha1((((packet+ X)+ D)+ PID)+ Data), List := f_append(PID1), bestPath(@X, D, C, P, N), PID2 := f_sha1(((((bestPath+ X)+ D)+ C)+ P)+ N), List2 := f_append(PID2), List := f_concat(List, List2), X != D, RLOC := X, R := r1, RID := f_sha1((R+ RLOC)+ List).
+prov_edb_1 prov(@X, VID, RID, $1) :- $1 := X, link(@X, Y, C), VID := f_sha1(((link+ X)+ Y)+ C), RID := VID.
+prov_edb_2 prov(@X, VID, RID, $1) :- $1 := X, status(@X), VID := f_sha1(status+ X), RID := VID.
+prov_edb_3 prov(@X, VID, RID, $1) :- $1 := X, table(@X, Ind, D), VID := f_sha1(((table+ X)+ Ind)+ D), RID := VID.
+edb1 pReturn(@Ret, QID, VID, Prov) :- provQuery(@X, QID, VID, Ret), prov(@X, VID, RID, RLoc), RID == VID, Prov := f_pEDB(VID, X).
+idb1 pQList(@X, QID, LIST< RID >) :- provQuery(@X, QID, VID, Ret), prov(@X, VID, RID, RLoc), RID != VID.
+idb2 pResultTmp(@X, QID, Ret, VID, Buf) :- provQuery(@X, QID, VID, Ret), Buf := f_empty().
+idb3 pIterate(@X, QID, N) :- provQuery(@X, QID, VID, Ret), N := 1.
+idb4 pIterate(@X, QID, N) :- pIterate(@X, QID, N1), pQList(@X, QID, List), N1 < f_size(List), N := N1+ 1.
+idb5 eRuleQuery(@X, NQID, RID) :- pIterate(@X, QID, N), pQList(@X, QID, List), N <= f_size(List), RID := f_item(List, N), NQID := f_sha1((+ QID)+ RID).
+idb6 ruleQuery(@RLoc, QID, RID, X) :- eRuleQuery(@X, QID, RID), prov(@X, VID, RID, RLoc).
+idb7 pResultTmp(@X, QID, Ret, VID, Buf) :- rReturn(@X, NQID, RID, Prov), pResultTmp(@X, QID, Ret, VID, Buf1), NQID == f_sha1((+ QID)+ RID), Buf2 := f_append(Prov), Buf := f_concat(Buf1, Buf2).
+idb8 ePReturn(@X, QID) :- pResultTmp(@X, QID, Ret, VID, Buf), pQList(@X, QID, List), f_size(Buf) == f_size(List), f_size(Buf) != 0.
+idb9 pReturn(@Ret, QID, VID, Prov) :- ePReturn(@X, QID), pResultTmp(@X, QID, Ret, VID, Buf), Prov := f_pIDB(Buf, X).
+rv1 rQList(@X, QID, List) :- ruleQuery(@X, QID, RID, Ret), ruleExec(@X, RID, R, List).
+rv2 rResultTmp(@X, QID, Ret, RID, Buf) :- ruleQuery(@X, QID, RID, Ret), Buf := f_empty().
+rv3 rIterate(@X, QID, N) :- ruleQuery(@X, QID, RID, Ret), N := 1.
+rv4 rIterate(@X, QID, N) :- rIterate(@X, QID, N1), rQList(@X, QID, List), N1 < f_size(List), N := N1+ 1.
+rv5 eProvQuery(@X, NQID, VID) :- rIterate(@X, QID, N), rQList(@X, QID, List), VID := f_item(List, N), NQID := f_sha1((+ QID)+ VID).
+rv6 provQuery(@X, QID, VID, $1) :- $1 := X, eProvQuery(@X, QID, VID).
+rv7 rResultTmp(@X, QID, Ret, RID, Buf) :- pReturn(@X, NQID, VID, Prov), rResultTmp(@X, QID, Ret, RID, Buf1), NQID == f_sha1((+ QID)+ VID), Buf2 := f_append(Prov), Buf := f_concat(Buf1, Buf2).
+rv8 eRReturn(@X, QID) :- rResultTmp(@X, QID, Ret, RID, Buf), rQList(@X, QID, List), f_size(Buf) == f_size(List).
+rv9 rReturn(@Ret, QID, RID, Prov) :- eRReturn(@X, QID), rResultTmp(@X, QID, Ret, RID, Buf), ruleExec(@X, RID, R, List), Prov := f_pRULE(Buf, X, R).

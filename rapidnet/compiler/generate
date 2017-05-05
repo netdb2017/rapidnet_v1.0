@@ -1,0 +1,17 @@
+#!/usr/bin/python
+
+import os, sys
+
+args = {}
+args['path'] = 'src/rapidnet-compiler'
+
+# Generate Lexer
+cmd = 'flex -o %(path)s/ol-lexer.cc -8 %(path)s/ol-lexer.lex' % args
+print 'Generating Lexer:', cmd
+os.system (cmd)
+
+# Generate Parser
+cmd = 'bison -d -o %(path)s/ol-parser.cc -y %(path)s/ol-parser.y' % args
+print 'Generating Parser:', cmd
+os.system (cmd)
+

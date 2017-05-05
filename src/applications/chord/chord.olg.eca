@@ -1,0 +1,59 @@
+ECA Rule node_init_ecaperiodic ACTION_LOCAL_SEND<node_init_ecaperiodic(@NI, E)> :- EVENT_INSERT<periodic(@NI, E, 0, 1)>.
+ECA Rule node_init_eca ACTION_ADD<node(@NI, ID)> :- EVENT_RECV<node_init_ecaperiodic(@NI, E)>, landmark(@NI, L), ID := f_sha1(NI).
+ECA Rule l1_eca ACTION_REMOTE_SEND<lookupResults(@R, K, S, SI, E)> :- EVENT_RECV<lookup(@NI, K, R, E)>, node(@NI, N), bestSucc(@NI, S, SI), K in (N, S].
+ECA Rule l2_eca ACTION_LOCAL_SEND<bestLookupDist(@NI, K, R, E, MIN< D >)> :- EVENT_RECV<lookup(@NI, K, R, E)>, node(@NI, N), finger(@NI, I, B, BI), D := (K- B)- 1, B in (N, K).
+ECA Rule l3_eca ACTION_LOCAL_SEND<forwardLookup(@NI, MIN< BI >, K, R, E)> :- EVENT_RECV<bestLookupDist(@NI, K, R, E, D)>, node(@NI, N), finger(@NI, I, B, BI), D == (K- B)- 1, B in (N, K).
+ECA Rule l4_eca ACTION_REMOTE_SEND<lookup(@BI, K, R, E)> :- EVENT_RECV<forwardLookup(@NI, BI, K, R, E)>, f_typeOf(BI) != null.
+ECA Rule n0Eca0Ins ACTION_LOCAL_SEND<newSuccEvent(@NI)> :- EVENT_INSERT<succEvictPolicy(@NI, D, S, SI)>.
+ECA Rule n2_eca ACTION_LOCAL_SEND<newSuccEvent(@NI)> :- EVENT_RECV<deleteSucc(@NI, D, S, SI)>.
+ECA Rule n1_eca ACTION_LOCAL_SEND<bestSuccDist(@NI, MIN< D >)> :- EVENT_RECV<newSuccEvent(@NI)>, succEvictPolicy(@NI, D, S, SI).
+ECA Rule n3_eca ACTION_ADD<bestSucc(@NI, S, SI)> :- EVENT_RECV<bestSuccDist(@NI, D)>, succEvictPolicy(@NI, D, S, SI).
+ECA Rule n4Eca1Ins ACTION_ADD<finger(@NI, $1, S, SI)> :- EVENT_INSERT<bestSucc(@NI, S, SI)>, $1 := 0.
+ECA Rule n4Eca1Del ACTION_DELETE<finger(@NI, $1, S, SI)> :- EVENT_DELETE<bestSucc(@NI, S, SI)>, $1 := 0.
+ECA Rule f1_ecaperiodic ACTION_LOCAL_SEND<f1_ecaperiodic(@NI, E)> :- EVENT_INSERT<periodic(@NI, E, 50, 0, 10, 30)>.
+ECA Rule f1_eca ACTION_ADD<fFix(@NI, E, I)> :- EVENT_RECV<f1_ecaperiodic(@NI, E)>, nextFingerFix(@NI, I).
+ECA Rule f2Eca0Ins ACTION_LOCAL_SEND<fFixEvent(@NI, E, I)> :- EVENT_INSERT<fFix(@NI, E, I)>.
+ECA Rule f2Eca0Ref ACTION_LOCAL_SEND<fFixEvent(@NI, E, I)> :- EVENT_REFRESH<fFix(@NI, E, I)>.
+ECA Rule f3_eca ACTION_LOCAL_SEND<lookup(@NI, K, $1, E)> :- EVENT_RECV<fFixEvent(@NI, E, I)>, node(@NI, N), $1 := NI, K := (0x0000000000000000000000000000000000000001I<< I)+ N.
+ECA Rule f4_eca ACTION_LOCAL_SEND<eagerFinger(@NI, I, B, BI)> :- EVENT_RECV<lookupResults(@NI, K, B, BI, E)>, fFix(@NI, E, I).
+ECA Rule f5_eca ACTION_ADD<finger(@NI, I, B, BI)> :- EVENT_RECV<eagerFinger(@NI, I, B, BI)>.
+ECA Rule f6_eca ACTION_LOCAL_SEND<eagerFinger(@NI, I, B, BI)> :- EVENT_RECV<eagerFinger(@NI, I1, B, BI)>, node(@NI, N), I := I1+ 1, K := (0x0000000000000000000000000000000000000001I<< I)+ N, K in (N, B), BI != NI.
+ECA Rule f7_eca ACTION_DELETE<fFix(@NI, E, I1)> :- EVENT_RECV<eagerFinger(@NI, I, B, BI)>, fFix(@NI, E, I1), I > 0, I1 == I- 1.
+ECA Rule f8_eca ACTION_ADD<nextFingerFix(@NI, $1)> :- EVENT_RECV<eagerFinger(@NI, I, B, BI)>, $1 := 0, (I == 159) || (BI == NI).
+ECA Rule f9_eca ACTION_ADD<nextFingerFix(@NI, I)> :- EVENT_RECV<eagerFinger(@NI, I1, B, BI)>, node(@NI, N), I := I1+ 1, K := (0x0000000000000000000000000000000000000001I<< I)+ N, K in (B, N), NI != BI.
+ECA Rule f10Eca0Ins ACTION_ADD<uniqueFinger(@NI, BI)> :- EVENT_INSERT<finger(@NI, I, B, BI)>.
+ECA Rule c1_ecaperiodic ACTION_LOCAL_SEND<c1_ecaperiodic(@NI, E)> :- EVENT_INSERT<periodic(@NI, E, 5, 3)>.
+ECA Rule c1_eca ACTION_LOCAL_SEND<joinEvent(@NI, E)> :- EVENT_RECV<c1_ecaperiodic(@NI, E)>.
+ECA Rule c2_eca ACTION_ADD<join(@NI, E)> :- EVENT_RECV<joinEvent(@NI, E)>.
+ECA Rule c3_eca ACTION_REMOTE_SEND<joinReq(@LI, N, NI, E)> :- EVENT_RECV<joinEvent(@NI, E)>, node(@NI, N), landmark(@NI, LI), LI != NIL.
+ECA Rule c4_eca ACTION_ADD<succEvictPolicy(@NI, D, N, $1)> :- EVENT_RECV<joinEvent(@NI, E)>, landmark(@NI, LI), node(@NI, N), $1 := NI, D := (N- N)- 1, LI == NIL.
+ECA Rule c5_eca ACTION_LOCAL_SEND<lookup(@LI, N, NI, E)> :- EVENT_RECV<joinReq(@LI, N, NI, E)>.
+ECA Rule c6_eca ACTION_ADD<succEvictPolicy(@NI, D, S, SI)> :- EVENT_RECV<lookupResults(@NI, K, S, SI, E)>, join(@NI, E), node(@NI, N), D := (S- N)- 1.
+ECA Rule sb0_ecaperiodic ACTION_LOCAL_SEND<sb0_ecaperiodic(@NI, E)> :- EVENT_INSERT<periodic(@NI, E, 50, 0, INITIAL_DELAY, 30)>.
+ECA Rule sb0_eca ACTION_LOCAL_SEND<stabilizeEvent(@NI)> :- EVENT_RECV<sb0_ecaperiodic(@NI, E)>.
+ECA Rule sb1ALocal1_eca ACTION_REMOTE_SEND<sb1AstabilizeEventnodebestSuccSI(NI, N, S, @SI)> :- EVENT_RECV<stabilizeEvent(@NI)>, node(@NI, N), bestSucc(@NI, S, SI).
+ECA Rule sb1ALocal2_eca ACTION_REMOTE_SEND<succEvictPolicyEvent(@NI, P, PI)> :- EVENT_RECV<sb1AstabilizeEventnodebestSuccSI(NI, N, S, @SI)>, pred(@SI, P, PI), PI != NIL, P in (N, S).
+ECA Rule sb1B_eca ACTION_ADD<succEvictPolicy(@NI, D, P, PI)> :- EVENT_RECV<succEvictPolicyEvent(@NI, P, PI)>, node(@NI, N), D := (P- N)- 1.
+ECA Rule sb2Local1_eca ACTION_REMOTE_SEND<sb2stabilizeEventnodesuccEvictPolicySI(NI, N, D, S, @SI)> :- EVENT_RECV<stabilizeEvent(@NI)>, node(@NI, N), succEvictPolicy(@NI, D, S, SI).
+ECA Rule sb2Local2ECAMat ACTION_ADD<succEvictPolicy(@NI, D2, S1, SI1)> :- EVENT_RECV<sb2Local2succEvictPolicysend(@NI, D2, S1, SI1)>.
+ECA Rule sb2Local2_eca ACTION_REMOTE_SEND<sb2Local2succEvictPolicysend(@NI, D2, S1, SI1)> :- EVENT_RECV<sb2stabilizeEventnodesuccEvictPolicySI(NI, N, D, S, @SI)>, succEvictPolicy(@SI, D1, S1, SI1), SI1 != NI, D2 := (S1- N)- 1.
+ECA Rule sb3Local1_eca ACTION_REMOTE_SEND<sb3stabilizeEventnodesuccEvictPolicySI(NI, N, D, S, @SI)> :- EVENT_RECV<stabilizeEvent(@NI)>, node(@NI, N), succEvictPolicy(@NI, D, S, SI).
+ECA Rule sb3Local2_eca ACTION_ADD<pred(@SI, N, NI)> :- EVENT_RECV<sb3stabilizeEventnodesuccEvictPolicySI(NI, N, D, S, @SI)>, pred(@SI, P, PI), node(@SI, N1), ((PI == NIL) || (N in (P, N1))) && (NI != SI).
+ECA Rule pp1_ecaperiodic ACTION_LOCAL_SEND<pp1_ecaperiodic(@NI, E)> :- EVENT_INSERT<periodic(@NI, E, 10)>.
+ECA Rule pp1_eca ACTION_ADD<pendingPing(@NI, SI, E1, T)> :- EVENT_RECV<pp1_ecaperiodic(@NI, E)>, succEvictPolicy(@NI, D, S, SI), E1 := f_rand(), SI != NI, T := f_now().
+ECA Rule pp2_ecaperiodic ACTION_LOCAL_SEND<pp2_ecaperiodic(@NI, E)> :- EVENT_INSERT<periodic(@NI, E, 10)>.
+ECA Rule pp2_eca ACTION_ADD<pendingPing(@NI, PI, E1, T)> :- EVENT_RECV<pp2_ecaperiodic(@NI, E)>, pred(@NI, P, PI), E1 := f_rand(), PI != NIL, PI != NI, T := f_now().
+ECA Rule pp3_ecaperiodic ACTION_LOCAL_SEND<pp3_ecaperiodic(@NI, E)> :- EVENT_INSERT<periodic(@NI, E, 10)>.
+ECA Rule pp3_eca ACTION_ADD<pendingPing(@NI, FI, E1, T)> :- EVENT_RECV<pp3_ecaperiodic(@NI, E)>, uniqueFinger(@NI, FI), E1 := f_rand(), FI != NI, T := f_now().
+ECA Rule pp4_eca ACTION_REMOTE_SEND<pingResp(@RI, NI, E)> :- EVENT_RECV<pingReq(@NI, RI, E)>.
+ECA Rule pp5_ecaperiodic ACTION_LOCAL_SEND<pp5_ecaperiodic(@NI, E1)> :- EVENT_INSERT<periodic(@NI, E1, 3)>.
+ECA Rule pp5_eca ACTION_REMOTE_SEND<pingReq(@PI, NI, E)> :- EVENT_RECV<pp5_ecaperiodic(@NI, E1)>, pendingPing(@NI, PI, E, T).
+ECA Rule pp6_eca ACTION_DELETE<pendingPing(@NI, SI, E1, T)> :- EVENT_RECV<pingResp(@NI, SI, E)>, pendingPing(@NI, SI, E1, T).
+ECA Rule cm1_ecaperiodic ACTION_LOCAL_SEND<cm1_ecaperiodic(@NI, E)> :- EVENT_INSERT<periodic(@NI, E, 1)>.
+ECA Rule cm1_eca ACTION_LOCAL_SEND<nodeFailure(@NI, PI, E1, D)> :- EVENT_RECV<cm1_ecaperiodic(@NI, E)>, pendingPing(@NI, PI, E1, T), T1 := f_now(), D := T1- T, D > 7.
+ECA Rule cm1a_eca ACTION_DELETE<pendingPing(@NI, PI, E, T)> :- EVENT_RECV<nodeFailure(@NI, PI, E, D)>, pendingPing(@NI, PI, E, T).
+ECA Rule cm2a_eca ACTION_LOCAL_SEND<deleteSucc(@NI, D, S, SI)> :- EVENT_RECV<nodeFailure(@NI, SI, E, DD)>, succEvictPolicy(@NI, D, S, SI).
+ECA Rule cm2b_eca ACTION_DELETE<succEvictPolicy(@NI, D, S, SI)> :- EVENT_RECV<deleteSucc(@NI, D, S, SI)>.
+ECA Rule cm3_eca ACTION_ADD<pred(@NI, $1, $2)> :- EVENT_RECV<nodeFailure(@NI, PI, E, D)>, pred(@NI, P, PI), $1 := NIL, $2 := NIL.
+ECA Rule cm4_eca ACTION_DELETE<finger(@NI, I, B, BI)> :- EVENT_RECV<nodeFailure(@NI, BI, E, D)>, finger(@NI, I, B, BI).
+ECA Rule cm6_eca ACTION_DELETE<uniqueFinger(@NI, FI)> :- EVENT_RECV<nodeFailure(@NI, FI, E, D)>, uniqueFinger(@NI, FI).

@@ -1,0 +1,54 @@
+time=5 node=10.1.1.1 tuple=bestPath bestPath_attr1=10.1.1.1 bestPath_attr2=10.1.1.2 bestPath_attr3=3 
+time=5 node=10.1.1.1 tuple=bestPath bestPath_attr1=10.1.1.1 bestPath_attr2=10.1.1.3 bestPath_attr3=5 
+time=5 node=10.1.1.2 tuple=bestPath bestPath_attr1=10.1.1.2 bestPath_attr2=10.1.1.1 bestPath_attr3=3 
+time=5 node=10.1.1.2 tuple=bestPath bestPath_attr1=10.1.1.2 bestPath_attr2=10.1.1.3 bestPath_attr3=2 
+time=5 node=10.1.1.3 tuple=bestPath bestPath_attr1=10.1.1.3 bestPath_attr2=10.1.1.1 bestPath_attr3=5 
+time=5 node=10.1.1.3 tuple=bestPath bestPath_attr1=10.1.1.3 bestPath_attr2=10.1.1.2 bestPath_attr3=2 
+time=5 node=10.1.1.1 tuple=prov prov_attr1=10.1.1.1 prov_attr2=155d25ca3bfd0da8f37ee22b4a60a3cfaa05d47 prov_attr3=33b478e7b032d20951c14bff3f0a760acc2c00b1 prov_attr4=10.1.1.1 
+time=5 node=10.1.1.1 tuple=prov prov_attr1=10.1.1.1 prov_attr2=66df63c1002f9cfaf42a6752d37d4d954c1ce6d prov_attr3=a7da298728703373de27f8f2592e092b6d86366 prov_attr4=10.1.1.1 
+time=5 node=10.1.1.1 tuple=prov prov_attr1=10.1.1.1 prov_attr2=18c56473662ef408e782c6fd191af74fa362c03a prov_attr3=18c56473662ef408e782c6fd191af74fa362c03a prov_attr4=10.1.1.1 
+time=5 node=10.1.1.1 tuple=prov prov_attr1=10.1.1.1 prov_attr2=1aa2ecc896d6abcd8afac42ef9ad6b592bd2ba52 prov_attr3=5770cb5b2b2b099c7c55d4459a28ec50dcded584 prov_attr4=10.1.1.2 
+time=5 node=10.1.1.1 tuple=prov prov_attr1=10.1.1.1 prov_attr2=1aa2ecc896d6abcd8afac42ef9ad6b592bd2ba52 prov_attr3=881ace202065c25ade3246092659c74e3318dd16 prov_attr4=10.1.1.1 
+time=5 node=10.1.1.1 tuple=prov prov_attr1=10.1.1.1 prov_attr2=2738d3853a7c79591f0a646379f31e3321d78e16 prov_attr3=f48cedfcd17187a603631416114fa5137b014521 prov_attr4=10.1.1.3 
+time=5 node=10.1.1.1 tuple=prov prov_attr1=10.1.1.1 prov_attr2=b5b05a0127a9a4ae83a88994298759df35c2f776 prov_attr3=b5b05a0127a9a4ae83a88994298759df35c2f776 prov_attr4=10.1.1.1 
+time=5 node=10.1.1.1 tuple=prov prov_attr1=10.1.1.1 prov_attr2=d45c6fb8178757ebc43095412c1191616e267659 prov_attr3=65e562128d19bc223fce39e3b1d15efb6b5bdc7f prov_attr4=10.1.1.1 
+time=5 node=10.1.1.2 tuple=prov prov_attr1=10.1.1.2 prov_attr2=296bcaf0a2bcfff6403c75a8b948c9abf24dd923 prov_attr3=a40e07c4311d09a5427205b5e1b0d24e191b197d prov_attr4=10.1.1.2 
+time=5 node=10.1.1.2 tuple=prov prov_attr1=10.1.1.2 prov_attr2=7c2a459fddfef88da3d669f4424798df7bb67430 prov_attr3=ca06e2c2a4557154909209ccf1c5293143b50391 prov_attr4=10.1.1.2 
+time=5 node=10.1.1.2 tuple=prov prov_attr1=10.1.1.2 prov_attr2=9abd1542b64951ccee8e68212de220aaf99ff992 prov_attr3=500915d825afdd67a8fe626b3b6999f70a7cb0ee prov_attr4=10.1.1.1 
+time=5 node=10.1.1.2 tuple=prov prov_attr1=10.1.1.2 prov_attr2=aa87986e44bdf222f500848e033a0b09d14601de prov_attr3=aa87986e44bdf222f500848e033a0b09d14601de prov_attr4=10.1.1.2 
+time=5 node=10.1.1.2 tuple=prov prov_attr1=10.1.1.2 prov_attr2=ace74fc491d9e6344b8fe2cccdebc389409d5f51 prov_attr3=7f68295f1c04dc77171feaa431564f34adf21d8a prov_attr4=10.1.1.3 
+time=5 node=10.1.1.2 tuple=prov prov_attr1=10.1.1.2 prov_attr2=c5968fa115038f477e56c4638b48f104a6039a5d prov_attr3=c5968fa115038f477e56c4638b48f104a6039a5d prov_attr4=10.1.1.2 
+time=5 node=10.1.1.2 tuple=prov prov_attr1=10.1.1.2 prov_attr2=dc3ec8cb3980809d2a54c8e7b2123ab7c04a651f prov_attr3=e07effc4bbcf9276e8fd04f0221bfd12122c99cf prov_attr4=10.1.1.2 
+time=5 node=10.1.1.2 tuple=prov prov_attr1=10.1.1.2 prov_attr2=fc52a5584cb42e3462a17d29e058ee138f7ac29e prov_attr3=b3e3820061cdeba07b4a845603486b62bb214c05 prov_attr4=10.1.1.2 
+time=5 node=10.1.1.3 tuple=prov prov_attr1=10.1.1.3 prov_attr2=5775569962e3e5c6a7e461dc3f8bbc264794e25 prov_attr3=2cf84682b1756e801b263e7fe6f9197b9205b7ad prov_attr4=10.1.1.3 
+time=5 node=10.1.1.3 tuple=prov prov_attr1=10.1.1.3 prov_attr2=2c111a66e25848aa3f1c956cf1a3a3e4ac72a1d7 prov_attr3=2c111a66e25848aa3f1c956cf1a3a3e4ac72a1d7 prov_attr4=10.1.1.3 
+time=5 node=10.1.1.3 tuple=prov prov_attr1=10.1.1.3 prov_attr2=44186744ec1a6f59fe060ace3c41f9bb745ada2f prov_attr3=339a3cde17b642aa39776f585f71a2c6bc7334c7 prov_attr4=10.1.1.1 
+time=5 node=10.1.1.3 tuple=prov prov_attr1=10.1.1.3 prov_attr2=58d60208d25b03846010d35e162a6a1fe60ce6ca prov_attr3=42303456bb0ad93f38e5e8e766bf4dd7da226c45 prov_attr4=10.1.1.3 
+time=5 node=10.1.1.3 tuple=prov prov_attr1=10.1.1.3 prov_attr2=7595cd84e47480d7e651f47635d3db8f5f272277 prov_attr3=8c53ddc6bc340c257743941494c48f8ae194dd77 prov_attr4=10.1.1.3 
+time=5 node=10.1.1.3 tuple=prov prov_attr1=10.1.1.3 prov_attr2=8890cac678235635ef7ee4f230ff66bc08b8a84e prov_attr3=8890cac678235635ef7ee4f230ff66bc08b8a84e prov_attr4=10.1.1.3 
+time=5 node=10.1.1.3 tuple=prov prov_attr1=10.1.1.3 prov_attr2=9c16b4d4a5b85ad63596f725917c5f2010fda837 prov_attr3=c29400193d4935493f9c47dd69db772c08c1c603 prov_attr4=10.1.1.3 
+time=5 node=10.1.1.3 tuple=prov prov_attr1=10.1.1.3 prov_attr2=9c16b4d4a5b85ad63596f725917c5f2010fda837 prov_attr3=f5df10c2ec09c09de51d91b73ed22636c0f7f574 prov_attr4=10.1.1.2 
+time=5 node=10.1.1.1 tuple=ruleExec ruleExec_attr1=10.1.1.1 ruleExec_attr2=a7da298728703373de27f8f2592e092b6d86366 ruleExec_attr3=r3 ruleExec_attr4=(id:155d25ca3bfd0da8f37ee22b4a60a3cfaa05d47) 
+time=5 node=10.1.1.1 tuple=ruleExec ruleExec_attr1=10.1.1.1 ruleExec_attr2=339a3cde17b642aa39776f585f71a2c6bc7334c7 ruleExec_attr3=r2 ruleExec_attr4=(id:18c56473662ef408e782c6fd191af74fa362c03a,id:66df63c1002f9cfaf42a6752d37d4d954c1ce6d) 
+time=5 node=10.1.1.1 tuple=ruleExec ruleExec_attr1=10.1.1.1 ruleExec_attr2=33b478e7b032d20951c14bff3f0a760acc2c00b1 ruleExec_attr3=r1 ruleExec_attr4=(id:b5b05a0127a9a4ae83a88994298759df35c2f776) 
+time=5 node=10.1.1.1 tuple=ruleExec ruleExec_attr1=10.1.1.1 ruleExec_attr2=500915d825afdd67a8fe626b3b6999f70a7cb0ee ruleExec_attr3=r2 ruleExec_attr4=(id:b5b05a0127a9a4ae83a88994298759df35c2f776,id:d45c6fb8178757ebc43095412c1191616e267659) 
+time=5 node=10.1.1.1 tuple=ruleExec ruleExec_attr1=10.1.1.1 ruleExec_attr2=65e562128d19bc223fce39e3b1d15efb6b5bdc7f ruleExec_attr3=r3 ruleExec_attr4=(id:1aa2ecc896d6abcd8afac42ef9ad6b592bd2ba52) 
+time=5 node=10.1.1.1 tuple=ruleExec ruleExec_attr1=10.1.1.1 ruleExec_attr2=881ace202065c25ade3246092659c74e3318dd16 ruleExec_attr3=r1 ruleExec_attr4=(id:18c56473662ef408e782c6fd191af74fa362c03a) 
+time=5 node=10.1.1.2 tuple=ruleExec ruleExec_attr1=10.1.1.2 ruleExec_attr2=5770cb5b2b2b099c7c55d4459a28ec50dcded584 ruleExec_attr3=r2 ruleExec_attr4=(id:aa87986e44bdf222f500848e033a0b09d14601de,id:fc52a5584cb42e3462a17d29e058ee138f7ac29e) 
+time=5 node=10.1.1.2 tuple=ruleExec ruleExec_attr1=10.1.1.2 ruleExec_attr2=a40e07c4311d09a5427205b5e1b0d24e191b197d ruleExec_attr3=r1 ruleExec_attr4=(id:aa87986e44bdf222f500848e033a0b09d14601de) 
+time=5 node=10.1.1.2 tuple=ruleExec ruleExec_attr1=10.1.1.2 ruleExec_attr2=b3e3820061cdeba07b4a845603486b62bb214c05 ruleExec_attr3=r3 ruleExec_attr4=(id:7c2a459fddfef88da3d669f4424798df7bb67430) 
+time=5 node=10.1.1.2 tuple=ruleExec ruleExec_attr1=10.1.1.2 ruleExec_attr2=ca06e2c2a4557154909209ccf1c5293143b50391 ruleExec_attr3=r1 ruleExec_attr4=(id:c5968fa115038f477e56c4638b48f104a6039a5d) 
+time=5 node=10.1.1.2 tuple=ruleExec ruleExec_attr1=10.1.1.2 ruleExec_attr2=e07effc4bbcf9276e8fd04f0221bfd12122c99cf ruleExec_attr3=r3 ruleExec_attr4=(id:296bcaf0a2bcfff6403c75a8b948c9abf24dd923) 
+time=5 node=10.1.1.2 tuple=ruleExec ruleExec_attr1=10.1.1.2 ruleExec_attr2=f5df10c2ec09c09de51d91b73ed22636c0f7f574 ruleExec_attr3=r2 ruleExec_attr4=(id:c5968fa115038f477e56c4638b48f104a6039a5d,id:dc3ec8cb3980809d2a54c8e7b2123ab7c04a651f) 
+time=5 node=10.1.1.3 tuple=ruleExec ruleExec_attr1=10.1.1.3 ruleExec_attr2=2cf84682b1756e801b263e7fe6f9197b9205b7ad ruleExec_attr3=r3 ruleExec_attr4=(id:58d60208d25b03846010d35e162a6a1fe60ce6ca) 
+time=5 node=10.1.1.3 tuple=ruleExec ruleExec_attr1=10.1.1.3 ruleExec_attr2=42303456bb0ad93f38e5e8e766bf4dd7da226c45 ruleExec_attr3=r1 ruleExec_attr4=(id:2c111a66e25848aa3f1c956cf1a3a3e4ac72a1d7) 
+time=5 node=10.1.1.3 tuple=ruleExec ruleExec_attr1=10.1.1.3 ruleExec_attr2=7f68295f1c04dc77171feaa431564f34adf21d8a ruleExec_attr3=r2 ruleExec_attr4=(id:2c111a66e25848aa3f1c956cf1a3a3e4ac72a1d7,id:7595cd84e47480d7e651f47635d3db8f5f272277) 
+time=5 node=10.1.1.3 tuple=ruleExec ruleExec_attr1=10.1.1.3 ruleExec_attr2=8c53ddc6bc340c257743941494c48f8ae194dd77 ruleExec_attr3=r3 ruleExec_attr4=(id:9c16b4d4a5b85ad63596f725917c5f2010fda837) 
+time=5 node=10.1.1.3 tuple=ruleExec ruleExec_attr1=10.1.1.3 ruleExec_attr2=c29400193d4935493f9c47dd69db772c08c1c603 ruleExec_attr3=r1 ruleExec_attr4=(id:8890cac678235635ef7ee4f230ff66bc08b8a84e) 
+time=5 node=10.1.1.3 tuple=ruleExec ruleExec_attr1=10.1.1.3 ruleExec_attr2=f48cedfcd17187a603631416114fa5137b014521 ruleExec_attr3=r2 ruleExec_attr4=(id:8890cac678235635ef7ee4f230ff66bc08b8a84e,id:5775569962e3e5c6a7e461dc3f8bbc264794e25) 
+time=5 node=10.1.1.4 tuple=tuple tuple_attr1=10.1.1.4 tuple_attr2=bestPath tuple_attr3=10.1.1.3 tuple_attr4=10.1.1.2 tuple_attr5=2 
+time=5 node=10.1.1.4 tuple=tuple tuple_attr1=10.1.1.4 tuple_attr2=link tuple_attr3=10.1.1.1 tuple_attr4=10.1.1.2 tuple_attr5=3 
+time=5 node=10.1.1.4 tuple=tuple tuple_attr1=10.1.1.4 tuple_attr2=path tuple_attr3=10.1.1.1 tuple_attr4=10.1.1.3 tuple_attr5=5 
+time=5 node=10.1.1.4 tuple=records records_attr1=10.1.1.4 records_attr2=2f3a486dcb496b9ffba211523e7fc0043e369297 records_attr3=b5b05a0127a9a4ae83a88994298759df35c2f776 records_attr4=b5b05a0127a9a4ae83a88994298759df35c2f776 
+time=5 node=10.1.1.4 tuple=records records_attr1=10.1.1.4 records_attr2=7b17caadb36897a7c924afed8214439e40b7376b records_attr3=5775569962e3e5c6a7e461dc3f8bbc264794e25 records_attr4=r3@n257(r1@n257(2c111a66e25848aa3f1c956cf1a3a3e4ac72a1d7)) 
+time=5 node=10.1.1.4 tuple=records records_attr1=10.1.1.4 records_attr2=8073b12568898ead04469dbbbc67d33c5a6b28c5 records_attr3=1aa2ecc896d6abcd8afac42ef9ad6b592bd2ba52 records_attr4=(r1@n257(18c56473662ef408e782c6fd191af74fa362c03a)+r2@n257(aa87986e44bdf222f500848e033a0b09d14601de*r3@n257(r1@n257(c5968fa115038f477e56c4638b48f104a6039a5d)))) 

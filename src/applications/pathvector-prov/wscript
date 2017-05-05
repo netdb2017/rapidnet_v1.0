@@ -1,0 +1,13 @@
+## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def build(bld):
+    module = bld.create_ns3_module('pathvector-prov', ['internet-stack'])
+    module.source = [
+        'pathvector-prov.cc',
+        ]
+    headers = bld.new_task_gen('ns3header')
+    headers.module = 'pathvector-prov'
+    headers.source = [
+        'pathvector-prov.h',
+        'pathvector-prov-helper.h',
+        ]

@@ -1,0 +1,28 @@
+#define BEACON_PERIOD 2
+#define INITIAL_DELAY 1
+#define SPACEOUT 2
+#define TIMEOUT 5
+
+materialize(link, TIMEOUT, infinity, keys(1, 2)).
+//tLink(@Src, Next, Cost)
+
+
+// Broadcast beacons periodically
+r1  beacon(@Broadcast, Src):-
+    periodic(@Src, E, BEACON_PERIOD, 0, INITIAL_DELAY, SPACEOUT).
+
+// Localize the beacon
+r2  beaconLoc(@Local, Nbr):-
+    beacon(@X, Nbr).
+
+// Insert link
+r3  link(@Src, Nbr, Cost):-
+    beaconLoc(@Src, Nbr),
+    Cost := 1.
+
+rAddLink  eLinkDiscoveryAdd(@Src, Nbr, Cost):-
+          link(@Src, Nbr, Cost).
+
+rDelLink  eLinkDiscoveryDel(@Src, Nbr, Cost):-
+          delete link(@Src, Nbr, Cost).
+

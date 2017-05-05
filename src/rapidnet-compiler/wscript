@@ -1,0 +1,40 @@
+## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def configure(conf):
+  conf.env['BOOST_DATE_TIME'] = conf.check(lib='boost_date_time', define_name='BOOST_DATE_TIME', uselib='BOOST_DATE_TIME')
+  conf.report_optional_feature("boost_date_time", "boost_date_time library",
+  conf.env['BOOST_DATE_TIME'], "library 'boost_date_time' not found")
+
+
+def build(bld):
+    module = bld.create_ns3_module('rapidnet-compiler', ['node'])
+    module.source = [
+        'ol-lexer.cc',
+        'ol-context.cc',
+        'table-store.cc',
+        'all-values.cc',
+        'parser-util.cc',
+        'rapidnet-context.cc',
+        'localize-context.cc',
+        'eca-context.cc',
+        'ol-parser.cc',
+        ]
+
+    headers = bld.new_task_gen('ns3header')
+    headers.module = 'rapidnet-compiler'
+    headers.source = [
+        'ol-context.h',
+        'table-store.h',
+        'eca-context.h',
+        'rapidnet-context.h',
+        'ol-lexer.h',
+        'parser-util.h',
+        'ol-parser.hh',
+        'localize-context.h',
+        'all-values.h',
+        ]
+
+    obj = bld.create_ns3_program('rapidnet-compiler')
+    obj.source = 'rapidnet-compiler.cc'
+
+    bld.env.append_value('LINKFLAGS', ['-lgmp'])

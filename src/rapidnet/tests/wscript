@@ -1,0 +1,27 @@
+## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def build(bld):
+    module = bld.create_ns3_module('tests', ['node'])
+    module.source = [
+        'values-test.cc',
+        'utils-test.cc',
+        'tuple-test.cc',
+        'temp-relation-test.cc',
+        'relation-test.cc',
+        'join-project-test.cc',
+        'heap-relation-test.cc',
+        'header-test.cc',
+        'functions-test.cc',
+        'expression-test.cc',
+        'database-test.cc',
+        'tuple-attribute-test.cc',
+        'aggwrap-test.cc',
+        'evp-key-test.cc',
+        'blowfish-encryption-test.cc',
+        'pki-authentication-test.cc'
+        ]
+
+    headers = bld.new_task_gen('ns3header')
+    headers.module = 'tests'
+    headers.source = ['tests.h']
+

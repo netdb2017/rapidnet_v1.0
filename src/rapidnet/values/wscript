@@ -1,0 +1,44 @@
+## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def configure(conf):
+  conf.env['GMPXX'] = conf.check(lib='gmpxx', define_name='GMPXX', uselib='GMPXX')
+  conf.report_optional_feature("gmpxx", "libgmpxx library",
+  conf.env['GMPXX'], "library 'libgmpxx' not found")
+
+def build(bld):
+    values = bld.create_ns3_module('values', ['node'])
+    values.source = [
+        'value.cc',
+        'type-ids.cc',
+        'nil-value.cc',
+        'int32-value.cc',
+        'real-value.cc',
+        'str-value.cc',
+        'ipv4-value.cc',
+        'bool-value.cc',
+        'list-value.cc',
+        'id-value.cc',
+        'sv-value.cc',
+        'byte-array-value.cc',
+        ]
+
+    if bld.env['GMPXX']:
+        values.uselib = 'GMPXX'
+
+    headers = bld.new_task_gen('ns3header')
+    headers.module = 'values'
+    headers.source = [
+        'rapidnet-types.h',
+        'value.h',
+        'type-ids.h',
+        'nil-value.h',
+        'int32-value.h',
+        'real-value.h',
+        'str-value.h',
+        'ipv4-value.h',
+        'bool-value.h',
+        'list-value.h',
+        'id-value.h',
+        'sv-value.h',
+        'byte-array-value.h',
+        ]

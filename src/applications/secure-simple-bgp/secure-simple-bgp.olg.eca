@@ -1,0 +1,6 @@
+ECA Rule z1Eca0Ins ACTION_ADD<route(@Z, X, P)> :- EVENT_INSERT<neighbor(@Z, X)>, P1 := f_append(Z), P2 := f_append(X), P := f_concat(P1, P2).
+ECA Rule z1Eca0Del ACTION_DELETE<route(@Z, X, P)> :- EVENT_DELETE<neighbor(@Z, X)>, P1 := f_append(Z), P2 := f_append(X), P := f_concat(P1, P2).
+ECA Rule z2_eca ACTION_ADD<route(@Z, Y, P)> :- EVENT_RECV<X says advertise(Y, P, @Z, X)>, acceptRoute(@Z, X, Y).
+ECA Rule z3Eca0Ins ACTION_REMOTE_SEND<Z says advertise(Y, P1, @X, Z)> :- EVENT_INSERT<neighbor(@Z, X)>, route(@Z, Y, P), carryTraffic(@Z, X, Y), P0 := f_append(X), P1 := f_concat(P0, P).
+ECA Rule z3Eca1Ins ACTION_REMOTE_SEND<Z says advertise(Y, P1, @X, Z)> :- EVENT_INSERT<route(@Z, Y, P)>, neighbor(@Z, X), carryTraffic(@Z, X, Y), P0 := f_append(X), P1 := f_concat(P0, P).
+ECA Rule z3Eca2Ins ACTION_REMOTE_SEND<Z says advertise(Y, P1, @X, Z)> :- EVENT_INSERT<carryTraffic(@Z, X, Y)>, neighbor(@Z, X), route(@Z, Y, P), P0 := f_append(X), P1 := f_concat(P0, P).

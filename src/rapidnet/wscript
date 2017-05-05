@@ -1,0 +1,74 @@
+## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def configure(conf):
+  conf.env['CRYPTO'] = conf.check(lib='crypto', define_name='CRYPTO', uselib='CRYPTO')
+  conf.report_optional_feature("crypto", "crypto library",
+  conf.env['CRYPTO'], "library 'crypto' not found")
+
+def build(bld):
+    rapidnet = bld.create_ns3_module('rapidnet', ['node'])
+    rapidnet.source = [
+      'tuple-attribute.cc',
+      'tuple.cc',
+      'rapidnet-header.cc',
+      'relation-base.cc',
+      'temp-relation.cc',
+      'rapidnet-utils.cc',
+      'relation.cc',
+      'database.cc',
+      'rapidnet-application-base.cc',
+      'rapidnet-script-utils.cc',
+      'rapidnet-decorator-frontend.cc',
+      'app-decorator-trigger.cc',
+      'expression.cc',
+      'assignor.cc',
+      'selector.cc',
+      'rapidnet-functions.cc',
+      'aggregator.cc',
+      'aggwrap.cc',
+      'heap-relation.cc',
+      'rapidnet-application-helper.cc',
+      'evp-key.cc',
+      'sendlog-authentication-manager.cc',
+      'sendlog-encryption-manager.cc',
+      'pki-authentication-manager.cc',
+      'blowfish-encryption-manager.cc',
+      'rapidnet-tcp-connection.cc',
+    ]
+
+    if bld.env['CRYPTO']:
+      rapidnet.uselib = 'CRYPTO'
+        
+    headers = bld.new_task_gen('ns3header')
+    headers.module = 'rapidnet'
+    headers.source = [
+      'tuple-attribute.h',
+      'tuple.h',
+      'rapidnet-header.h',
+      'relation-base.h',
+      'temp-relation.h',
+      'rapidnet-utils.h',
+      'trigger.h',
+      'relation.h',
+      'database.h',
+      'rapidnet-application-base.h',
+      'rapidnet-script-utils.h',
+      'rapidnet-decorator-frontend.h',
+      'app-decorator-trigger.h',
+      'expression.h',
+      'assignor.h',
+      'selector.h',
+      'rapidnet-functions.h',
+      'aggregator.h',
+      'aggwrap.h',
+      'heap-relation.h',
+      'rapidnet-application-helper.h',
+      'evp-key.h',
+      'sendlog-authentication-manager.h',
+      'sendlog-encryption-manager.h',
+      'pki-authentication-manager.h',
+      'blowfish-encryption-manager.h',
+      'rapidnet-tcp-connection.h',
+    ]
+
+    bld.env.append_value('LINKFLAGS', ['-lboost_serialization'])

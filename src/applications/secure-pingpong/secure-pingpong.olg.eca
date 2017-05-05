@@ -1,0 +1,4 @@
+ECA Rule r1_ecaperiodic ACTION_LOCAL_SEND<r1_ecaperiodic(@Src, E)> :- EVENT_INSERT<periodic(@Src, E, 1)>.
+ECA Rule r1_eca ACTION_REMOTE_SEND< encrypts ePing(@Next, Src)> :- EVENT_RECV<r1_ecaperiodic(@Src, E)>, tLink(@Src, Next).
+ECA Rule r2_eca ACTION_REMOTE_SEND< encrypts ePong(@Next, Src)> :- EVENT_RECV< encrypts ePing(@Src, Next)>.
+ECA Rule r3_eca ACTION_LOCAL_SEND<ePingPongFinish(@Src)> :- EVENT_RECV< encrypts ePong(@Src, Next)>.

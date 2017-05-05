@@ -1,0 +1,3 @@
+ECA Rule r1Eca0Ins ACTION_REMOTE_SEND<ePing(@Next, Src)> :- EVENT_INSERT<tLink(@Src, Next)>.
+ECA Rule r2_eca ACTION_REMOTE_SEND<ePong(@Next, Src)> :- EVENT_RECV<ePing(@Src, Next)>.
+ECA Rule r3_eca ACTION_LOCAL_SEND<ePingPongFinish(@Src)> :- EVENT_RECV<ePong(@Src, Next)>.

@@ -1,0 +1,3 @@
+ECA Rule q1_ecaperiodic ACTION_LOCAL_SEND<q1_ecaperiodic(@ME, E)> :- EVENT_INSERT<periodic(@ME, E, 4, 2)>.
+ECA Rule q1_eca ACTION_REMOTE_SEND<provQuery(@X, QID, UID, ME)> :- EVENT_RECV<q1_ecaperiodic(@ME, E)>, tuple(@ME, Name, X, Y, C), UID := f_sha1(((Name+ X)+ Y)+ C), Time := f_now(), QID := f_sha1((+ UID)+ Time).
+ECA Rule q2_eca ACTION_ADD<records(@ME, QID, RID, Prov)> :- EVENT_RECV<pReturn(@ME, QID, RID, Prov)>.

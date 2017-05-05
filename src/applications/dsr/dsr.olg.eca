@@ -1,0 +1,13 @@
+ECA Rule r11_eca ACTION_REMOTE_SEND<ePathDst(@Broadcast, Src, Dst, Cost, P_vec, Qid, Pre)> :- EVENT_RECV<eQuery(@Src, Dst, Qid)>, Cost := 0, P_vec := f_append(Src), Pre := Src.
+ECA Rule r12_eca ACTION_REMOTE_SEND<ePathDstLoc(@Local, Src, Dst, Cost, P_vec, Qid, Pre)> :- EVENT_RECV<ePathDst(@X, Src, Dst, Cost, P_vec, Qid, Pre)>.
+ECA Rule r13_eca ACTION_ADD<tPathDst(@Local, Src, Dst, CostUpdate, P_vecUpdate, Qid)> :- EVENT_RECV<ePathDstLoc(@Local, Src, Dst, Cost, P_vec, Qid, Pre)>, f_member(P_vec, Local) == 0, Cost_2 := 1, CostUpdate := Cost+ Cost_2, P_vec_2 := f_append(Local), P_vecUpdate := f_concat(P_vec, P_vec_2).
+ECA Rule r14eca ACTION_ADD<tBestPathDst(@Local, Src, Dst, MIN< Cost >, P_vec, Qid)> :- EVENT_INSERT<tPathDst(@Local, Src, Dst, Cost, P_vec, Qid)>.
+ECA Rule r14eca2 ACTION_DELETE<tBestPathDst(@Local, Src, Dst, MIN< Cost >, P_vec, Qid)> :- EVENT_DELETE<tPathDst(@Local, Src, Dst, Cost, P_vec, Qid)>.
+ECA Rule r15Eca0Ins ACTION_LOCAL_SEND<eBestPathDst(@Local, Src, Dst, Cost, P_vec, Qid)> :- EVENT_INSERT<tBestPathDst(@Local, Src, Dst, Cost, P_vec, Qid)>.
+ECA Rule r16_eca ACTION_REMOTE_SEND<ePathDst(@Broadcast, Src, Dst, Cost, P_vec, Qid, Pre)> :- EVENT_RECV<eBestPathDst(@Local, Src, Dst, Cost, P_vec, Qid)>, Local != Dst, f_size(P_vec) < 16, Pre := Local.
+ECA Rule r21_eca ACTION_REMOTE_SEND<ePathSrc(@Pre, P_track_vec, P_vec, Cost, Qid)> :- EVENT_RECV<eBestPathDst(@Local, Src, Dst, Cost, P_vec, Qid)>, Local == Dst, Temp_vec := P_vec, P_track_vec := f_removeLast(Temp_vec), Pre := f_last(P_track_vec).
+ECA Rule r22_eca ACTION_REMOTE_SEND<ePathSrc(@Pre, P_new_track_vec, P_vec, Cost, Qid)> :- EVENT_RECV<ePathSrc(@Mid, P_track_vec, P_vec, Cost, Qid)>, Last := f_last(P_track_vec), Mid == Last, f_size(P_track_vec) >= 2, Temp_vec := P_track_vec, P_new_track_vec := f_removeLast(Temp_vec), Pre := f_last(P_new_track_vec).
+ECA Rule r23ECAMat ACTION_ADD<tPath(@Src, Dst, Cost, P_vec, Qid)> :- EVENT_RECV<r23tPathsend(@Src, Dst, Cost, P_vec, Qid)>.
+ECA Rule r23_eca ACTION_REMOTE_SEND<r23tPathsend(@Src, Dst, Cost, P_vec, Qid)> :- EVENT_RECV<ePathSrc(@Mid, P_track_vec, P_vec, Cost, Qid)>, Last := f_last(P_track_vec), Mid == Last, f_size(P_track_vec) == 1, Src := Mid, Dst := f_last(P_vec).
+ECA Rule r31eca ACTION_ADD<tBestPath(@Src, Dst, MIN< Cost >, P_vec, Qid)> :- EVENT_INSERT<tPath(@Src, Dst, Cost, P_vec, Qid)>.
+ECA Rule r31eca2 ACTION_DELETE<tBestPath(@Src, Dst, MIN< Cost >, P_vec, Qid)> :- EVENT_DELETE<tPath(@Src, Dst, Cost, P_vec, Qid)>.

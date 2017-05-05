@@ -1,0 +1,13 @@
+## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def build(bld):
+    module = bld.create_ns3_module('mincost-prov', ['internet-stack'])
+    module.source = [
+        'mincost-prov.cc',
+        ]
+    headers = bld.new_task_gen('ns3header')
+    headers.module = 'mincost-prov'
+    headers.source = [
+        'mincost-prov.h',
+        'mincost-prov-helper.h',
+        ]

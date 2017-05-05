@@ -1,0 +1,42 @@
+materialize(pQList, -1, 0, keys(1, 2)
+materialize(pResultTmp, -1, 0, keys(1, 2)
+materialize(prov, -1, 0, keys(1, 2, 3)
+materialize(rQList, -1, 0, keys(1, 2)
+materialize(rResultTmp, -1, 0, keys(1, 2)
+materialize(ruleExec, -1, 0, keys(1, 2)
+materialize(tLink, -1, 0, keys(1, 2)
+prov_r1_1 eePingTemp(@RLOC, Next, Src, EID, RID, R, List) :- periodic(@Src, E, 1), PID1 := f_sha1(((periodic+ Src)+ E)+ 1), List := f_append(PID1), tLink(@Src, Next), PID2 := f_sha1((tLink+ Src)+ Next), List2 := f_append(PID2), List := f_concat(List, List2), Time := f_now(), EID := f_sha1(Time), RLOC := Src, R := r1, RID := f_sha1((R+ RLOC)+ List).
+prov_r1_2 ruleExec(@RLOC, RID, R, List) :- eePingTemp(@RLOC, Next, Src, EID, RID, R, List).
+prov_r1_3 eePing(@Next, Src, EID, RID, RLOC) :- eePingTemp(@RLOC, Next, Src, EID, RID, R, List).
+prov_r1_4 ePing(@Next, Src, EID) :- eePing(@Next, Src, EID, RID, RLOC).
+prov_r1_5 prov(@Next, VID, RID, RLOC) :- eePing(@Next, Src, EID, RID, RLOC), VID := f_sha1(((ePing+ Next)+ Src)+ EID).
+prov_r2_1 eePongTemp(@RLOC, Next, Src, EID, RID, R, List) :- ePing(@Src, Next, EID), PID1 := f_sha1(((ePing+ Src)+ Next)+ EID), List := f_append(PID1), RLOC := Src, R := r2, RID := f_sha1((R+ RLOC)+ List).
+prov_r2_2 ruleExec(@RLOC, RID, R, List) :- eePongTemp(@RLOC, Next, Src, EID, RID, R, List).
+prov_r2_3 eePong(@Next, Src, EID, RID, RLOC) :- eePongTemp(@RLOC, Next, Src, EID, RID, R, List).
+prov_r2_4 ePong(@Next, Src, EID) :- eePong(@Next, Src, EID, RID, RLOC).
+prov_r2_5 prov(@Next, VID, RID, RLOC) :- eePong(@Next, Src, EID, RID, RLOC), VID := f_sha1(((ePong+ Next)+ Src)+ EID).
+prov_r3_1 eePingPongFinishTemp(@RLOC, Src, EID, RID, R, List) :- ePong(@Src, Next, EID), PID1 := f_sha1(((ePong+ Src)+ Next)+ EID), List := f_append(PID1), RLOC := Src, R := r3, RID := f_sha1((R+ RLOC)+ List).
+prov_r3_2 ruleExec(@RLOC, RID, R, List) :- eePingPongFinishTemp(@RLOC, Src, EID, RID, R, List).
+prov_r3_3 eePingPongFinish(@Src, EID, RID, RLOC) :- eePingPongFinishTemp(@RLOC, Src, EID, RID, R, List).
+prov_r3_4 ePingPongFinish(@Src, EID) :- eePingPongFinish(@Src, EID, RID, RLOC).
+prov_r3_5 prov(@Src, VID, RID, RLOC) :- eePingPongFinish(@Src, EID, RID, RLOC), VID := f_sha1((ePingPongFinish+ Src)+ EID).
+prov_edb_1 prov(@Src, VID, RID, $1) :- $1 := Src, tLink(@Src, Next), VID := f_sha1((tLink+ Src)+ Next), RID := VID.
+edb1 pReturn(@Ret, QID, VID, Prov) :- provQuery(@X, QID, VID, Ret), prov(@X, VID, RID, RLoc), RID == VID, Prov := f_pEDB(VID, X).
+idb1 pQList(@X, QID, LIST< RID >) :- provQuery(@X, QID, VID, Ret), prov(@X, VID, RID, RLoc), RID != VID.
+idb2 pResultTmp(@X, QID, Ret, VID, Buf) :- provQuery(@X, QID, VID, Ret), Buf := f_empty().
+idb3 pIterate(@X, QID, N) :- provQuery(@X, QID, VID, Ret), N := 1.
+idb4 pIterate(@X, QID, N) :- pIterate(@X, QID, N1), pQList(@X, QID, List), N1 < f_size(List), N := N1+ 1.
+idb5 eRuleQuery(@X, NQID, RID) :- pIterate(@X, QID, N), pQList(@X, QID, List), N <= f_size(List), RID := f_item(List, N), NQID := f_sha1((+ QID)+ RID).
+idb6 ruleQuery(@RLoc, NQID, RID, X) :- eRuleQuery(@X, NQID, RID), prov(@X, VID, RID, RLoc).
+idb7 pResultTmp(@X, QID, Ret, VID, Buf) :- rReturn(@X, NQID, RID, Prov), pResultTmp(@X, QID, Ret, VID, Buf1), NQID == f_sha1((+ QID)+ RID), Buf2 := f_append(Prov), Buf := f_concat(Buf1, Buf2).
+idb8 ePReturn(@X, QID) :- pResultTmp(@X, QID, Ret, VID, Buf), pQList(@X, QID, List), f_size(Buf) == f_size(List), f_size(Buf) != 0.
+idb9 pReturn(@Ret, QID, VID, Prov) :- ePReturn(@X, QID), pResultTmp(@X, QID, Ret, VID, Buf), Prov := f_pIDB(Buf, X).
+rv1 rQList(@X, NQID, List) :- ruleQuery(@X, NQID, RID, Ret), ruleExec(@X, RID, R, List).
+rv2 rResultTmp(@X, NQID, Ret, RID, Buf) :- ruleQuery(@X, NQID, RID, Ret), Buf := f_empty().
+rv3 rIterate(@X, NQID, N) :- ruleQuery(@X, NQID, RID, Ret), N := 1.
+rv4 rIterate(@X, NQID, N) :- rIterate(@X, NQID, N1), rQList(@X, NQID, List), N1 < f_size(List), N := N1+ 1.
+rv5 eProvQuery(@X, NNQID, VID) :- rIterate(@X, NQID, N), rQList(@X, NQID, List), VID := f_item(List, N), NNQID := f_sha1((+ NQID)+ VID).
+rv6 provQuery(@X, NNQID, VID, $1) :- $1 := X, eProvQuery(@X, NNQID, VID).
+rv7 rResultTmp(@X, NQID, Ret, RID, Buf) :- pReturn(@X, NNQID, VID, Prov), rResultTmp(@X, NQID, Ret, RID, Buf1), NNQID == f_sha1((+ NQID)+ VID), Buf2 := f_append(Prov), Buf := f_concat(Buf1, Buf2).
+rv8 eRReturn(@X, NQID) :- rResultTmp(@X, NQID, Ret, RID, Buf), rQList(@X, NQID, List), f_size(Buf) == f_size(List).
+rv9 rReturn(@Ret, NQID, RID, Prov) :- eRReturn(@X, NQID), rResultTmp(@X, NQID, Ret, RID, Buf), ruleExec(@X, RID, R, List), Prov := f_pRULE(Buf, X, R).

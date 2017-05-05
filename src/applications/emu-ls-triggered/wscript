@@ -1,0 +1,13 @@
+## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def build(bld):
+    module = bld.create_ns3_module('emu-ls-triggered', ['internet-stack'])
+    module.source = [
+        'emu-ls-triggered.cc',
+        ]
+    headers = bld.new_task_gen('ns3header')
+    headers.module = 'emu-ls-triggered'
+    headers.source = [
+        'emu-ls-triggered.h',
+        'emu-ls-triggered-helper.h',
+        ]

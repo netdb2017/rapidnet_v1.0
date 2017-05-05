@@ -1,0 +1,25 @@
+#!/usr/bin/python
+
+import os, sys
+
+apps = [
+  'pktfwd-prov',
+  'mincost-prov',
+  'pathvector-prov',
+]
+
+
+for app in apps:
+  os.system ("./rapidnet/compiler/compile src/applications/%s --provenance" % app)
+
+print "====== Comparing .prov files with expected files ======"
+for app in apps:
+  os.system ("diff src/applications/%s/%s.olg.prov \
+rapidnet/expoutput/provenance/%s.olg.prov.expected > rapidnet/output/%s.olg.prov.diff" % (app, app, app, app))
+  if len(open("./rapidnet/output/%s.olg.prov.diff" % app).readlines ()) != 0:
+    print "Provenance rewrite src/applications/%s/%s.olg.prov does not match \
+rapidnet/expoutput/provenance/%s.olg.prov.expected" % (app, app, app)
+    print "See output file: rapidnet/output/%s.olg.prov.diff" % app
+  else:
+    print "Provenance rewrite of src/applications/%s/%s.olg.prov successfull" % (app, app)
+

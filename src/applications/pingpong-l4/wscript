@@ -1,0 +1,13 @@
+## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def build(bld):
+    module = bld.create_ns3_module('pingpong-l4', ['internet-stack'])
+    module.source = [
+        'pingpong-l4.cc',
+        ]
+    headers = bld.new_task_gen('ns3header')
+    headers.module = 'pingpong-l4'
+    headers.source = [
+        'pingpong-l4.h',
+        'pingpong-l4-helper.h',
+        ]

@@ -1,0 +1,13 @@
+## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def build(bld):
+    module = bld.create_ns3_module('sim-hsls-triggered', ['internet-stack'])
+    module.source = [
+        'sim-hsls-triggered.cc',
+        ]
+    headers = bld.new_task_gen('ns3header')
+    headers.module = 'sim-hsls-triggered'
+    headers.source = [
+        'sim-hsls-triggered.h',
+        'sim-hsls-triggered-helper.h',
+        ]

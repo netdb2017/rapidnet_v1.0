@@ -1,0 +1,22 @@
+ECA Rule r01_eca ACTION_ADD<tLink(@Src, Next, Cost)> :- EVENT_RECV<eLinkDiscoveryAdd(@Src, Next, Cost)>.
+ECA Rule r02_eca ACTION_DELETE<tLink(@Src, Next, Cost)> :- EVENT_RECV<eLinkDiscoveryDel(@Src, Next, Cost)>.
+ECA Rule r03Eca0Ins ACTION_LOCAL_SEND<eLinkAdd(@Src, Next, Cost)> :- EVENT_INSERT<tLink(@Src, Next, Cost)>.
+ECA Rule r04_eca ACTION_LOCAL_SEND<eMessageBegin(@Src, $1, Dst, ID, T_begin)> :- EVENT_RECV<eMessageInject(@Src, Dst, ID, T_begin)>, $1 := Src.
+ECA Rule r05Eca0Ins ACTION_LOCAL_SEND<eMessageEnd(@Local, Src, Dst, ID, T_begin)> :- EVENT_INSERT<tMessage(@Local, Src, Dst, ID, T_begin)>, Local == Dst.
+ECA Rule r11_ecaperiodic ACTION_LOCAL_SEND<r11_ecaperiodic(@Src, E)> :- EVENT_INSERT<periodic(@Src, E, 0, 1)>.
+ECA Rule r11_eca ACTION_ADD<tSummaryVec(@Src, SummaryVec)> :- EVENT_RECV<r11_ecaperiodic(@Src, E)>, SummaryVec := f_svcreate().
+ECA Rule r12_eca ACTION_REMOTE_SEND<eBitVectorRequest(@Next, Local, SummaryVec)> :- EVENT_RECV<eLinkAdd(@Local, Next, Cost)>, tSummaryVec(@Local, SummaryVec).
+ECA Rule r13_eca ACTION_REMOTE_SEND<eBitVectorReply(@From, Local, SummaryVec_3)> :- EVENT_RECV<eBitVectorRequest(@Local, From, SummaryVec_1)>, tSummaryVec(@Local, SummaryVec_2), SummaryVec_3 := f_svandnot(SummaryVec_1, SummaryVec_2).
+ECA Rule r14_eca ACTION_REMOTE_SEND<eMessage(@From, Src, Dst, ID, T_begin)> :- EVENT_RECV<eBitVectorReply(@Local, From, SummaryVec)>, tMessage(@Local, Src, Dst, ID, T_begin), Result := f_svin(SummaryVec, ID), Result == 1.
+ECA Rule r21_eca ACTION_LOCAL_SEND<eMessageInject(@Src, Dst, ID, T_begin)> :- EVENT_RECV<eMessageInjectOriginal(@Src, Dst)>, ID := f_rand(), T_begin := f_now().
+ECA Rule r22_eca ACTION_ADD<tMessage(@Src, $1, Dst, ID, T_begin)> :- EVENT_RECV<eMessageInject(@Src, Dst, ID, T_begin)>, $1 := Src.
+ECA Rule r23_eca ACTION_ADD<tSummaryVec(@Src, SummaryVecUpdate)> :- EVENT_RECV<eMessageInject(@Src, Dst, ID, T_begin)>, tSummaryVec(@Src, SummaryVec), SummaryVecUpdate := f_svappend(SummaryVec, ID).
+ECA Rule r24Eca0Ins ACTION_LOCAL_SEND<eMessageNew(@Local, Src, Dst, ID, T_begin)> :- EVENT_INSERT<tMessage(@Local, Src, Dst, ID, T_begin)>, Local != Dst.
+ECA Rule r25_eca ACTION_REMOTE_SEND<eMessage(@Broadcast, Src, Dst, ID, T_begin)> :- EVENT_RECV<eMessageNew(@Local, Src, Dst, ID, T_begin)>.
+ECA Rule r26_eca ACTION_REMOTE_SEND<eMessageLoc(@Local, Src, Dst, ID, T_begin)> :- EVENT_RECV<eMessage(@X, Src, Dst, ID, T_begin)>.
+ECA Rule r27_eca ACTION_ADD<tMessage(@Local, Src, Dst, ID, T_begin)> :- EVENT_RECV<eMessageLoc(@Local, Src, Dst, ID, T_begin)>.
+ECA Rule r28_eca ACTION_ADD<tSummaryVec(@Local, SummaryVecUpdate)> :- EVENT_RECV<eMessageLoc(@Local, Src, Dst, ID, T_begin)>, tSummaryVec(@Local, SummaryVec), SummaryVecUpdate := f_svappend(SummaryVec, ID).
+ECA Rule r29_ecaperiodic ACTION_LOCAL_SEND<r29_ecaperiodic(@Local, E)> :- EVENT_INSERT<periodic(@Local, E, 1)>.
+ECA Rule r29_eca ACTION_LOCAL_SEND<eMessageDel(@Local, Src, Dst, ID, T_begin)> :- EVENT_RECV<r29_ecaperiodic(@Local, E)>, tMessage(@Local, Src, Dst, ID, T_begin), Now := f_now(), T_exist := f_diffTime(Now, T_begin), T_exist > 120.
+ECA Rule r2A_eca ACTION_DELETE<tMessage(@Local, Src, Dst, ID, T_begin)> :- EVENT_RECV<eMessageDel(@Local, Src, Dst, ID, T_begin)>.
+ECA Rule r2B_eca ACTION_ADD<tSummaryVec(@Local, SummaryVecUpdate)> :- EVENT_RECV<eMessageDel(@Local, Src, Dst, ID, T_begin)>, tSummaryVec(@Local, SummaryVec), SummaryVecUpdate := f_svremove(SummaryVec, ID).

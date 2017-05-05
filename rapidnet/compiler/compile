@@ -1,0 +1,117 @@
+#!/usr/bin/python
+import os, sys, re
+import optparse
+
+rn_appbase = 'RapidNetApplicationBase'
+options = None
+args = None
+
+# Returns true if the given filename has extension .olg
+def isolg (filename):
+  return re.match ('.*\.olg$', filename) != None
+
+
+# Returns the Ndlog filename and error message if any
+def getNDlogFile (arg):
+  if os.path.isdir (arg):
+    app_dir = arg
+    files = os.listdir (app_dir)
+    olgfiles = filter (isolg, files)
+    if len (olgfiles) == 0:
+      return None, 'No NDlog (*.olg) files found in ' + arg
+    if len (olgfiles) > 1:
+      return None, 'Found multiple NDlog files in ' + arg
+    ndlog_file = os.path.join (app_dir, olgfiles[0])
+  elif os.path.isfile (arg):
+    ndlog_file = arg
+  else:
+    return None, arg + ' is not a file or directory.'
+
+  return ndlog_file, 'Found NDlog file'
+
+# Get paths of other generated files
+def getFile (ndlog_file, ext):
+  basename = ndlog_file.rpartition ('.')[0]
+  if ext == '.h' or ext == '.cc':
+    return basename + ext
+  elif ext == '.cpp' or ext == '.eca':
+    return ndlog_file + ext
+  else:
+    return None
+
+#Compile
+def rn_compile (ndlog_file, appbase_file, provenance):
+  # Compare the modified times of ndlog file and header file
+  header_file = getFile (ndlog_file, '.h')
+  cc_file = getFile (ndlog_file, '.cc')
+
+  # Uncomment this later to avoid redundant recompilation
+  #if os.path.exists (header_file) \
+  #  and os.path.exists (cc_file) \
+  #  and os.stat (ndlog_file).st_mtime < os.stat (header_file).st_mtime:
+  #
+  #  print ndlog_file, 'is upto date. Nothing to do.'
+  #  return
+
+  print 'Compiling %s' % ndlog_file
+
+  # Run compiler
+  cmd = './waf --run rapidnet-compiler --command-template=" %%s ' \
+    '--ndlog=%s --base-ndlog=%s --provenance=%d"' % \
+    (ndlog_file, appbase_file, (1 if provenance else 0))
+  print cmd
+  os.system (cmd)
+
+  # Generate wscript
+  appname = os.path.basename (ndlog_file).rpartition ('.')[0]
+  wscript_filename = os.path.dirname (ndlog_file) + '/wscript'
+  wscript_file = open (wscript_filename, 'w')  
+  wscript_template = open ('rapidnet/compiler/wscript-template', 'r').read ()
+  wscript_file.write (wscript_template % {'name': appname})
+  wscript_file.close ()
+  print 'Generated wscript file', wscript_filename
+
+
+def parse_args ():
+  global options, args
+  usage = "usage: %prog application [options]"
+  parser = optparse.OptionParser (usage)
+  parser.add_option ("-b", "--base", dest="appbase",
+                    default = rn_appbase,
+                    help="Base application file/folder path")
+  parser.add_option("-p", "--provenance", default=False,
+                    action="store_true", dest="provenance",
+                    help="Enable provenance")
+  parser.add_option("-v", "--verbose", default=True,
+                    action="store_true", dest="verbose")
+  (options, args) = parser.parse_args()
+  if len(args) != 1:
+    parser.print_help ()
+    parser.error("application file/folder path missing.")
+  if options.verbose:
+    print "Application:", args[0]
+    print "Base application:", options.appbase
+    print "Provenance Enabled:", options.provenance
+
+def main():
+  parse_args ()
+  if options.appbase != rn_appbase:
+    appbase_file, msg = getNDlogFile (options.appbase)
+    if appbase_file == None:
+      print 'Error while reading application base file:', msg
+      sys.exit (0)
+  else:
+    appbase_file = rn_appbase
+
+  app_file, msg = getNDlogFile (args[0])
+  if app_file == None:
+    print msg
+    sys.exit (0)
+
+  print appbase_file
+  rn_compile (app_file, appbase_file, options.provenance)
+
+if __name__== "__main__":
+  main()
+
+

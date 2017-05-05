@@ -1,0 +1,174 @@
+/* Epidemic protocol for Ad-hoc network */
+
+// for wireless testbed
+#define WIRELESS_PROTOCOL 10001
+
+// for common usage
+#define LS_PERIOD 5 
+//#define TLINK_TIMEOUT 11 // no need to timeout tLink, link is all handeled by neighbor discovery2
+
+// for Epidemic specific usage
+//#define SUMMARY_VECTOR_SIZE_LIMIT 9600 // summary vector words: 1200, built-in
+//#define BUFFER_SIZE 1600 // buffer size for message stored: 300*8*4 / 6(ratio: m to n)
+
+// timeout for messages1
+#define MESSAGE_TIMEOUT 120 // after (f_now() - message's T_begin) has exceed this value, message will be timeout, i.e. deleted from message table tMessage
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+materialize(tLink, infinity, infinity, keys(1, 2)). //hard state table, no timeout
+//tLink(@Src, Next, Cost)
+
+materialize(tSummaryVec, infinity, 1, keys(1)). // epidemic summary vector
+// tSummaryVec(@Src, SummaryVec)
+
+materialize(tMessage, infinity, infinity, keys(1, 2, 3, 4:str)). // messages for sending out and receive
+// tMessage(@Local, Src, Dst, ID, T_begin), will be timed out by MESSAGE_TIMEOUT
+
+////////////////////////////////////////////////////////////////for debugging(1) : tables
+
+//watchmod(tSummaryVec, "").
+//watchmod(tMessage, "").
+
+////////////////////////////////////////////////////////////////for debugging(2) : events
+
+//watchmod(eLinkInject, "").
+watchmod(eOneHopNborAdd, "").
+watchmod(eOneHopNborDelete, "").
+//watchmod(eBitVectorRequest, ""). //
+//watchmod(eBitVectorReply, ""). //
+//watchmod(eOneHopNborChange, "").
+watchmod(eTimeStart, "").
+//watchmod(pong, "").
+watchmod(eMessageBegin, "").
+watchmod(eMessageEnd, "").
+
+////////////////////////////////////////////////////////////////for debugging(3) : dump table
+
+//watchmod(dumpTSummaryVec, "").
+//watchmod(dumpTMessage, ""). // mostly
+
+////////////////////////////////////////////////////////////////
+
+rA  pong(@I, J) :- ping(@J, I).	// // test whether this node is alive or not
+
+////////////////////////////////////////////////////////////////initialization 
+
+r00 eTimeStart(@Src):- // initialize starting time
+    periodic(@Src, E, 0, 1).
+
+r01 tLink(@Src, Next, Cost) :- // different from soft state link table in NEIGHBOR DISCOVERY component, tLink is hard state table
+    eLinkDiscoveryAdd(@Src, Next, Cost). // link actual ADD or REFRESH, by NEIGHBOR DISCOVERY component (src/application/discovery2)
+
+r02 delete tLink(@Src, Next, Cost) :- // different from soft state link table in NEIGHBOR DISCOVERY component, tLink is hard state table
+    eLinkDiscoveryDel(@Src, Next, Cost). // link actual DELETE, by NEIGHBOR DISCOVERY component (src/application/discovery2)
+
+r03 eLinkAdd(@Src, Next, Cost) :-
+    tLink(@Src, Next, Cost). // only when there is actual ADD (not refresh) in tLink, then trigger a eLinkAdd
+
+r04 eLinkDel(@Src, Next, Cost):-
+    delete tLink(@Src, Next, Cost). // when there is actual DELETE in tLink, then trigger a eLinkDel
+
+//////////////////////////////////////////////////////////////// link (1) initialization and injection, for cluster usage
+/*
+r12 eOneHopNborAdd(@Src, Next, Cost):- // prepare to add a new link
+    eLinkInject(@Src, Next, Cost, Type), // inject outside from cbWrapper, need to specify port in "Next" when injecting
+    Type == "ADD",
+    Src != Next.
+
+r13 eOneHopNborDelete(@Src, Next):- // prepare to delete
+    eLinkInject(@Src, Next, Cost, Type),  // inject outside from cbWrapper
+    Type == "DELETE".
+
+//////////////////////////////////////////////////////////////// link (2) detection, for orbit testbed usage
+
+r21 eOneHopNborAdd(@Src, Next, Cost):- // prepare to add a new link
+    eLinkDetect(@Src, NextIP, Cost, Type), // inject outside from cbWrapper
+    Type == "ADD",
+    Next := NextIP+":"+WIRELESS_PROTOCOL,
+    Src != Next. 		// this circumstance happens when the node detects itself
+
+r22 eOneHopNborDelete(@Src, Next):- // prepare to delete
+    eLinkDetect(@Src, NextIP, Cost, Type),  // inject outside from cbWrapper
+    Type == "DELETE",
+    Next := NextIP+":"+WIRELESS_PROTOCOL.
+*/
+
+////////////////////////////////////////////////////////////////// Epidemic summary vector and message exchange
+
+rE0 tSummaryVec(@Src, SummaryVec):- // initialize summary vector table
+    periodic(@Src, E, 0, 1),
+    SummaryVec := f_svcreate().// size limit of this summary vector
+
+rE1 eBitVectorRequest(@Next, Local, SummaryVec):- // currently bit vector contains "ID" as bit information
+    eLinkAdd(@Local, Next, Cost),
+    tSummaryVec(@Local, SummaryVec).
+
+rE2 eBitVectorReply(@From, Local, SummaryVec_3):-
+    eBitVectorRequest(@Local, From, SummaryVec_1),
+    tSummaryVec(@Local, SummaryVec_2),
+    SummaryVec_3 := f_svandnot(SummaryVec_1, SummaryVec_2).
+
+rE3 eMessage(@From, Src, Dst, ID, T_begin):- // after receiving a reply for requesting message, send it this message
+    eBitVectorReply(@Local, From, SummaryVec),
+    tMessage(@Local, Src, Dst, ID, T_begin),
+    Result := f_svin(SummaryVec, ID),
+    Result == 1. // ID is in Summary Vector
+
+////////////////////////////////////////////////////////////////////// messages
+
+rF0 eMessageInject(@Src, Dst, ID, T_begin) :-
+    eMessageInjectOriginal(@Src, Dst),
+    ID := f_rand(), // random number 32bit interger, as string type
+    T_begin := f_now().
+
+rF1 eMessageBegin(@Src, Src, Dst, ID, T_begin):- // Observation: message begins
+    eMessageInject(@Src, Dst, ID, T_begin).    
+
+rF2 tMessage(@Src, Src, Dst, ID, T_begin):- // generate original message, using the information of one-hop neighbor
+    eMessageInject(@Src, Dst, ID, T_begin).
+
+rF3 tSummaryVec(@Src, SummaryVecUpdate):- // once inject a message, update summary vector
+    eMessageInject(@Src, Dst, ID, T_begin),
+    tSummaryVec(@Src, SummaryVec),
+    SummaryVecUpdate := f_svappend(SummaryVec, ID).
+
+rF4 eMessageNew(@Local, Src, Dst, ID, T_begin):- // if Local is not its destinationa, trigger a new message, i.e. generate a event indicating new message (prepare to forward it using route table)
+    tMessage(@Local, Src, Dst, ID, T_begin),
+    Local != Dst.
+
+rF5 eMessageEnd(@Local, Src, Dst, ID, T_begin):- // Observation: receive a new message, will only trigger one time (one exception: when this message in tMessage is timeout, and there are some intermidiate nodes holding this message, note that this is epidemic, and then sent and received by this node again, this will be triggered another time ), this is for the ease of couting the number of eMessageEnd
+    tMessage(@Local, Src, Dst, ID, T_begin),
+    Local == Dst.
+
+rF6 eMessage(@Broadcast, Src, Dst, ID, T_begin):- // flooding messages in Epidemic
+    eMessageNew(@Local, Src, Dst, ID, T_begin). // broadcast
+//    tLink(@Local, Next, Cost). // unicast
+
+rF7 eMessageLoc(@Local, Src, Dst, ID, T_begin):-
+    eMessage(@X, Src, Dst, ID, T_begin).
+
+rF8 tMessage(@Local, Src, Dst, ID, T_begin):- // sees to causing cpu 100% (maybe looping) when tMessage has lifetime
+    eMessageLoc(@Local, Src, Dst, ID, T_begin).
+
+rFA tSummaryVec(@Local, SummaryVecUpdate):- // receive a message sent from neighbor, put this in the summary 
+    eMessageLoc(@Local, Src, Dst, ID, T_begin),
+    tSummaryVec(@Local, SummaryVec),
+    SummaryVecUpdate := f_svappend(SummaryVec, ID).
+
+rFB eMessageDelete(@Local, Src, Dst, ID, T_begin):- // message time out
+    periodic(@Local, E, LS_PERIOD),
+    tMessage(@Local, Src, Dst, ID, T_begin),
+    Now := f_now(),
+    T_exist := f_timeDivide(Now, T_begin),
+    T_exist > MESSAGE_TIMEOUT.
+
+rFC delete tMessage(@Local, Src, Dst, ID, T_begin):- // actually delete messages
+    eMessageDelete(@Local, Src, Dst, ID, T_begin).
+
+rFD tSummaryVec(@Local, SummaryVecUpdate):- // update summary vector
+    eMessageDelete(@Local, Src, Dst, ID, T_begin),
+    tSummaryVec(@Local, SummaryVec),
+    SummaryVecUpdate := f_svremove(SummaryVec, ID).
+
+/////////////////////////////////////////////////////////////////

@@ -1,0 +1,22 @@
+ECA Rule r11_ecaperiodic ACTION_LOCAL_SEND<r11_ecaperiodic(@Src, E)> :- EVENT_INSERT<periodic(@Src, E, 5, 0, 0.5)>.
+ECA Rule r11_eca ACTION_LOCAL_SEND<eLinkAdd(@Src, Next, Cost)> :- EVENT_RECV<r11_ecaperiodic(@Src, E)>, apptable(@Src, Next, Cost), Src != Next.
+ECA Rule r33_eca ACTION_LOCAL_SEND<eLinkCount(@Src, Next, Cost, COUNT< * >)> :- EVENT_RECV<eLinkAdd(@Src, Next, Cost)>, tLink(@Src, Next, Cost_2, SeqNum).
+ECA Rule r34_eca ACTION_ADD<tLink(@Src, Next, Cost, SeqNum)> :- EVENT_RECV<eLinkCount(@Src, Next, Cost, Count)>, Count == 0, SeqNum := 0.
+ECA Rule r35_eca ACTION_ADD<tLink(@Src, Next, Cost, SeqNum)> :- EVENT_RECV<eLinkAdd(@Src, Next, Cost)>, tLink(@Src, Next, Cost_2, SeqNum).
+ECA Rule r61A_ecaperiodic ACTION_LOCAL_SEND<r61A_ecaperiodic(@Src, E)> :- EVENT_INSERT<periodic(@Src, E, 60, 0, 60, 30)>.
+ECA Rule r61A_eca ACTION_LOCAL_SEND<eLSU(@Src, $1, $2, Next, Cost, SeqNum, TTL)> :- EVENT_RECV<r61A_ecaperiodic(@Src, E)>, tLink(@Src, Next, Cost, SeqNum), $1 := Src, $2 := Src, TTL := 999999.
+ECA Rule r61B_ecaperiodic ACTION_LOCAL_SEND<r61B_ecaperiodic(@Src, E)> :- EVENT_INSERT<periodic(@Src, E, 60, 0, 59)>.
+ECA Rule r61B_eca ACTION_ADD<tLink(@Src, Next, Cost, SeqNumU)> :- EVENT_RECV<r61B_ecaperiodic(@Src, E)>, tLink(@Src, Next, Cost, SeqNum), SeqNumU := SeqNum+ 1.
+ECA Rule rAddEca2Ins ACTION_LOCAL_SEND<eLSU(@Src, $1, $2, Next, Cost, SeqNum, TTL)> :- EVENT_INSERT<tLink(@Src, Next, Cost, SeqNum)>, $1 := Src, $2 := Src, SeqNum == 0, TTL := 999999.
+ECA Rule rAddEca2Ref ACTION_LOCAL_SEND<eLSU(@Src, $1, $2, Next, Cost, SeqNum, TTL)> :- EVENT_REFRESH<tLink(@Src, Next, Cost, SeqNum)>, $1 := Src, $2 := Src, SeqNum == 0, TTL := 999999.
+ECA Rule r70_eca ACTION_REMOTE_SEND<eLSULoc(@Local, From, LastHop, Dst, Cost, SeqNum, TTL)> :- EVENT_RECV<eLSU(@X, From, LastHop, Dst, Cost, SeqNum, TTL)>.
+ECA Rule rFilter_eca ACTION_LOCAL_SEND<eLSUFiltered(@Src, LastHop, Dst, Cost, SeqNum, TTL)> :- EVENT_RECV<eLSULoc(@Src, From, LastHop, Dst, Cost, SeqNum, TTL)>, apptable(@Src, From, Cost), Cost < 999999.
+ECA Rule r71_eca ACTION_LOCAL_SEND<eLSUCount(@Src, LastHop, Dst, Cost, SeqNum, TTL, COUNT< * >)> :- EVENT_RECV<eLSUFiltered(@Src, LastHop, Dst, Cost, SeqNum, TTL)>, tLSU(@Src, LastHop, Dst, Cost_2, SeqNum_2, TTL_2).
+ECA Rule r72_eca ACTION_ADD<tLSU(@Src, LastHop, Dst, Cost, SeqNum, TTL)> :- EVENT_RECV<eLSUCount(@Src, LastHop, Dst, Cost, SeqNum, TTL, Count)>, Count == 0, Cost < 999999.
+ECA Rule r73_eca ACTION_ADD<tLSU(@Src, LastHop, Dst, Cost, SeqNum, TTL)> :- EVENT_RECV<eLSUFiltered(@Src, LastHop, Dst, Cost, SeqNum, TTL)>, tLSU(@Src, LastHop, Dst, Cost_2, SeqNum_2, TTL_2), SeqNum > SeqNum_2, Cost < 999999.
+ECA Rule r74_eca ACTION_LOCAL_SEND<eLSUDel(@Src, LastHop, Dst, Cost_2, SeqNum_2, TTL_2)> :- EVENT_RECV<eLSUCount(@Src, LastHop, Dst, Cost, SeqNum, TTL, Count)>, tLSU(@Src, LastHop, Dst, Cost_2, SeqNum_2, TTL_2), Count > 0, Cost == 999999.
+ECA Rule r75_eca ACTION_DELETE<tLSU(@Src, LastHop, Dst, Cost_2, SeqNum_2, TTL_2)> :- EVENT_RECV<eLSUDel(@Src, LastHop, Dst, Cost_2, SeqNum_2, TTL_2)>.
+ECA Rule r81Eca0Ins ACTION_LOCAL_SEND<eLSUChange(@Src, LastHop, Dst, Cost, SeqNum, TTL)> :- EVENT_INSERT<tLSU(@Src, LastHop, Dst, Cost, SeqNum, TTL)>.
+ECA Rule r81Eca0Ref ACTION_LOCAL_SEND<eLSUChange(@Src, LastHop, Dst, Cost, SeqNum, TTL)> :- EVENT_REFRESH<tLSU(@Src, LastHop, Dst, Cost, SeqNum, TTL)>.
+ECA Rule r82_eca ACTION_REMOTE_SEND<eLSU(@Broadcast, Src, LastHop, Dst, Cost, SeqNum, TTLU)> :- EVENT_RECV<eLSUChange(@Src, LastHop, Dst, Cost, SeqNum, TTL)>, TTL > 0, TTLU := TTL- 1.
+ECA Rule r83_eca ACTION_REMOTE_SEND<eLSU(@Broadcast, Src, LastHop, Dst, Cost_2, SeqNum_2, TTL_2)> :- EVENT_RECV<eLSUDel(@Src, LastHop, Dst, Cost_2, SeqNum_2, TTL_2)>.

@@ -1,0 +1,4 @@
+ECA Rule r1_ecaperiodic ACTION_LOCAL_SEND<r1_ecaperiodic(@Src, E)> :- EVENT_INSERT<periodic(@Src, E, 5, 0, 1, 4)>.
+ECA Rule r1_eca ACTION_REMOTE_SEND<beacon(@Broadcast, Src)> :- EVENT_RECV<r1_ecaperiodic(@Src, E)>.
+ECA Rule r2_eca ACTION_REMOTE_SEND<beaconLoc(@Local, Nbr)> :- EVENT_RECV<beacon(@X, Nbr)>.
+ECA Rule r3_eca ACTION_ADD<link(@Src, Nbr, Cost)> :- EVENT_RECV<beaconLoc(@Src, Nbr)>, Cost := 1.

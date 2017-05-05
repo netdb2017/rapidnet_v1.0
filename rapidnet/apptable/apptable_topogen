@@ -1,0 +1,35 @@
+#!/usr/bin/python
+import os
+import sys
+
+if len (sys.argv) != 5:
+  print 'Usage: parse_args <output-file-name> <nodesmap.py> <apptable-period> <duration>'
+  sys.exit (0)
+
+# Map of time with tuples list from all nodes
+apptable = {}
+base = 0
+period = int (sys.argv[3])
+duration = int (sys.argv[4])
+
+# Execute the nodesmap.py to setup the nodes dict
+nodes = {}
+execfile (sys.argv[2])
+
+print 'apptable = {}'
+print 'for time in range (%d, %d + %d, %d):' % (base, duration, period, period)
+print '  apptable[time] = []'
+
+#print nodes
+
+# Read all the link tuples into apptable
+file = open (sys.argv[1], 'r')
+for line in file:
+  if line.startswith ('time') and line.find ('tuple=link') >= 0:
+    words = line.split (' ')
+    time = int (words[0].split('=')[1])
+    #split to get the value and pick only x from '192.168.0.x' and then look it up in nodes
+    from_attr = nodes [int (words[3].split('=')[1].rpartition ('.')[2])]
+    to_attr = nodes[int (words[4].split('=')[1].rpartition ('.')[2])]
+    print 'apptable[%d] += [[\'%s\', \'%s\']]' % (time, from_attr, to_attr)
+

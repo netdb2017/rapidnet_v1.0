@@ -1,0 +1,11 @@
+ECA Rule r1Eca0Ins ACTION_ADD<path(@X, Y, C, P)> :- EVENT_INSERT<link(@X, Y, C)>, P1 := f_append(X), P2 := f_append(Y), P := f_concat(P1, P2).
+ECA Rule r1Eca0Ref ACTION_ADD<path(@X, Y, C, P)> :- EVENT_REFRESH<link(@X, Y, C)>, P1 := f_append(X), P2 := f_append(Y), P := f_concat(P1, P2).
+ECA Rule r2Local1Eca0RemoteIns ACTION_ADD<r2linkZ(X, @Z, C1)> :- EVENT_RECV<r2Local1r2linkZsend(X, @Z, C1)>.
+ECA Rule r2Local1Eca0Ins ACTION_REMOTE_SEND<r2Local1r2linkZsend(X, @Z, C1)> :- EVENT_INSERT<link(@X, Z, C1)>.
+ECA Rule r2Local1Eca0Ref ACTION_REMOTE_SEND<r2Local1r2linkZsend(X, @Z, C1)> :- EVENT_REFRESH<link(@X, Z, C1)>.
+ECA Rule r2Local2Eca0RemoteIns ACTION_ADD<path(@X, Y, C, P)> :- EVENT_RECV<r2Local2pathsend(@X, Y, C, P)>.
+ECA Rule r2Local2Eca0RemoteDel ACTION_DELETE<path(@X, Y, C, P)> :- EVENT_RECV<pathDelete(@X, Y, C, P)>.
+ECA Rule r2Local2Eca0Ins ACTION_REMOTE_SEND<r2Local2pathsend(@X, Y, C, P)> :- EVENT_INSERT<r2linkZ(X, @Z, C1)>, path(@Z, Y, C2, P2), C := C1+ C2, f_member(P2, X) == 0, P1 := f_append(X), P := f_concat(P1, P2).
+ECA Rule r2Local2Eca0Del ACTION_REMOTE_SEND<pathDelete(@X, Y, C, P)> :- EVENT_DELETE<r2linkZ(X, @Z, C1)>, path(@Z, Y, C2, P2), C := C1+ C2, f_member(P2, X) == 0, P1 := f_append(X), P := f_concat(P1, P2).
+ECA Rule r2Local2Eca1Ins ACTION_REMOTE_SEND<r2Local2pathsend(@X, Y, C, P)> :- EVENT_INSERT<path(@Z, Y, C2, P2)>, r2linkZ(X, @Z, C1), C := C1+ C2, f_member(P2, X) == 0, P1 := f_append(X), P := f_concat(P1, P2).
+ECA Rule r2Local2Eca1Del ACTION_REMOTE_SEND<pathDelete(@X, Y, C, P)> :- EVENT_DELETE<path(@Z, Y, C2, P2)>, r2linkZ(X, @Z, C1), C := C1+ C2, f_member(P2, X) == 0, P1 := f_append(X), P := f_concat(P1, P2).

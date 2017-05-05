@@ -1,0 +1,13 @@
+## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def build(bld):
+    module = bld.create_ns3_module('secure-simple-bgp', ['internet-stack'])
+    module.source = [
+        'secure-simple-bgp.cc',
+        ]
+    headers = bld.new_task_gen('ns3header')
+    headers.module = 'secure-simple-bgp'
+    headers.source = [
+        'secure-simple-bgp.h',
+        'secure-simple-bgp-helper.h',
+        ]

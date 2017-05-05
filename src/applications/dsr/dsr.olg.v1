@@ -1,0 +1,95 @@
+/* Ad-hoc DSR routing protocol 
+ * Features: 
+ *   (1) group-by shortest path calculation
+ *   (2) broadcast for wireless
+ */
+
+#define MAX_TTL 16
+#define DUMP_INTERVAL 5
+//#define CLEAR_INTERVAL 3
+
+//materialize(link, infinity, infinity, keys(1, 2)). // injected from outside
+//link(@Src, Next, Cost)
+
+materialize(tLink, infinity, infinity, keys(1, 2)). 
+//tLink(@Src, Next, Cost)
+
+materialize(tPath, infinity, infinity, keys(1, 2, 4:list)). 
+//tPath(@Src, Dst, Cost, P_vec, Qid), tPath is all "multi-hop"(2 or more) routing Path
+
+materialize(tBestPath, infinity, infinity, keys(1, 2)).  
+//tBestPath(@Src, Dst, Cost, P_vec, Qid), tBestPath is the shortest "multi-hop"(2 or more) routing Path
+
+materialize(tPathDst, infinity, infinity, keys(1, 2, 3, 5:list)). 
+//tPathDst(@Local, Src, Dst, Cost, P_vec, Qid),
+
+materialize(tBestPathDst, infinity, infinity, keys(1, 2, 3)).   
+//tBestPathDst(@Local, Src, Dst, Cost, P_vec, Qid),
+
+////////////////////////////////////////////////// route discovery(1): sending path discovery route to destination by flooding
+
+// broadcast version
+r11  ePathDst(@Broadcast, Src, Dst, Cost, P_vec, Qid, Pre) :-
+     eQuery(@Src, Dst, Qid), //  Inject tuple/eQuery here!!
+     Cost := 0,
+     P_vec := f_append(Src),
+     Pre := Src.
+
+r16  ePathDstLoc(@Local, Src, Dst, Cost, P_vec, Qid, Pre):-
+     ePathDst(@X, Src, Dst, Cost, P_vec, Qid, Pre).
+
+r12  tPathDst(@Local, Src, Dst, CostUpdate, P_vecUpdate, Qid):-
+     ePathDstLoc(@Local, Src, Dst, Cost, P_vec, Qid, Pre),
+//     tLink(@Local, Pre, Cost_2),
+     f_member(P_vec, Local) == 0, // reject ePathDst which is broadcast back, ensureing no redundant flooding or looping
+     Cost_2 := 1,
+     CostUpdate := Cost + Cost_2,
+     P_vec_2 := f_append(Local),
+     P_vecUpdate := f_concat(P_vec, P_vec_2).
+
+r13  tBestPathDst(@Local, Src, Dst, a_MIN<Cost>, P_vec, Qid) :-
+     tPathDst(@Local, Src, Dst, Cost, P_vec, Qid).
+
+r14  eBestPathDst(@Local, Src, Dst, Cost, P_vec, Qid) :-
+     tBestPathDst(@Local, Src, Dst, Cost, P_vec, Qid).
+
+r15  ePathDst(@Broadcast, Src, Dst, Cost, P_vec, Qid, Pre) :-
+     eBestPathDst(@Local, Src, Dst, Cost, P_vec, Qid),
+     Local != Dst, //not reach the destination
+     f_size(P_vec) < MAX_TTL,
+     Pre := Local.
+
+////////////////////////////////////////////////// route discovery(2): route found, send back route, path to source
+
+// reaching the destination, sending back ePathSrc
+r21  ePathSrc(@Pre, P_track_vec, P_vec, Cost, Qid) :-
+     eBestPathDst(@Local, Src, Dst, Cost, P_vec, Qid),
+     Local == Dst,
+     Temp_vec := P_vec,
+     P_track_vec := f_removeLast(Temp_vec),
+     Pre := f_last(P_track_vec).
+
+//during the sending back process and middle nodes, keep on sending back
+r22 ePathSrc(@Pre, P_new_track_vec, P_vec, Cost, Qid) :-
+	ePathSrc(@Mid, P_track_vec, P_vec, Cost, Qid),
+	Last := f_last(P_track_vec), /// redundancy, just to make sure
+	Mid == Last,
+	f_size(P_track_vec) >= 2, /// not reaching the Dst // !!!! P2 bug !!!//// New_vec := f_removeLast(Vec) will modify Vec!!!???????? still wrong!!!
+	Temp_vec := P_track_vec,
+	P_new_track_vec := f_removeLast(Temp_vec),/// keep sending back
+	Pre := f_last(P_new_track_vec).
+
+r23 tPath(@Src, Dst, Cost, P_vec, Qid) :- //correct
+	ePathSrc(@Mid, P_track_vec, P_vec, Cost, Qid),
+	Last := f_last(P_track_vec),
+	Mid == Last,
+	f_size(P_track_vec) == 1,
+	Src := Mid,
+	Dst := f_last(P_vec).
+
+//////////////////////////////////////////////////route discovery(3): Compute the best routing path (this is necessary, since path will be flushed by new ones)
+
+r31 tBestPath(@Src, Dst, a_MIN<Cost>, P_vec, Qid):-
+    tPath(@Src, Dst, Cost, P_vec, Qid).
+
+////////////////////////////////////////////////// 

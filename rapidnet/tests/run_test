@@ -1,0 +1,34 @@
+#!/bin/bash
+
+f_usage() {
+  echo "Usage: run_test TEST_COMMAND"
+}
+
+# Check for arguments
+if [ $# -lt 1 ]; then
+        f_usage
+        exit 0
+fi
+
+output="rapidnet/output/$1.out"
+log="rapidnet/output/$1.log"
+diff="rapidnet/output/$1.diff"
+expout="rapidnet/expoutput/$1.expout"
+
+
+# Run the command
+./waf --run $1 1> $output 2> $log
+
+# Diff the output
+diff $output $expout > $diff
+
+# Check diff file is empty
+count=`wc -l $diff | cut -d ' ' -f 1`
+
+if [ $count -eq "0" ]; then
+	echo "Test $1 passed!"
+else
+	echo "Test $1 failed!"
+        echo "See log file: $log, output file: $output and diff file $diff"
+fi
+
