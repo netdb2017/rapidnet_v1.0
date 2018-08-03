@@ -1,0 +1,2748 @@
+Terminals unused in grammar
+
+   OL_ID
+   OL_LCURB
+   OL_RCURB
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: OL_EOF
+    2        | clauselist OL_EOF
+
+    3 clauselist: clause
+    4           | clause clauselist
+
+    5 clause: rule
+    6       | fact
+    7       | materialize
+    8       | watch
+    9       | watchfine
+   10       | trace
+   11       | TraceTable
+   12       | query
+   13       | stage
+   14       | context
+
+   15 materialize: OL_MATERIALIZE OL_LPAR OL_NAME OL_COMMA tablearg OL_COMMA tablearg OL_COMMA primarykeys OL_RPAR OL_DOT
+
+   16 tablearg: OL_VALUE
+
+   17 primarykeys: OL_KEYS OL_LPAR keylist OL_RPAR
+   18            | OL_KEYS OL_LPAR OL_RPAR
+
+   19 keylist: key
+   20        | key OL_COMMA keylist
+
+   21 key: OL_VALUE OL_COLON OL_NAME
+   22    | OL_VALUE
+
+   23 watch: OL_WATCH OL_LPAR OL_NAME OL_RPAR OL_DOT
+
+   24 watchfine: OL_WATCHFINE OL_LPAR OL_NAME OL_COMMA OL_STRING OL_RPAR OL_DOT
+
+   25 stage: OL_STAGE OL_LPAR OL_STRING OL_COMMA OL_NAME OL_COMMA OL_NAME OL_RPAR OL_DOT
+
+   26 trace: OL_TRACE OL_LPAR OL_NAME OL_RPAR OL_DOT
+
+   27 TraceTable: OL_TRACETABLE OL_LPAR OL_NAME OL_RPAR OL_DOT
+
+   28 fact: functor OL_DOT
+
+   29 rule: namedRule
+   30     | unnamedRule
+
+   31 namedRule: OL_NAME unnamedRule
+
+   32 unnamedRule: weightedRule
+   33            | unweightedRule
+
+   34 weightedRule: OL_VALUE unweightedRule
+
+   35 unweightedRule: functor OL_IF termlist OL_DOT
+   36               | OL_DEL functor OL_IF termlist OL_DOT
+   37               | functor OL_IF OL_DEL termlist OL_DOT
+   38               | OL_DEL functor OL_DEL OL_IF termlist OL_DOT
+   39               | functor OL_IF aggview OL_DOT
+
+   40 context: OL_CONTEXT OL_VAR OL_COLON
+
+   41 query: OL_QUERY functorname functorbody OL_DOT
+
+   42 termlist: term
+   43         | term OL_COMMA termlist
+
+   44 term: functor
+   45     | assign
+   46     | select
+
+   47 functor: functorname functorbody
+   48        | OL_VAR OL_SAYS functorname functorbody
+   49        | OL_ENCRYPTS functorname functorbody
+   50        | OL_ENCRYPTS OL_VAR OL_SAYS functorname functorbody
+   51        | functorname functorbody OL_AT OL_VAR
+   52        | OL_VAR OL_SAYS functorname functorbody OL_AT OL_VAR
+   53        | OL_ENCRYPTS functorname functorbody OL_AT OL_VAR
+   54        | OL_ENCRYPTS OL_VAR OL_SAYS functorname functorbody OL_AT OL_VAR
+
+   55 aggview: agg_oper OL_LPAR functorbody OL_COMMA functorbody OL_COMMA functor OL_RPAR
+
+   56 functorname: OL_NAME
+
+   57 functorbody: OL_LPAR OL_RPAR
+   58            | OL_LPAR functorargs OL_RPAR
+
+   59 functorargs: functorarg
+   60            | functorarg OL_COMMA functorargs
+   61            | OL_AT atom
+   62            | OL_AT atom OL_COMMA functorargs
+
+   63 functorarg: atom
+   64           | aggregate
+
+   65 function: OL_FUNCTION OL_LPAR functionargs OL_RPAR
+   66         | OL_FUNCTION OL_LPAR OL_RPAR
+
+   67 functionargs: functionarg
+   68             | functionarg OL_COMMA functionargs
+
+   69 functionarg: math_expr
+   70            | atom
+
+   71 select: bool_expr
+
+   72 assign: OL_VAR OL_ASSIGN rel_atom
+   73       | OL_VAR OL_ASSIGN bool_expr
+
+   74 bool_expr: OL_LPAR bool_expr OL_RPAR
+   75          | OL_VAR OL_IN range_expr
+   76          | OL_NOT bool_expr
+   77          | bool_expr OL_OR bool_expr
+   78          | bool_expr OL_AND bool_expr
+   79          | rel_atom rel_oper rel_atom
+
+   80 rel_atom: math_expr
+   81         | function
+   82         | atom
+
+   83 rel_oper: OL_EQ
+   84         | OL_NEQ
+   85         | OL_GT
+   86         | OL_LT
+   87         | OL_GTE
+   88         | OL_LTE
+
+   89 math_expr: math_expr math_oper math_atom
+   90          | math_atom math_oper math_atom
+
+   91 math_atom: atom
+   92          | function
+   93          | OL_LPAR math_expr OL_RPAR
+
+   94 math_oper: OL_LSHIFT
+   95          | OL_RSHIFT
+   96          | OL_PLUS
+   97          | OL_MINUS
+   98          | OL_TIMES
+   99          | OL_DIVIDE
+  100          | OL_MODULUS
+  101          | OL_BITXOR
+  102          | OL_BITAND
+  103          | OL_BITOR
+  104          | OL_BITNOT
+
+  105 range_expr: OL_LPAR range_atom OL_COMMA range_atom OL_RPAR
+  106           | OL_LPAR range_atom OL_COMMA range_atom OL_RSQUB
+  107           | OL_LSQUB range_atom OL_COMMA range_atom OL_RPAR
+  108           | OL_LSQUB range_atom OL_COMMA range_atom OL_RSQUB
+
+  109 range_atom: math_expr
+  110           | atom
+
+  111 atom: OL_VALUE
+  112     | OL_VAR
+  113     | OL_STRING
+  114     | OL_NULL
+
+  115 aggregate: agg_oper OL_LT OL_VAR OL_GT
+  116          | agg_oper OL_LT OL_AT OL_VAR OL_GT
+  117          | agg_oper OL_LT OL_TIMES OL_GT
+
+  118 agg_oper: OL_AGGFUNCNAME
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+OL_OR (258) 77
+OL_AND (259) 78
+OL_BITOR (260) 103
+OL_BITXOR (261) 101
+OL_BITAND (262) 102
+OL_BITNOT (263) 104
+OL_EQ (264) 83
+OL_NEQ (265) 84
+OL_GT (266) 85 115 116 117
+OL_GTE (267) 87
+OL_LT (268) 86 115 116 117
+OL_LTE (269) 88
+OL_LSHIFT (270) 94
+OL_RSHIFT (271) 95
+OL_PLUS (272) 96
+OL_MINUS (273) 97
+OL_TIMES (274) 98 117
+OL_DIVIDE (275) 99
+OL_MODULUS (276) 100
+OL_NOT (277) 76
+OL_IN (278) 75
+OL_ID (279)
+OL_ASSIGN (280) 72 73
+OL_AT (281) 51 52 53 54 61 62 116
+OL_NAME (282) 15 21 23 24 25 26 27 31 56
+OL_COMMA (283) 15 20 24 25 43 55 60 62 68 105 106 107 108
+OL_DOT (284) 15 23 24 25 26 27 28 35 36 37 38 39 41
+OL_EOF (285) 1 2
+OL_IF (286) 35 36 37 38 39
+OL_STRING (287) 24 25 113
+OL_VALUE (288) 16 21 22 34 111
+OL_VAR (289) 40 48 50 51 52 53 54 72 73 75 112 115 116
+OL_AGGFUNCNAME (290) 118
+OL_FUNCTION (291) 65 66
+OL_NULL (292) 114
+OL_RPAR (293) 15 17 18 23 24 25 26 27 55 57 58 65 66 74 93 105 107
+OL_LPAR (294) 15 17 18 23 24 25 26 27 55 57 58 65 66 74 93 105 106
+OL_LSQUB (295) 107 108
+OL_RSQUB (296) 106 108
+OL_LCURB (297)
+OL_RCURB (298)
+OL_COLON (299) 21 40
+OL_DEL (300) 36 37 38
+OL_QUERY (301) 41
+OL_MATERIALIZE (302) 15
+OL_KEYS (303) 17 18
+OL_SAYS (304) 48 50 52 54
+OL_ENCRYPTS (305) 49 50 53 54
+OL_CONTEXT (306) 40
+OL_WATCH (307) 23
+OL_WATCHFINE (308) 24
+OL_STAGE (309) 25
+OL_TRACE (310) 26
+OL_TRACETABLE (311) 27
+
+
+Nonterminals, with rules where they appear
+
+$accept (57)
+    on left: 0
+program (58)
+    on left: 1 2, on right: 0
+clauselist (59)
+    on left: 3 4, on right: 2 4
+clause (60)
+    on left: 5 6 7 8 9 10 11 12 13 14, on right: 3 4
+materialize (61)
+    on left: 15, on right: 7
+tablearg (62)
+    on left: 16, on right: 15
+primarykeys (63)
+    on left: 17 18, on right: 15
+keylist (64)
+    on left: 19 20, on right: 17 20
+key (65)
+    on left: 21 22, on right: 19 20
+watch (66)
+    on left: 23, on right: 8
+watchfine (67)
+    on left: 24, on right: 9
+stage (68)
+    on left: 25, on right: 13
+trace (69)
+    on left: 26, on right: 10
+TraceTable (70)
+    on left: 27, on right: 11
+fact (71)
+    on left: 28, on right: 6
+rule (72)
+    on left: 29 30, on right: 5
+namedRule (73)
+    on left: 31, on right: 29
+unnamedRule (74)
+    on left: 32 33, on right: 30 31
+weightedRule (75)
+    on left: 34, on right: 32
+unweightedRule (76)
+    on left: 35 36 37 38 39, on right: 33 34
+context (77)
+    on left: 40, on right: 14
+query (78)
+    on left: 41, on right: 12
+termlist (79)
+    on left: 42 43, on right: 35 36 37 38 43
+term (80)
+    on left: 44 45 46, on right: 42 43
+functor (81)
+    on left: 47 48 49 50 51 52 53 54, on right: 28 35 36 37 38 39 44
+    55
+aggview (82)
+    on left: 55, on right: 39
+functorname (83)
+    on left: 56, on right: 41 47 48 49 50 51 52 53 54
+functorbody (84)
+    on left: 57 58, on right: 41 47 48 49 50 51 52 53 54 55
+functorargs (85)
+    on left: 59 60 61 62, on right: 58 60 62
+functorarg (86)
+    on left: 63 64, on right: 59 60
+function (87)
+    on left: 65 66, on right: 81 92
+functionargs (88)
+    on left: 67 68, on right: 65 68
+functionarg (89)
+    on left: 69 70, on right: 67 68
+select (90)
+    on left: 71, on right: 46
+assign (91)
+    on left: 72 73, on right: 45
+bool_expr (92)
+    on left: 74 75 76 77 78 79, on right: 71 73 74 76 77 78
+rel_atom (93)
+    on left: 80 81 82, on right: 72 79
+rel_oper (94)
+    on left: 83 84 85 86 87 88, on right: 79
+math_expr (95)
+    on left: 89 90, on right: 69 80 89 93 109
+math_atom (96)
+    on left: 91 92 93, on right: 89 90
+math_oper (97)
+    on left: 94 95 96 97 98 99 100 101 102 103 104, on right: 89 90
+range_expr (98)
+    on left: 105 106 107 108, on right: 75
+range_atom (99)
+    on left: 109 110, on right: 105 106 107 108
+atom (100)
+    on left: 111 112 113 114, on right: 61 62 63 70 82 91 110
+aggregate (101)
+    on left: 115 116 117, on right: 64
+agg_oper (102)
+    on left: 118, on right: 55 115 116 117
+
+
+State 0
+
+    0 $accept: . program $end
+
+    OL_NAME         shift, and go to state 1
+    OL_EOF          shift, and go to state 2
+    OL_VALUE        shift, and go to state 3
+    OL_VAR          shift, and go to state 4
+    OL_DEL          shift, and go to state 5
+    OL_QUERY        shift, and go to state 6
+    OL_MATERIALIZE  shift, and go to state 7
+    OL_ENCRYPTS     shift, and go to state 8
+    OL_CONTEXT      shift, and go to state 9
+    OL_WATCH        shift, and go to state 10
+    OL_WATCHFINE    shift, and go to state 11
+    OL_STAGE        shift, and go to state 12
+    OL_TRACE        shift, and go to state 13
+    OL_TRACETABLE   shift, and go to state 14
+
+    program         go to state 15
+    clauselist      go to state 16
+    clause          go to state 17
+    materialize     go to state 18
+    watch           go to state 19
+    watchfine       go to state 20
+    stage           go to state 21
+    trace           go to state 22
+    TraceTable      go to state 23
+    fact            go to state 24
+    rule            go to state 25
+    namedRule       go to state 26
+    unnamedRule     go to state 27
+    weightedRule    go to state 28
+    unweightedRule  go to state 29
+    context         go to state 30
+    query           go to state 31
+    functor         go to state 32
+    functorname     go to state 33
+
+
+State 1
+
+   31 namedRule: OL_NAME . unnamedRule
+   56 functorname: OL_NAME .
+
+    OL_NAME      shift, and go to state 34
+    OL_VALUE     shift, and go to state 3
+    OL_VAR       shift, and go to state 4
+    OL_DEL       shift, and go to state 5
+    OL_ENCRYPTS  shift, and go to state 8
+
+    $default  reduce using rule 56 (functorname)
+
+    unnamedRule     go to state 35
+    weightedRule    go to state 28
+    unweightedRule  go to state 29
+    functor         go to state 36
+    functorname     go to state 33
+
+
+State 2
+
+    1 program: OL_EOF .
+
+    $default  reduce using rule 1 (program)
+
+
+State 3
+
+   34 weightedRule: OL_VALUE . unweightedRule
+
+    OL_NAME      shift, and go to state 34
+    OL_VAR       shift, and go to state 4
+    OL_DEL       shift, and go to state 5
+    OL_ENCRYPTS  shift, and go to state 8
+
+    unweightedRule  go to state 37
+    functor         go to state 36
+    functorname     go to state 33
+
+
+State 4
+
+   48 functor: OL_VAR . OL_SAYS functorname functorbody
+   52        | OL_VAR . OL_SAYS functorname functorbody OL_AT OL_VAR
+
+    OL_SAYS  shift, and go to state 38
+
+
+State 5
+
+   36 unweightedRule: OL_DEL . functor OL_IF termlist OL_DOT
+   38               | OL_DEL . functor OL_DEL OL_IF termlist OL_DOT
+
+    OL_NAME      shift, and go to state 34
+    OL_VAR       shift, and go to state 4
+    OL_ENCRYPTS  shift, and go to state 8
+
+    functor      go to state 39
+    functorname  go to state 33
+
+
+State 6
+
+   41 query: OL_QUERY . functorname functorbody OL_DOT
+
+    OL_NAME  shift, and go to state 34
+
+    functorname  go to state 40
+
+
+State 7
+
+   15 materialize: OL_MATERIALIZE . OL_LPAR OL_NAME OL_COMMA tablearg OL_COMMA tablearg OL_COMMA primarykeys OL_RPAR OL_DOT
+
+    OL_LPAR  shift, and go to state 41
+
+
+State 8
+
+   49 functor: OL_ENCRYPTS . functorname functorbody
+   50        | OL_ENCRYPTS . OL_VAR OL_SAYS functorname functorbody
+   53        | OL_ENCRYPTS . functorname functorbody OL_AT OL_VAR
+   54        | OL_ENCRYPTS . OL_VAR OL_SAYS functorname functorbody OL_AT OL_VAR
+
+    OL_NAME  shift, and go to state 34
+    OL_VAR   shift, and go to state 42
+
+    functorname  go to state 43
+
+
+State 9
+
+   40 context: OL_CONTEXT . OL_VAR OL_COLON
+
+    OL_VAR  shift, and go to state 44
+
+
+State 10
+
+   23 watch: OL_WATCH . OL_LPAR OL_NAME OL_RPAR OL_DOT
+
+    OL_LPAR  shift, and go to state 45
+
+
+State 11
+
+   24 watchfine: OL_WATCHFINE . OL_LPAR OL_NAME OL_COMMA OL_STRING OL_RPAR OL_DOT
+
+    OL_LPAR  shift, and go to state 46
+
+
+State 12
+
+   25 stage: OL_STAGE . OL_LPAR OL_STRING OL_COMMA OL_NAME OL_COMMA OL_NAME OL_RPAR OL_DOT
+
+    OL_LPAR  shift, and go to state 47
+
+
+State 13
+
+   26 trace: OL_TRACE . OL_LPAR OL_NAME OL_RPAR OL_DOT
+
+    OL_LPAR  shift, and go to state 48
+
+
+State 14
+
+   27 TraceTable: OL_TRACETABLE . OL_LPAR OL_NAME OL_RPAR OL_DOT
+
+    OL_LPAR  shift, and go to state 49
+
+
+State 15
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 50
+
+
+State 16
+
+    2 program: clauselist . OL_EOF
+
+    OL_EOF  shift, and go to state 51
+
+
+State 17
+
+    3 clauselist: clause .
+    4           | clause . clauselist
+
+    OL_NAME         shift, and go to state 1
+    OL_VALUE        shift, and go to state 3
+    OL_VAR          shift, and go to state 4
+    OL_DEL          shift, and go to state 5
+    OL_QUERY        shift, and go to state 6
+    OL_MATERIALIZE  shift, and go to state 7
+    OL_ENCRYPTS     shift, and go to state 8
+    OL_CONTEXT      shift, and go to state 9
+    OL_WATCH        shift, and go to state 10
+    OL_WATCHFINE    shift, and go to state 11
+    OL_STAGE        shift, and go to state 12
+    OL_TRACE        shift, and go to state 13
+    OL_TRACETABLE   shift, and go to state 14
+
+    $default  reduce using rule 3 (clauselist)
+
+    clauselist      go to state 52
+    clause          go to state 17
+    materialize     go to state 18
+    watch           go to state 19
+    watchfine       go to state 20
+    stage           go to state 21
+    trace           go to state 22
+    TraceTable      go to state 23
+    fact            go to state 24
+    rule            go to state 25
+    namedRule       go to state 26
+    unnamedRule     go to state 27
+    weightedRule    go to state 28
+    unweightedRule  go to state 29
+    context         go to state 30
+    query           go to state 31
+    functor         go to state 32
+    functorname     go to state 33
+
+
+State 18
+
+    7 clause: materialize .
+
+    $default  reduce using rule 7 (clause)
+
+
+State 19
+
+    8 clause: watch .
+
+    $default  reduce using rule 8 (clause)
+
+
+State 20
+
+    9 clause: watchfine .
+
+    $default  reduce using rule 9 (clause)
+
+
+State 21
+
+   13 clause: stage .
+
+    $default  reduce using rule 13 (clause)
+
+
+State 22
+
+   10 clause: trace .
+
+    $default  reduce using rule 10 (clause)
+
+
+State 23
+
+   11 clause: TraceTable .
+
+    $default  reduce using rule 11 (clause)
+
+
+State 24
+
+    6 clause: fact .
+
+    $default  reduce using rule 6 (clause)
+
+
+State 25
+
+    5 clause: rule .
+
+    $default  reduce using rule 5 (clause)
+
+
+State 26
+
+   29 rule: namedRule .
+
+    $default  reduce using rule 29 (rule)
+
+
+State 27
+
+   30 rule: unnamedRule .
+
+    $default  reduce using rule 30 (rule)
+
+
+State 28
+
+   32 unnamedRule: weightedRule .
+
+    $default  reduce using rule 32 (unnamedRule)
+
+
+State 29
+
+   33 unnamedRule: unweightedRule .
+
+    $default  reduce using rule 33 (unnamedRule)
+
+
+State 30
+
+   14 clause: context .
+
+    $default  reduce using rule 14 (clause)
+
+
+State 31
+
+   12 clause: query .
+
+    $default  reduce using rule 12 (clause)
+
+
+State 32
+
+   28 fact: functor . OL_DOT
+   35 unweightedRule: functor . OL_IF termlist OL_DOT
+   37               | functor . OL_IF OL_DEL termlist OL_DOT
+   39               | functor . OL_IF aggview OL_DOT
+
+    OL_DOT  shift, and go to state 53
+    OL_IF   shift, and go to state 54
+
+
+State 33
+
+   47 functor: functorname . functorbody
+   51        | functorname . functorbody OL_AT OL_VAR
+
+    OL_LPAR  shift, and go to state 55
+
+    functorbody  go to state 56
+
+
+State 34
+
+   56 functorname: OL_NAME .
+
+    $default  reduce using rule 56 (functorname)
+
+
+State 35
+
+   31 namedRule: OL_NAME unnamedRule .
+
+    $default  reduce using rule 31 (namedRule)
+
+
+State 36
+
+   35 unweightedRule: functor . OL_IF termlist OL_DOT
+   37               | functor . OL_IF OL_DEL termlist OL_DOT
+   39               | functor . OL_IF aggview OL_DOT
+
+    OL_IF  shift, and go to state 54
+
+
+State 37
+
+   34 weightedRule: OL_VALUE unweightedRule .
+
+    $default  reduce using rule 34 (weightedRule)
+
+
+State 38
+
+   48 functor: OL_VAR OL_SAYS . functorname functorbody
+   52        | OL_VAR OL_SAYS . functorname functorbody OL_AT OL_VAR
+
+    OL_NAME  shift, and go to state 34
+
+    functorname  go to state 57
+
+
+State 39
+
+   36 unweightedRule: OL_DEL functor . OL_IF termlist OL_DOT
+   38               | OL_DEL functor . OL_DEL OL_IF termlist OL_DOT
+
+    OL_IF   shift, and go to state 58
+    OL_DEL  shift, and go to state 59
+
+
+State 40
+
+   41 query: OL_QUERY functorname . functorbody OL_DOT
+
+    OL_LPAR  shift, and go to state 55
+
+    functorbody  go to state 60
+
+
+State 41
+
+   15 materialize: OL_MATERIALIZE OL_LPAR . OL_NAME OL_COMMA tablearg OL_COMMA tablearg OL_COMMA primarykeys OL_RPAR OL_DOT
+
+    OL_NAME  shift, and go to state 61
+
+
+State 42
+
+   50 functor: OL_ENCRYPTS OL_VAR . OL_SAYS functorname functorbody
+   54        | OL_ENCRYPTS OL_VAR . OL_SAYS functorname functorbody OL_AT OL_VAR
+
+    OL_SAYS  shift, and go to state 62
+
+
+State 43
+
+   49 functor: OL_ENCRYPTS functorname . functorbody
+   53        | OL_ENCRYPTS functorname . functorbody OL_AT OL_VAR
+
+    OL_LPAR  shift, and go to state 55
+
+    functorbody  go to state 63
+
+
+State 44
+
+   40 context: OL_CONTEXT OL_VAR . OL_COLON
+
+    OL_COLON  shift, and go to state 64
+
+
+State 45
+
+   23 watch: OL_WATCH OL_LPAR . OL_NAME OL_RPAR OL_DOT
+
+    OL_NAME  shift, and go to state 65
+
+
+State 46
+
+   24 watchfine: OL_WATCHFINE OL_LPAR . OL_NAME OL_COMMA OL_STRING OL_RPAR OL_DOT
+
+    OL_NAME  shift, and go to state 66
+
+
+State 47
+
+   25 stage: OL_STAGE OL_LPAR . OL_STRING OL_COMMA OL_NAME OL_COMMA OL_NAME OL_RPAR OL_DOT
+
+    OL_STRING  shift, and go to state 67
+
+
+State 48
+
+   26 trace: OL_TRACE OL_LPAR . OL_NAME OL_RPAR OL_DOT
+
+    OL_NAME  shift, and go to state 68
+
+
+State 49
+
+   27 TraceTable: OL_TRACETABLE OL_LPAR . OL_NAME OL_RPAR OL_DOT
+
+    OL_NAME  shift, and go to state 69
+
+
+State 50
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 51
+
+    2 program: clauselist OL_EOF .
+
+    $default  reduce using rule 2 (program)
+
+
+State 52
+
+    4 clauselist: clause clauselist .
+
+    $default  reduce using rule 4 (clauselist)
+
+
+State 53
+
+   28 fact: functor OL_DOT .
+
+    $default  reduce using rule 28 (fact)
+
+
+State 54
+
+   35 unweightedRule: functor OL_IF . termlist OL_DOT
+   37               | functor OL_IF . OL_DEL termlist OL_DOT
+   39               | functor OL_IF . aggview OL_DOT
+
+    OL_NOT          shift, and go to state 70
+    OL_NAME         shift, and go to state 34
+    OL_STRING       shift, and go to state 71
+    OL_VALUE        shift, and go to state 72
+    OL_VAR          shift, and go to state 73
+    OL_AGGFUNCNAME  shift, and go to state 74
+    OL_FUNCTION     shift, and go to state 75
+    OL_NULL         shift, and go to state 76
+    OL_LPAR         shift, and go to state 77
+    OL_DEL          shift, and go to state 78
+    OL_ENCRYPTS     shift, and go to state 8
+
+    termlist     go to state 79
+    term         go to state 80
+    functor      go to state 81
+    aggview      go to state 82
+    functorname  go to state 33
+    function     go to state 83
+    select       go to state 84
+    assign       go to state 85
+    bool_expr    go to state 86
+    rel_atom     go to state 87
+    math_expr    go to state 88
+    math_atom    go to state 89
+    atom         go to state 90
+    agg_oper     go to state 91
+
+
+State 55
+
+   57 functorbody: OL_LPAR . OL_RPAR
+   58            | OL_LPAR . functorargs OL_RPAR
+
+    OL_AT           shift, and go to state 92
+    OL_STRING       shift, and go to state 71
+    OL_VALUE        shift, and go to state 72
+    OL_VAR          shift, and go to state 93
+    OL_AGGFUNCNAME  shift, and go to state 74
+    OL_NULL         shift, and go to state 76
+    OL_RPAR         shift, and go to state 94
+
+    functorargs  go to state 95
+    functorarg   go to state 96
+    atom         go to state 97
+    aggregate    go to state 98
+    agg_oper     go to state 99
+
+
+State 56
+
+   47 functor: functorname functorbody .
+   51        | functorname functorbody . OL_AT OL_VAR
+
+    OL_AT  shift, and go to state 100
+
+    $default  reduce using rule 47 (functor)
+
+
+State 57
+
+   48 functor: OL_VAR OL_SAYS functorname . functorbody
+   52        | OL_VAR OL_SAYS functorname . functorbody OL_AT OL_VAR
+
+    OL_LPAR  shift, and go to state 55
+
+    functorbody  go to state 101
+
+
+State 58
+
+   36 unweightedRule: OL_DEL functor OL_IF . termlist OL_DOT
+
+    OL_NOT       shift, and go to state 70
+    OL_NAME      shift, and go to state 34
+    OL_STRING    shift, and go to state 71
+    OL_VALUE     shift, and go to state 72
+    OL_VAR       shift, and go to state 73
+    OL_FUNCTION  shift, and go to state 75
+    OL_NULL      shift, and go to state 76
+    OL_LPAR      shift, and go to state 77
+    OL_ENCRYPTS  shift, and go to state 8
+
+    termlist     go to state 102
+    term         go to state 80
+    functor      go to state 81
+    functorname  go to state 33
+    function     go to state 83
+    select       go to state 84
+    assign       go to state 85
+    bool_expr    go to state 86
+    rel_atom     go to state 87
+    math_expr    go to state 88
+    math_atom    go to state 89
+    atom         go to state 90
+
+
+State 59
+
+   38 unweightedRule: OL_DEL functor OL_DEL . OL_IF termlist OL_DOT
+
+    OL_IF  shift, and go to state 103
+
+
+State 60
+
+   41 query: OL_QUERY functorname functorbody . OL_DOT
+
+    OL_DOT  shift, and go to state 104
+
+
+State 61
+
+   15 materialize: OL_MATERIALIZE OL_LPAR OL_NAME . OL_COMMA tablearg OL_COMMA tablearg OL_COMMA primarykeys OL_RPAR OL_DOT
+
+    OL_COMMA  shift, and go to state 105
+
+
+State 62
+
+   50 functor: OL_ENCRYPTS OL_VAR OL_SAYS . functorname functorbody
+   54        | OL_ENCRYPTS OL_VAR OL_SAYS . functorname functorbody OL_AT OL_VAR
+
+    OL_NAME  shift, and go to state 34
+
+    functorname  go to state 106
+
+
+State 63
+
+   49 functor: OL_ENCRYPTS functorname functorbody .
+   53        | OL_ENCRYPTS functorname functorbody . OL_AT OL_VAR
+
+    OL_AT  shift, and go to state 107
+
+    $default  reduce using rule 49 (functor)
+
+
+State 64
+
+   40 context: OL_CONTEXT OL_VAR OL_COLON .
+
+    $default  reduce using rule 40 (context)
+
+
+State 65
+
+   23 watch: OL_WATCH OL_LPAR OL_NAME . OL_RPAR OL_DOT
+
+    OL_RPAR  shift, and go to state 108
+
+
+State 66
+
+   24 watchfine: OL_WATCHFINE OL_LPAR OL_NAME . OL_COMMA OL_STRING OL_RPAR OL_DOT
+
+    OL_COMMA  shift, and go to state 109
+
+
+State 67
+
+   25 stage: OL_STAGE OL_LPAR OL_STRING . OL_COMMA OL_NAME OL_COMMA OL_NAME OL_RPAR OL_DOT
+
+    OL_COMMA  shift, and go to state 110
+
+
+State 68
+
+   26 trace: OL_TRACE OL_LPAR OL_NAME . OL_RPAR OL_DOT
+
+    OL_RPAR  shift, and go to state 111
+
+
+State 69
+
+   27 TraceTable: OL_TRACETABLE OL_LPAR OL_NAME . OL_RPAR OL_DOT
+
+    OL_RPAR  shift, and go to state 112
+
+
+State 70
+
+   76 bool_expr: OL_NOT . bool_expr
+
+    OL_NOT       shift, and go to state 70
+    OL_STRING    shift, and go to state 71
+    OL_VALUE     shift, and go to state 72
+    OL_VAR       shift, and go to state 113
+    OL_FUNCTION  shift, and go to state 75
+    OL_NULL      shift, and go to state 76
+    OL_LPAR      shift, and go to state 77
+
+    function   go to state 83
+    bool_expr  go to state 114
+    rel_atom   go to state 87
+    math_expr  go to state 88
+    math_atom  go to state 89
+    atom       go to state 90
+
+
+State 71
+
+  113 atom: OL_STRING .
+
+    $default  reduce using rule 113 (atom)
+
+
+State 72
+
+  111 atom: OL_VALUE .
+
+    $default  reduce using rule 111 (atom)
+
+
+State 73
+
+   48 functor: OL_VAR . OL_SAYS functorname functorbody
+   52        | OL_VAR . OL_SAYS functorname functorbody OL_AT OL_VAR
+   72 assign: OL_VAR . OL_ASSIGN rel_atom
+   73       | OL_VAR . OL_ASSIGN bool_expr
+   75 bool_expr: OL_VAR . OL_IN range_expr
+  112 atom: OL_VAR .
+
+    OL_IN      shift, and go to state 115
+    OL_ASSIGN  shift, and go to state 116
+    OL_SAYS    shift, and go to state 38
+
+    $default  reduce using rule 112 (atom)
+
+
+State 74
+
+  118 agg_oper: OL_AGGFUNCNAME .
+
+    $default  reduce using rule 118 (agg_oper)
+
+
+State 75
+
+   65 function: OL_FUNCTION . OL_LPAR functionargs OL_RPAR
+   66         | OL_FUNCTION . OL_LPAR OL_RPAR
+
+    OL_LPAR  shift, and go to state 117
+
+
+State 76
+
+  114 atom: OL_NULL .
+
+    $default  reduce using rule 114 (atom)
+
+
+State 77
+
+   74 bool_expr: OL_LPAR . bool_expr OL_RPAR
+   93 math_atom: OL_LPAR . math_expr OL_RPAR
+
+    OL_NOT       shift, and go to state 70
+    OL_STRING    shift, and go to state 71
+    OL_VALUE     shift, and go to state 72
+    OL_VAR       shift, and go to state 113
+    OL_FUNCTION  shift, and go to state 75
+    OL_NULL      shift, and go to state 76
+    OL_LPAR      shift, and go to state 77
+
+    function   go to state 83
+    bool_expr  go to state 118
+    rel_atom   go to state 87
+    math_expr  go to state 119
+    math_atom  go to state 89
+    atom       go to state 90
+
+
+State 78
+
+   37 unweightedRule: functor OL_IF OL_DEL . termlist OL_DOT
+
+    OL_NOT       shift, and go to state 70
+    OL_NAME      shift, and go to state 34
+    OL_STRING    shift, and go to state 71
+    OL_VALUE     shift, and go to state 72
+    OL_VAR       shift, and go to state 73
+    OL_FUNCTION  shift, and go to state 75
+    OL_NULL      shift, and go to state 76
+    OL_LPAR      shift, and go to state 77
+    OL_ENCRYPTS  shift, and go to state 8
+
+    termlist     go to state 120
+    term         go to state 80
+    functor      go to state 81
+    functorname  go to state 33
+    function     go to state 83
+    select       go to state 84
+    assign       go to state 85
+    bool_expr    go to state 86
+    rel_atom     go to state 87
+    math_expr    go to state 88
+    math_atom    go to state 89
+    atom         go to state 90
+
+
+State 79
+
+   35 unweightedRule: functor OL_IF termlist . OL_DOT
+
+    OL_DOT  shift, and go to state 121
+
+
+State 80
+
+   42 termlist: term .
+   43         | term . OL_COMMA termlist
+
+    OL_COMMA  shift, and go to state 122
+
+    $default  reduce using rule 42 (termlist)
+
+
+State 81
+
+   44 term: functor .
+
+    $default  reduce using rule 44 (term)
+
+
+State 82
+
+   39 unweightedRule: functor OL_IF aggview . OL_DOT
+
+    OL_DOT  shift, and go to state 123
+
+
+State 83
+
+   81 rel_atom: function .
+   92 math_atom: function .
+
+    OL_BITOR    reduce using rule 92 (math_atom)
+    OL_BITXOR   reduce using rule 92 (math_atom)
+    OL_BITAND   reduce using rule 92 (math_atom)
+    OL_BITNOT   reduce using rule 92 (math_atom)
+    OL_LSHIFT   reduce using rule 92 (math_atom)
+    OL_RSHIFT   reduce using rule 92 (math_atom)
+    OL_PLUS     reduce using rule 92 (math_atom)
+    OL_MINUS    reduce using rule 92 (math_atom)
+    OL_TIMES    reduce using rule 92 (math_atom)
+    OL_DIVIDE   reduce using rule 92 (math_atom)
+    OL_MODULUS  reduce using rule 92 (math_atom)
+    $default    reduce using rule 81 (rel_atom)
+
+
+State 84
+
+   46 term: select .
+
+    $default  reduce using rule 46 (term)
+
+
+State 85
+
+   45 term: assign .
+
+    $default  reduce using rule 45 (term)
+
+
+State 86
+
+   71 select: bool_expr .
+   77 bool_expr: bool_expr . OL_OR bool_expr
+   78          | bool_expr . OL_AND bool_expr
+
+    OL_OR   shift, and go to state 124
+    OL_AND  shift, and go to state 125
+
+    $default  reduce using rule 71 (select)
+
+
+State 87
+
+   79 bool_expr: rel_atom . rel_oper rel_atom
+
+    OL_EQ   shift, and go to state 126
+    OL_NEQ  shift, and go to state 127
+    OL_GT   shift, and go to state 128
+    OL_GTE  shift, and go to state 129
+    OL_LT   shift, and go to state 130
+    OL_LTE  shift, and go to state 131
+
+    rel_oper  go to state 132
+
+
+State 88
+
+   80 rel_atom: math_expr .
+   89 math_expr: math_expr . math_oper math_atom
+
+    OL_BITOR    shift, and go to state 133
+    OL_BITXOR   shift, and go to state 134
+    OL_BITAND   shift, and go to state 135
+    OL_BITNOT   shift, and go to state 136
+    OL_LSHIFT   shift, and go to state 137
+    OL_RSHIFT   shift, and go to state 138
+    OL_PLUS     shift, and go to state 139
+    OL_MINUS    shift, and go to state 140
+    OL_TIMES    shift, and go to state 141
+    OL_DIVIDE   shift, and go to state 142
+    OL_MODULUS  shift, and go to state 143
+
+    $default  reduce using rule 80 (rel_atom)
+
+    math_oper  go to state 144
+
+
+State 89
+
+   90 math_expr: math_atom . math_oper math_atom
+
+    OL_BITOR    shift, and go to state 133
+    OL_BITXOR   shift, and go to state 134
+    OL_BITAND   shift, and go to state 135
+    OL_BITNOT   shift, and go to state 136
+    OL_LSHIFT   shift, and go to state 137
+    OL_RSHIFT   shift, and go to state 138
+    OL_PLUS     shift, and go to state 139
+    OL_MINUS    shift, and go to state 140
+    OL_TIMES    shift, and go to state 141
+    OL_DIVIDE   shift, and go to state 142
+    OL_MODULUS  shift, and go to state 143
+
+    math_oper  go to state 145
+
+
+State 90
+
+   82 rel_atom: atom .
+   91 math_atom: atom .
+
+    OL_BITOR    reduce using rule 91 (math_atom)
+    OL_BITXOR   reduce using rule 91 (math_atom)
+    OL_BITAND   reduce using rule 91 (math_atom)
+    OL_BITNOT   reduce using rule 91 (math_atom)
+    OL_LSHIFT   reduce using rule 91 (math_atom)
+    OL_RSHIFT   reduce using rule 91 (math_atom)
+    OL_PLUS     reduce using rule 91 (math_atom)
+    OL_MINUS    reduce using rule 91 (math_atom)
+    OL_TIMES    reduce using rule 91 (math_atom)
+    OL_DIVIDE   reduce using rule 91 (math_atom)
+    OL_MODULUS  reduce using rule 91 (math_atom)
+    $default    reduce using rule 82 (rel_atom)
+
+
+State 91
+
+   55 aggview: agg_oper . OL_LPAR functorbody OL_COMMA functorbody OL_COMMA functor OL_RPAR
+
+    OL_LPAR  shift, and go to state 146
+
+
+State 92
+
+   61 functorargs: OL_AT . atom
+   62            | OL_AT . atom OL_COMMA functorargs
+
+    OL_STRING  shift, and go to state 71
+    OL_VALUE   shift, and go to state 72
+    OL_VAR     shift, and go to state 93
+    OL_NULL    shift, and go to state 76
+
+    atom  go to state 147
+
+
+State 93
+
+  112 atom: OL_VAR .
+
+    $default  reduce using rule 112 (atom)
+
+
+State 94
+
+   57 functorbody: OL_LPAR OL_RPAR .
+
+    $default  reduce using rule 57 (functorbody)
+
+
+State 95
+
+   58 functorbody: OL_LPAR functorargs . OL_RPAR
+
+    OL_RPAR  shift, and go to state 148
+
+
+State 96
+
+   59 functorargs: functorarg .
+   60            | functorarg . OL_COMMA functorargs
+
+    OL_COMMA  shift, and go to state 149
+
+    $default  reduce using rule 59 (functorargs)
+
+
+State 97
+
+   63 functorarg: atom .
+
+    $default  reduce using rule 63 (functorarg)
+
+
+State 98
+
+   64 functorarg: aggregate .
+
+    $default  reduce using rule 64 (functorarg)
+
+
+State 99
+
+  115 aggregate: agg_oper . OL_LT OL_VAR OL_GT
+  116          | agg_oper . OL_LT OL_AT OL_VAR OL_GT
+  117          | agg_oper . OL_LT OL_TIMES OL_GT
+
+    OL_LT  shift, and go to state 150
+
+
+State 100
+
+   51 functor: functorname functorbody OL_AT . OL_VAR
+
+    OL_VAR  shift, and go to state 151
+
+
+State 101
+
+   48 functor: OL_VAR OL_SAYS functorname functorbody .
+   52        | OL_VAR OL_SAYS functorname functorbody . OL_AT OL_VAR
+
+    OL_AT  shift, and go to state 152
+
+    $default  reduce using rule 48 (functor)
+
+
+State 102
+
+   36 unweightedRule: OL_DEL functor OL_IF termlist . OL_DOT
+
+    OL_DOT  shift, and go to state 153
+
+
+State 103
+
+   38 unweightedRule: OL_DEL functor OL_DEL OL_IF . termlist OL_DOT
+
+    OL_NOT       shift, and go to state 70
+    OL_NAME      shift, and go to state 34
+    OL_STRING    shift, and go to state 71
+    OL_VALUE     shift, and go to state 72
+    OL_VAR       shift, and go to state 73
+    OL_FUNCTION  shift, and go to state 75
+    OL_NULL      shift, and go to state 76
+    OL_LPAR      shift, and go to state 77
+    OL_ENCRYPTS  shift, and go to state 8
+
+    termlist     go to state 154
+    term         go to state 80
+    functor      go to state 81
+    functorname  go to state 33
+    function     go to state 83
+    select       go to state 84
+    assign       go to state 85
+    bool_expr    go to state 86
+    rel_atom     go to state 87
+    math_expr    go to state 88
+    math_atom    go to state 89
+    atom         go to state 90
+
+
+State 104
+
+   41 query: OL_QUERY functorname functorbody OL_DOT .
+
+    $default  reduce using rule 41 (query)
+
+
+State 105
+
+   15 materialize: OL_MATERIALIZE OL_LPAR OL_NAME OL_COMMA . tablearg OL_COMMA tablearg OL_COMMA primarykeys OL_RPAR OL_DOT
+
+    OL_VALUE  shift, and go to state 155
+
+    tablearg  go to state 156
+
+
+State 106
+
+   50 functor: OL_ENCRYPTS OL_VAR OL_SAYS functorname . functorbody
+   54        | OL_ENCRYPTS OL_VAR OL_SAYS functorname . functorbody OL_AT OL_VAR
+
+    OL_LPAR  shift, and go to state 55
+
+    functorbody  go to state 157
+
+
+State 107
+
+   53 functor: OL_ENCRYPTS functorname functorbody OL_AT . OL_VAR
+
+    OL_VAR  shift, and go to state 158
+
+
+State 108
+
+   23 watch: OL_WATCH OL_LPAR OL_NAME OL_RPAR . OL_DOT
+
+    OL_DOT  shift, and go to state 159
+
+
+State 109
+
+   24 watchfine: OL_WATCHFINE OL_LPAR OL_NAME OL_COMMA . OL_STRING OL_RPAR OL_DOT
+
+    OL_STRING  shift, and go to state 160
+
+
+State 110
+
+   25 stage: OL_STAGE OL_LPAR OL_STRING OL_COMMA . OL_NAME OL_COMMA OL_NAME OL_RPAR OL_DOT
+
+    OL_NAME  shift, and go to state 161
+
+
+State 111
+
+   26 trace: OL_TRACE OL_LPAR OL_NAME OL_RPAR . OL_DOT
+
+    OL_DOT  shift, and go to state 162
+
+
+State 112
+
+   27 TraceTable: OL_TRACETABLE OL_LPAR OL_NAME OL_RPAR . OL_DOT
+
+    OL_DOT  shift, and go to state 163
+
+
+State 113
+
+   75 bool_expr: OL_VAR . OL_IN range_expr
+  112 atom: OL_VAR .
+
+    OL_IN  shift, and go to state 115
+
+    $default  reduce using rule 112 (atom)
+
+
+State 114
+
+   76 bool_expr: OL_NOT bool_expr .
+   77          | bool_expr . OL_OR bool_expr
+   78          | bool_expr . OL_AND bool_expr
+
+    $default  reduce using rule 76 (bool_expr)
+
+
+State 115
+
+   75 bool_expr: OL_VAR OL_IN . range_expr
+
+    OL_LPAR   shift, and go to state 164
+    OL_LSQUB  shift, and go to state 165
+
+    range_expr  go to state 166
+
+
+State 116
+
+   72 assign: OL_VAR OL_ASSIGN . rel_atom
+   73       | OL_VAR OL_ASSIGN . bool_expr
+
+    OL_NOT       shift, and go to state 70
+    OL_STRING    shift, and go to state 71
+    OL_VALUE     shift, and go to state 72
+    OL_VAR       shift, and go to state 113
+    OL_FUNCTION  shift, and go to state 75
+    OL_NULL      shift, and go to state 76
+    OL_LPAR      shift, and go to state 77
+
+    function   go to state 83
+    bool_expr  go to state 167
+    rel_atom   go to state 168
+    math_expr  go to state 88
+    math_atom  go to state 89
+    atom       go to state 90
+
+
+State 117
+
+   65 function: OL_FUNCTION OL_LPAR . functionargs OL_RPAR
+   66         | OL_FUNCTION OL_LPAR . OL_RPAR
+
+    OL_STRING    shift, and go to state 71
+    OL_VALUE     shift, and go to state 72
+    OL_VAR       shift, and go to state 93
+    OL_FUNCTION  shift, and go to state 75
+    OL_NULL      shift, and go to state 76
+    OL_RPAR      shift, and go to state 169
+    OL_LPAR      shift, and go to state 170
+
+    function      go to state 171
+    functionargs  go to state 172
+    functionarg   go to state 173
+    math_expr     go to state 174
+    math_atom     go to state 89
+    atom          go to state 175
+
+
+State 118
+
+   74 bool_expr: OL_LPAR bool_expr . OL_RPAR
+   77          | bool_expr . OL_OR bool_expr
+   78          | bool_expr . OL_AND bool_expr
+
+    OL_OR    shift, and go to state 124
+    OL_AND   shift, and go to state 125
+    OL_RPAR  shift, and go to state 176
+
+
+State 119
+
+   80 rel_atom: math_expr .
+   89 math_expr: math_expr . math_oper math_atom
+   93 math_atom: OL_LPAR math_expr . OL_RPAR
+
+    OL_BITOR    shift, and go to state 133
+    OL_BITXOR   shift, and go to state 134
+    OL_BITAND   shift, and go to state 135
+    OL_BITNOT   shift, and go to state 136
+    OL_LSHIFT   shift, and go to state 137
+    OL_RSHIFT   shift, and go to state 138
+    OL_PLUS     shift, and go to state 139
+    OL_MINUS    shift, and go to state 140
+    OL_TIMES    shift, and go to state 141
+    OL_DIVIDE   shift, and go to state 142
+    OL_MODULUS  shift, and go to state 143
+    OL_RPAR     shift, and go to state 177
+
+    $default  reduce using rule 80 (rel_atom)
+
+    math_oper  go to state 144
+
+
+State 120
+
+   37 unweightedRule: functor OL_IF OL_DEL termlist . OL_DOT
+
+    OL_DOT  shift, and go to state 178
+
+
+State 121
+
+   35 unweightedRule: functor OL_IF termlist OL_DOT .
+
+    $default  reduce using rule 35 (unweightedRule)
+
+
+State 122
+
+   43 termlist: term OL_COMMA . termlist
+
+    OL_NOT       shift, and go to state 70
+    OL_NAME      shift, and go to state 34
+    OL_STRING    shift, and go to state 71
+    OL_VALUE     shift, and go to state 72
+    OL_VAR       shift, and go to state 73
+    OL_FUNCTION  shift, and go to state 75
+    OL_NULL      shift, and go to state 76
+    OL_LPAR      shift, and go to state 77
+    OL_ENCRYPTS  shift, and go to state 8
+
+    termlist     go to state 179
+    term         go to state 80
+    functor      go to state 81
+    functorname  go to state 33
+    function     go to state 83
+    select       go to state 84
+    assign       go to state 85
+    bool_expr    go to state 86
+    rel_atom     go to state 87
+    math_expr    go to state 88
+    math_atom    go to state 89
+    atom         go to state 90
+
+
+State 123
+
+   39 unweightedRule: functor OL_IF aggview OL_DOT .
+
+    $default  reduce using rule 39 (unweightedRule)
+
+
+State 124
+
+   77 bool_expr: bool_expr OL_OR . bool_expr
+
+    OL_NOT       shift, and go to state 70
+    OL_STRING    shift, and go to state 71
+    OL_VALUE     shift, and go to state 72
+    OL_VAR       shift, and go to state 113
+    OL_FUNCTION  shift, and go to state 75
+    OL_NULL      shift, and go to state 76
+    OL_LPAR      shift, and go to state 77
+
+    function   go to state 83
+    bool_expr  go to state 180
+    rel_atom   go to state 87
+    math_expr  go to state 88
+    math_atom  go to state 89
+    atom       go to state 90
+
+
+State 125
+
+   78 bool_expr: bool_expr OL_AND . bool_expr
+
+    OL_NOT       shift, and go to state 70
+    OL_STRING    shift, and go to state 71
+    OL_VALUE     shift, and go to state 72
+    OL_VAR       shift, and go to state 113
+    OL_FUNCTION  shift, and go to state 75
+    OL_NULL      shift, and go to state 76
+    OL_LPAR      shift, and go to state 77
+
+    function   go to state 83
+    bool_expr  go to state 181
+    rel_atom   go to state 87
+    math_expr  go to state 88
+    math_atom  go to state 89
+    atom       go to state 90
+
+
+State 126
+
+   83 rel_oper: OL_EQ .
+
+    $default  reduce using rule 83 (rel_oper)
+
+
+State 127
+
+   84 rel_oper: OL_NEQ .
+
+    $default  reduce using rule 84 (rel_oper)
+
+
+State 128
+
+   85 rel_oper: OL_GT .
+
+    $default  reduce using rule 85 (rel_oper)
+
+
+State 129
+
+   87 rel_oper: OL_GTE .
+
+    $default  reduce using rule 87 (rel_oper)
+
+
+State 130
+
+   86 rel_oper: OL_LT .
+
+    $default  reduce using rule 86 (rel_oper)
+
+
+State 131
+
+   88 rel_oper: OL_LTE .
+
+    $default  reduce using rule 88 (rel_oper)
+
+
+State 132
+
+   79 bool_expr: rel_atom rel_oper . rel_atom
+
+    OL_STRING    shift, and go to state 71
+    OL_VALUE     shift, and go to state 72
+    OL_VAR       shift, and go to state 93
+    OL_FUNCTION  shift, and go to state 75
+    OL_NULL      shift, and go to state 76
+    OL_LPAR      shift, and go to state 170
+
+    function   go to state 83
+    rel_atom   go to state 182
+    math_expr  go to state 88
+    math_atom  go to state 89
+    atom       go to state 90
+
+
+State 133
+
+  103 math_oper: OL_BITOR .
+
+    $default  reduce using rule 103 (math_oper)
+
+
+State 134
+
+  101 math_oper: OL_BITXOR .
+
+    $default  reduce using rule 101 (math_oper)
+
+
+State 135
+
+  102 math_oper: OL_BITAND .
+
+    $default  reduce using rule 102 (math_oper)
+
+
+State 136
+
+  104 math_oper: OL_BITNOT .
+
+    $default  reduce using rule 104 (math_oper)
+
+
+State 137
+
+   94 math_oper: OL_LSHIFT .
+
+    $default  reduce using rule 94 (math_oper)
+
+
+State 138
+
+   95 math_oper: OL_RSHIFT .
+
+    $default  reduce using rule 95 (math_oper)
+
+
+State 139
+
+   96 math_oper: OL_PLUS .
+
+    $default  reduce using rule 96 (math_oper)
+
+
+State 140
+
+   97 math_oper: OL_MINUS .
+
+    $default  reduce using rule 97 (math_oper)
+
+
+State 141
+
+   98 math_oper: OL_TIMES .
+
+    $default  reduce using rule 98 (math_oper)
+
+
+State 142
+
+   99 math_oper: OL_DIVIDE .
+
+    $default  reduce using rule 99 (math_oper)
+
+
+State 143
+
+  100 math_oper: OL_MODULUS .
+
+    $default  reduce using rule 100 (math_oper)
+
+
+State 144
+
+   89 math_expr: math_expr math_oper . math_atom
+
+    OL_STRING    shift, and go to state 71
+    OL_VALUE     shift, and go to state 72
+    OL_VAR       shift, and go to state 93
+    OL_FUNCTION  shift, and go to state 75
+    OL_NULL      shift, and go to state 76
+    OL_LPAR      shift, and go to state 170
+
+    function   go to state 171
+    math_atom  go to state 183
+    atom       go to state 184
+
+
+State 145
+
+   90 math_expr: math_atom math_oper . math_atom
+
+    OL_STRING    shift, and go to state 71
+    OL_VALUE     shift, and go to state 72
+    OL_VAR       shift, and go to state 93
+    OL_FUNCTION  shift, and go to state 75
+    OL_NULL      shift, and go to state 76
+    OL_LPAR      shift, and go to state 170
+
+    function   go to state 171
+    math_atom  go to state 185
+    atom       go to state 184
+
+
+State 146
+
+   55 aggview: agg_oper OL_LPAR . functorbody OL_COMMA functorbody OL_COMMA functor OL_RPAR
+
+    OL_LPAR  shift, and go to state 55
+
+    functorbody  go to state 186
+
+
+State 147
+
+   61 functorargs: OL_AT atom .
+   62            | OL_AT atom . OL_COMMA functorargs
+
+    OL_COMMA  shift, and go to state 187
+
+    $default  reduce using rule 61 (functorargs)
+
+
+State 148
+
+   58 functorbody: OL_LPAR functorargs OL_RPAR .
+
+    $default  reduce using rule 58 (functorbody)
+
+
+State 149
+
+   60 functorargs: functorarg OL_COMMA . functorargs
+
+    OL_AT           shift, and go to state 92
+    OL_STRING       shift, and go to state 71
+    OL_VALUE        shift, and go to state 72
+    OL_VAR          shift, and go to state 93
+    OL_AGGFUNCNAME  shift, and go to state 74
+    OL_NULL         shift, and go to state 76
+
+    functorargs  go to state 188
+    functorarg   go to state 96
+    atom         go to state 97
+    aggregate    go to state 98
+    agg_oper     go to state 99
+
+
+State 150
+
+  115 aggregate: agg_oper OL_LT . OL_VAR OL_GT
+  116          | agg_oper OL_LT . OL_AT OL_VAR OL_GT
+  117          | agg_oper OL_LT . OL_TIMES OL_GT
+
+    OL_TIMES  shift, and go to state 189
+    OL_AT     shift, and go to state 190
+    OL_VAR    shift, and go to state 191
+
+
+State 151
+
+   51 functor: functorname functorbody OL_AT OL_VAR .
+
+    $default  reduce using rule 51 (functor)
+
+
+State 152
+
+   52 functor: OL_VAR OL_SAYS functorname functorbody OL_AT . OL_VAR
+
+    OL_VAR  shift, and go to state 192
+
+
+State 153
+
+   36 unweightedRule: OL_DEL functor OL_IF termlist OL_DOT .
+
+    $default  reduce using rule 36 (unweightedRule)
+
+
+State 154
+
+   38 unweightedRule: OL_DEL functor OL_DEL OL_IF termlist . OL_DOT
+
+    OL_DOT  shift, and go to state 193
+
+
+State 155
+
+   16 tablearg: OL_VALUE .
+
+    $default  reduce using rule 16 (tablearg)
+
+
+State 156
+
+   15 materialize: OL_MATERIALIZE OL_LPAR OL_NAME OL_COMMA tablearg . OL_COMMA tablearg OL_COMMA primarykeys OL_RPAR OL_DOT
+
+    OL_COMMA  shift, and go to state 194
+
+
+State 157
+
+   50 functor: OL_ENCRYPTS OL_VAR OL_SAYS functorname functorbody .
+   54        | OL_ENCRYPTS OL_VAR OL_SAYS functorname functorbody . OL_AT OL_VAR
+
+    OL_AT  shift, and go to state 195
+
+    $default  reduce using rule 50 (functor)
+
+
+State 158
+
+   53 functor: OL_ENCRYPTS functorname functorbody OL_AT OL_VAR .
+
+    $default  reduce using rule 53 (functor)
+
+
+State 159
+
+   23 watch: OL_WATCH OL_LPAR OL_NAME OL_RPAR OL_DOT .
+
+    $default  reduce using rule 23 (watch)
+
+
+State 160
+
+   24 watchfine: OL_WATCHFINE OL_LPAR OL_NAME OL_COMMA OL_STRING . OL_RPAR OL_DOT
+
+    OL_RPAR  shift, and go to state 196
+
+
+State 161
+
+   25 stage: OL_STAGE OL_LPAR OL_STRING OL_COMMA OL_NAME . OL_COMMA OL_NAME OL_RPAR OL_DOT
+
+    OL_COMMA  shift, and go to state 197
+
+
+State 162
+
+   26 trace: OL_TRACE OL_LPAR OL_NAME OL_RPAR OL_DOT .
+
+    $default  reduce using rule 26 (trace)
+
+
+State 163
+
+   27 TraceTable: OL_TRACETABLE OL_LPAR OL_NAME OL_RPAR OL_DOT .
+
+    $default  reduce using rule 27 (TraceTable)
+
+
+State 164
+
+  105 range_expr: OL_LPAR . range_atom OL_COMMA range_atom OL_RPAR
+  106           | OL_LPAR . range_atom OL_COMMA range_atom OL_RSQUB
+
+    OL_STRING    shift, and go to state 71
+    OL_VALUE     shift, and go to state 72
+    OL_VAR       shift, and go to state 93
+    OL_FUNCTION  shift, and go to state 75
+    OL_NULL      shift, and go to state 76
+    OL_LPAR      shift, and go to state 170
+
+    function    go to state 171
+    math_expr   go to state 198
+    math_atom   go to state 89
+    range_atom  go to state 199
+    atom        go to state 200
+
+
+State 165
+
+  107 range_expr: OL_LSQUB . range_atom OL_COMMA range_atom OL_RPAR
+  108           | OL_LSQUB . range_atom OL_COMMA range_atom OL_RSQUB
+
+    OL_STRING    shift, and go to state 71
+    OL_VALUE     shift, and go to state 72
+    OL_VAR       shift, and go to state 93
+    OL_FUNCTION  shift, and go to state 75
+    OL_NULL      shift, and go to state 76
+    OL_LPAR      shift, and go to state 170
+
+    function    go to state 171
+    math_expr   go to state 198
+    math_atom   go to state 89
+    range_atom  go to state 201
+    atom        go to state 200
+
+
+State 166
+
+   75 bool_expr: OL_VAR OL_IN range_expr .
+
+    $default  reduce using rule 75 (bool_expr)
+
+
+State 167
+
+   73 assign: OL_VAR OL_ASSIGN bool_expr .
+   77 bool_expr: bool_expr . OL_OR bool_expr
+   78          | bool_expr . OL_AND bool_expr
+
+    OL_OR   shift, and go to state 124
+    OL_AND  shift, and go to state 125
+
+    $default  reduce using rule 73 (assign)
+
+
+State 168
+
+   72 assign: OL_VAR OL_ASSIGN rel_atom .
+   79 bool_expr: rel_atom . rel_oper rel_atom
+
+    OL_EQ   shift, and go to state 126
+    OL_NEQ  shift, and go to state 127
+    OL_GT   shift, and go to state 128
+    OL_GTE  shift, and go to state 129
+    OL_LT   shift, and go to state 130
+    OL_LTE  shift, and go to state 131
+
+    $default  reduce using rule 72 (assign)
+
+    rel_oper  go to state 132
+
+
+State 169
+
+   66 function: OL_FUNCTION OL_LPAR OL_RPAR .
+
+    $default  reduce using rule 66 (function)
+
+
+State 170
+
+   93 math_atom: OL_LPAR . math_expr OL_RPAR
+
+    OL_STRING    shift, and go to state 71
+    OL_VALUE     shift, and go to state 72
+    OL_VAR       shift, and go to state 93
+    OL_FUNCTION  shift, and go to state 75
+    OL_NULL      shift, and go to state 76
+    OL_LPAR      shift, and go to state 170
+
+    function   go to state 171
+    math_expr  go to state 202
+    math_atom  go to state 89
+    atom       go to state 184
+
+
+State 171
+
+   92 math_atom: function .
+
+    $default  reduce using rule 92 (math_atom)
+
+
+State 172
+
+   65 function: OL_FUNCTION OL_LPAR functionargs . OL_RPAR
+
+    OL_RPAR  shift, and go to state 203
+
+
+State 173
+
+   67 functionargs: functionarg .
+   68             | functionarg . OL_COMMA functionargs
+
+    OL_COMMA  shift, and go to state 204
+
+    $default  reduce using rule 67 (functionargs)
+
+
+State 174
+
+   69 functionarg: math_expr .
+   89 math_expr: math_expr . math_oper math_atom
+
+    OL_BITOR    shift, and go to state 133
+    OL_BITXOR   shift, and go to state 134
+    OL_BITAND   shift, and go to state 135
+    OL_BITNOT   shift, and go to state 136
+    OL_LSHIFT   shift, and go to state 137
+    OL_RSHIFT   shift, and go to state 138
+    OL_PLUS     shift, and go to state 139
+    OL_MINUS    shift, and go to state 140
+    OL_TIMES    shift, and go to state 141
+    OL_DIVIDE   shift, and go to state 142
+    OL_MODULUS  shift, and go to state 143
+
+    $default  reduce using rule 69 (functionarg)
+
+    math_oper  go to state 144
+
+
+State 175
+
+   70 functionarg: atom .
+   91 math_atom: atom .
+
+    OL_COMMA  reduce using rule 70 (functionarg)
+    OL_RPAR   reduce using rule 70 (functionarg)
+    $default  reduce using rule 91 (math_atom)
+
+
+State 176
+
+   74 bool_expr: OL_LPAR bool_expr OL_RPAR .
+
+    $default  reduce using rule 74 (bool_expr)
+
+
+State 177
+
+   93 math_atom: OL_LPAR math_expr OL_RPAR .
+
+    $default  reduce using rule 93 (math_atom)
+
+
+State 178
+
+   37 unweightedRule: functor OL_IF OL_DEL termlist OL_DOT .
+
+    $default  reduce using rule 37 (unweightedRule)
+
+
+State 179
+
+   43 termlist: term OL_COMMA termlist .
+
+    $default  reduce using rule 43 (termlist)
+
+
+State 180
+
+   77 bool_expr: bool_expr . OL_OR bool_expr
+   77          | bool_expr OL_OR bool_expr .
+   78          | bool_expr . OL_AND bool_expr
+
+    OL_AND  shift, and go to state 125
+
+    $default  reduce using rule 77 (bool_expr)
+
+
+State 181
+
+   77 bool_expr: bool_expr . OL_OR bool_expr
+   78          | bool_expr . OL_AND bool_expr
+   78          | bool_expr OL_AND bool_expr .
+
+    $default  reduce using rule 78 (bool_expr)
+
+
+State 182
+
+   79 bool_expr: rel_atom rel_oper rel_atom .
+
+    $default  reduce using rule 79 (bool_expr)
+
+
+State 183
+
+   89 math_expr: math_expr math_oper math_atom .
+
+    $default  reduce using rule 89 (math_expr)
+
+
+State 184
+
+   91 math_atom: atom .
+
+    $default  reduce using rule 91 (math_atom)
+
+
+State 185
+
+   90 math_expr: math_atom math_oper math_atom .
+
+    $default  reduce using rule 90 (math_expr)
+
+
+State 186
+
+   55 aggview: agg_oper OL_LPAR functorbody . OL_COMMA functorbody OL_COMMA functor OL_RPAR
+
+    OL_COMMA  shift, and go to state 205
+
+
+State 187
+
+   62 functorargs: OL_AT atom OL_COMMA . functorargs
+
+    OL_AT           shift, and go to state 92
+    OL_STRING       shift, and go to state 71
+    OL_VALUE        shift, and go to state 72
+    OL_VAR          shift, and go to state 93
+    OL_AGGFUNCNAME  shift, and go to state 74
+    OL_NULL         shift, and go to state 76
+
+    functorargs  go to state 206
+    functorarg   go to state 96
+    atom         go to state 97
+    aggregate    go to state 98
+    agg_oper     go to state 99
+
+
+State 188
+
+   60 functorargs: functorarg OL_COMMA functorargs .
+
+    $default  reduce using rule 60 (functorargs)
+
+
+State 189
+
+  117 aggregate: agg_oper OL_LT OL_TIMES . OL_GT
+
+    OL_GT  shift, and go to state 207
+
+
+State 190
+
+  116 aggregate: agg_oper OL_LT OL_AT . OL_VAR OL_GT
+
+    OL_VAR  shift, and go to state 208
+
+
+State 191
+
+  115 aggregate: agg_oper OL_LT OL_VAR . OL_GT
+
+    OL_GT  shift, and go to state 209
+
+
+State 192
+
+   52 functor: OL_VAR OL_SAYS functorname functorbody OL_AT OL_VAR .
+
+    $default  reduce using rule 52 (functor)
+
+
+State 193
+
+   38 unweightedRule: OL_DEL functor OL_DEL OL_IF termlist OL_DOT .
+
+    $default  reduce using rule 38 (unweightedRule)
+
+
+State 194
+
+   15 materialize: OL_MATERIALIZE OL_LPAR OL_NAME OL_COMMA tablearg OL_COMMA . tablearg OL_COMMA primarykeys OL_RPAR OL_DOT
+
+    OL_VALUE  shift, and go to state 155
+
+    tablearg  go to state 210
+
+
+State 195
+
+   54 functor: OL_ENCRYPTS OL_VAR OL_SAYS functorname functorbody OL_AT . OL_VAR
+
+    OL_VAR  shift, and go to state 211
+
+
+State 196
+
+   24 watchfine: OL_WATCHFINE OL_LPAR OL_NAME OL_COMMA OL_STRING OL_RPAR . OL_DOT
+
+    OL_DOT  shift, and go to state 212
+
+
+State 197
+
+   25 stage: OL_STAGE OL_LPAR OL_STRING OL_COMMA OL_NAME OL_COMMA . OL_NAME OL_RPAR OL_DOT
+
+    OL_NAME  shift, and go to state 213
+
+
+State 198
+
+   89 math_expr: math_expr . math_oper math_atom
+  109 range_atom: math_expr .
+
+    OL_BITOR    shift, and go to state 133
+    OL_BITXOR   shift, and go to state 134
+    OL_BITAND   shift, and go to state 135
+    OL_BITNOT   shift, and go to state 136
+    OL_LSHIFT   shift, and go to state 137
+    OL_RSHIFT   shift, and go to state 138
+    OL_PLUS     shift, and go to state 139
+    OL_MINUS    shift, and go to state 140
+    OL_TIMES    shift, and go to state 141
+    OL_DIVIDE   shift, and go to state 142
+    OL_MODULUS  shift, and go to state 143
+
+    $default  reduce using rule 109 (range_atom)
+
+    math_oper  go to state 144
+
+
+State 199
+
+  105 range_expr: OL_LPAR range_atom . OL_COMMA range_atom OL_RPAR
+  106           | OL_LPAR range_atom . OL_COMMA range_atom OL_RSQUB
+
+    OL_COMMA  shift, and go to state 214
+
+
+State 200
+
+   91 math_atom: atom .
+  110 range_atom: atom .
+
+    OL_COMMA  reduce using rule 110 (range_atom)
+    OL_RPAR   reduce using rule 110 (range_atom)
+    OL_RSQUB  reduce using rule 110 (range_atom)
+    $default  reduce using rule 91 (math_atom)
+
+
+State 201
+
+  107 range_expr: OL_LSQUB range_atom . OL_COMMA range_atom OL_RPAR
+  108           | OL_LSQUB range_atom . OL_COMMA range_atom OL_RSQUB
+
+    OL_COMMA  shift, and go to state 215
+
+
+State 202
+
+   89 math_expr: math_expr . math_oper math_atom
+   93 math_atom: OL_LPAR math_expr . OL_RPAR
+
+    OL_BITOR    shift, and go to state 133
+    OL_BITXOR   shift, and go to state 134
+    OL_BITAND   shift, and go to state 135
+    OL_BITNOT   shift, and go to state 136
+    OL_LSHIFT   shift, and go to state 137
+    OL_RSHIFT   shift, and go to state 138
+    OL_PLUS     shift, and go to state 139
+    OL_MINUS    shift, and go to state 140
+    OL_TIMES    shift, and go to state 141
+    OL_DIVIDE   shift, and go to state 142
+    OL_MODULUS  shift, and go to state 143
+    OL_RPAR     shift, and go to state 177
+
+    math_oper  go to state 144
+
+
+State 203
+
+   65 function: OL_FUNCTION OL_LPAR functionargs OL_RPAR .
+
+    $default  reduce using rule 65 (function)
+
+
+State 204
+
+   68 functionargs: functionarg OL_COMMA . functionargs
+
+    OL_STRING    shift, and go to state 71
+    OL_VALUE     shift, and go to state 72
+    OL_VAR       shift, and go to state 93
+    OL_FUNCTION  shift, and go to state 75
+    OL_NULL      shift, and go to state 76
+    OL_LPAR      shift, and go to state 170
+
+    function      go to state 171
+    functionargs  go to state 216
+    functionarg   go to state 173
+    math_expr     go to state 174
+    math_atom     go to state 89
+    atom          go to state 175
+
+
+State 205
+
+   55 aggview: agg_oper OL_LPAR functorbody OL_COMMA . functorbody OL_COMMA functor OL_RPAR
+
+    OL_LPAR  shift, and go to state 55
+
+    functorbody  go to state 217
+
+
+State 206
+
+   62 functorargs: OL_AT atom OL_COMMA functorargs .
+
+    $default  reduce using rule 62 (functorargs)
+
+
+State 207
+
+  117 aggregate: agg_oper OL_LT OL_TIMES OL_GT .
+
+    $default  reduce using rule 117 (aggregate)
+
+
+State 208
+
+  116 aggregate: agg_oper OL_LT OL_AT OL_VAR . OL_GT
+
+    OL_GT  shift, and go to state 218
+
+
+State 209
+
+  115 aggregate: agg_oper OL_LT OL_VAR OL_GT .
+
+    $default  reduce using rule 115 (aggregate)
+
+
+State 210
+
+   15 materialize: OL_MATERIALIZE OL_LPAR OL_NAME OL_COMMA tablearg OL_COMMA tablearg . OL_COMMA primarykeys OL_RPAR OL_DOT
+
+    OL_COMMA  shift, and go to state 219
+
+
+State 211
+
+   54 functor: OL_ENCRYPTS OL_VAR OL_SAYS functorname functorbody OL_AT OL_VAR .
+
+    $default  reduce using rule 54 (functor)
+
+
+State 212
+
+   24 watchfine: OL_WATCHFINE OL_LPAR OL_NAME OL_COMMA OL_STRING OL_RPAR OL_DOT .
+
+    $default  reduce using rule 24 (watchfine)
+
+
+State 213
+
+   25 stage: OL_STAGE OL_LPAR OL_STRING OL_COMMA OL_NAME OL_COMMA OL_NAME . OL_RPAR OL_DOT
+
+    OL_RPAR  shift, and go to state 220
+
+
+State 214
+
+  105 range_expr: OL_LPAR range_atom OL_COMMA . range_atom OL_RPAR
+  106           | OL_LPAR range_atom OL_COMMA . range_atom OL_RSQUB
+
+    OL_STRING    shift, and go to state 71
+    OL_VALUE     shift, and go to state 72
+    OL_VAR       shift, and go to state 93
+    OL_FUNCTION  shift, and go to state 75
+    OL_NULL      shift, and go to state 76
+    OL_LPAR      shift, and go to state 170
+
+    function    go to state 171
+    math_expr   go to state 198
+    math_atom   go to state 89
+    range_atom  go to state 221
+    atom        go to state 200
+
+
+State 215
+
+  107 range_expr: OL_LSQUB range_atom OL_COMMA . range_atom OL_RPAR
+  108           | OL_LSQUB range_atom OL_COMMA . range_atom OL_RSQUB
+
+    OL_STRING    shift, and go to state 71
+    OL_VALUE     shift, and go to state 72
+    OL_VAR       shift, and go to state 93
+    OL_FUNCTION  shift, and go to state 75
+    OL_NULL      shift, and go to state 76
+    OL_LPAR      shift, and go to state 170
+
+    function    go to state 171
+    math_expr   go to state 198
+    math_atom   go to state 89
+    range_atom  go to state 222
+    atom        go to state 200
+
+
+State 216
+
+   68 functionargs: functionarg OL_COMMA functionargs .
+
+    $default  reduce using rule 68 (functionargs)
+
+
+State 217
+
+   55 aggview: agg_oper OL_LPAR functorbody OL_COMMA functorbody . OL_COMMA functor OL_RPAR
+
+    OL_COMMA  shift, and go to state 223
+
+
+State 218
+
+  116 aggregate: agg_oper OL_LT OL_AT OL_VAR OL_GT .
+
+    $default  reduce using rule 116 (aggregate)
+
+
+State 219
+
+   15 materialize: OL_MATERIALIZE OL_LPAR OL_NAME OL_COMMA tablearg OL_COMMA tablearg OL_COMMA . primarykeys OL_RPAR OL_DOT
+
+    OL_KEYS  shift, and go to state 224
+
+    primarykeys  go to state 225
+
+
+State 220
+
+   25 stage: OL_STAGE OL_LPAR OL_STRING OL_COMMA OL_NAME OL_COMMA OL_NAME OL_RPAR . OL_DOT
+
+    OL_DOT  shift, and go to state 226
+
+
+State 221
+
+  105 range_expr: OL_LPAR range_atom OL_COMMA range_atom . OL_RPAR
+  106           | OL_LPAR range_atom OL_COMMA range_atom . OL_RSQUB
+
+    OL_RPAR   shift, and go to state 227
+    OL_RSQUB  shift, and go to state 228
+
+
+State 222
+
+  107 range_expr: OL_LSQUB range_atom OL_COMMA range_atom . OL_RPAR
+  108           | OL_LSQUB range_atom OL_COMMA range_atom . OL_RSQUB
+
+    OL_RPAR   shift, and go to state 229
+    OL_RSQUB  shift, and go to state 230
+
+
+State 223
+
+   55 aggview: agg_oper OL_LPAR functorbody OL_COMMA functorbody OL_COMMA . functor OL_RPAR
+
+    OL_NAME      shift, and go to state 34
+    OL_VAR       shift, and go to state 4
+    OL_ENCRYPTS  shift, and go to state 8
+
+    functor      go to state 231
+    functorname  go to state 33
+
+
+State 224
+
+   17 primarykeys: OL_KEYS . OL_LPAR keylist OL_RPAR
+   18            | OL_KEYS . OL_LPAR OL_RPAR
+
+    OL_LPAR  shift, and go to state 232
+
+
+State 225
+
+   15 materialize: OL_MATERIALIZE OL_LPAR OL_NAME OL_COMMA tablearg OL_COMMA tablearg OL_COMMA primarykeys . OL_RPAR OL_DOT
+
+    OL_RPAR  shift, and go to state 233
+
+
+State 226
+
+   25 stage: OL_STAGE OL_LPAR OL_STRING OL_COMMA OL_NAME OL_COMMA OL_NAME OL_RPAR OL_DOT .
+
+    $default  reduce using rule 25 (stage)
+
+
+State 227
+
+  105 range_expr: OL_LPAR range_atom OL_COMMA range_atom OL_RPAR .
+
+    $default  reduce using rule 105 (range_expr)
+
+
+State 228
+
+  106 range_expr: OL_LPAR range_atom OL_COMMA range_atom OL_RSQUB .
+
+    $default  reduce using rule 106 (range_expr)
+
+
+State 229
+
+  107 range_expr: OL_LSQUB range_atom OL_COMMA range_atom OL_RPAR .
+
+    $default  reduce using rule 107 (range_expr)
+
+
+State 230
+
+  108 range_expr: OL_LSQUB range_atom OL_COMMA range_atom OL_RSQUB .
+
+    $default  reduce using rule 108 (range_expr)
+
+
+State 231
+
+   55 aggview: agg_oper OL_LPAR functorbody OL_COMMA functorbody OL_COMMA functor . OL_RPAR
+
+    OL_RPAR  shift, and go to state 234
+
+
+State 232
+
+   17 primarykeys: OL_KEYS OL_LPAR . keylist OL_RPAR
+   18            | OL_KEYS OL_LPAR . OL_RPAR
+
+    OL_VALUE  shift, and go to state 235
+    OL_RPAR   shift, and go to state 236
+
+    keylist  go to state 237
+    key      go to state 238
+
+
+State 233
+
+   15 materialize: OL_MATERIALIZE OL_LPAR OL_NAME OL_COMMA tablearg OL_COMMA tablearg OL_COMMA primarykeys OL_RPAR . OL_DOT
+
+    OL_DOT  shift, and go to state 239
+
+
+State 234
+
+   55 aggview: agg_oper OL_LPAR functorbody OL_COMMA functorbody OL_COMMA functor OL_RPAR .
+
+    $default  reduce using rule 55 (aggview)
+
+
+State 235
+
+   21 key: OL_VALUE . OL_COLON OL_NAME
+   22    | OL_VALUE .
+
+    OL_COLON  shift, and go to state 240
+
+    $default  reduce using rule 22 (key)
+
+
+State 236
+
+   18 primarykeys: OL_KEYS OL_LPAR OL_RPAR .
+
+    $default  reduce using rule 18 (primarykeys)
+
+
+State 237
+
+   17 primarykeys: OL_KEYS OL_LPAR keylist . OL_RPAR
+
+    OL_RPAR  shift, and go to state 241
+
+
+State 238
+
+   19 keylist: key .
+   20        | key . OL_COMMA keylist
+
+    OL_COMMA  shift, and go to state 242
+
+    $default  reduce using rule 19 (keylist)
+
+
+State 239
+
+   15 materialize: OL_MATERIALIZE OL_LPAR OL_NAME OL_COMMA tablearg OL_COMMA tablearg OL_COMMA primarykeys OL_RPAR OL_DOT .
+
+    $default  reduce using rule 15 (materialize)
+
+
+State 240
+
+   21 key: OL_VALUE OL_COLON . OL_NAME
+
+    OL_NAME  shift, and go to state 243
+
+
+State 241
+
+   17 primarykeys: OL_KEYS OL_LPAR keylist OL_RPAR .
+
+    $default  reduce using rule 17 (primarykeys)
+
+
+State 242
+
+   20 keylist: key OL_COMMA . keylist
+
+    OL_VALUE  shift, and go to state 235
+
+    keylist  go to state 244
+    key      go to state 238
+
+
+State 243
+
+   21 key: OL_VALUE OL_COLON OL_NAME .
+
+    $default  reduce using rule 21 (key)
+
+
+State 244
+
+   20 keylist: key OL_COMMA keylist .
+
+    $default  reduce using rule 20 (keylist)

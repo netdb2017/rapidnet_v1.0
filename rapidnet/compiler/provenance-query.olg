@@ -40,7 +40,7 @@ idb9 pReturn(@Ret,QID,VID,Prov) :- ePReturn(@X,QID),
 
 /* Rule Vertex */
 rv1 rQList(@X,QID,List) :- ruleQuery(@X,QID,RID,Ret),
-      ruleExec(@X,RID,R,List).
+      ruleExec(@X,RID,RWeight,R,List).
 rv2 rResultTmp(@X,QID,Ret,RID,Buf) :-
       ruleQuery(@X,QID,RID,Ret), Buf:=f_empty().
 
@@ -61,7 +61,7 @@ rv8 eRReturn(@X,QID) :- rResultTmp(@X,QID,Ret,RID,Buf),
       rQList(@X,QID,List), f_size(Buf)==f_size(List).
 rv9 rReturn(@Ret,QID,RID,Prov) :- eRReturn(@X,QID),
       rResultTmp(@X,QID,Ret,RID,Buf),
-      ruleExec(@X,RID,R,List), Prov:=f_pRULE(Buf,X,R).
+      ruleExec(@X,RID,RWeight,R,List), Prov:=f_pRULE(Buf,X,R).
 
 
 
