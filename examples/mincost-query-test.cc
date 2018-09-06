@@ -109,19 +109,25 @@ void
 TupleToQuery ()
 {
   Ptr<RapidNetApplicationBase> queryNode = queryapps.Get(0)->GetObject<RapidNetApplicationBase>();
-  inserttuple(1, "bestPath", 3, 2, 2); 
-  inserttuple(1, "path", 1, 3, 5); 
-  inserttuple(1, "link", 1, 2, 3); 
+  inserttuple(1, "bestPath", 1, 3, 5); 
+  //inserttuple(1, "path", 1, 3, 5); 
+  //inserttuple(1, "link", 1, 2, 3); 
+  //inserttuple(1, "link", 2, 3, 2); 
+  //inserttuple(1, "link", 1, 3, 5); 
+  //inserttuple(1, "link", 2, 1, 3);
+  //inserttuple(1, "link", 3, 2, 2);
+  //inserttuple(1, "link", 3, 1, 5);
+   
 }
 
 void
 Print ()
 {
-  PrintRelation (apps, MincostProv::BESTPATH);
-  PrintRelation (apps, MincostProv::PROV);
-  PrintRelation (apps, MincostProv::RULEEXEC);
+  //PrintRelation (apps, MincostProv::BESTPATH);
+  //PrintRelation (apps, MincostProv::PROV);
+  //PrintRelation (apps, MincostProv::RULEEXEC);
 
-  PrintRelation (queryapps, MincostQuery::TUPLE);
+  //PrintRelation (queryapps, MincostQuery::TUPLE);
   PrintRelation (queryapps, MincostQuery::RECORDS);
 }
 
@@ -136,9 +142,9 @@ main (int argc, char *argv[])
   initApps();
 
   apps.Start (Seconds (0.0));
-  apps.Stop (Seconds (5.0));
+  apps.Stop (Seconds (10.0));
   queryapps.Start (Seconds (0.0));
-  queryapps.Stop (Seconds (5.0));
+  queryapps.Stop (Seconds (10.0));
 
   schedule (1.0, TupleToQuery);
   schedule (2.0, UpdateLinks1);
