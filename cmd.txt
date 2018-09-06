@@ -1,0 +1,39 @@
+Waf: Entering directory `/home/cxy/rapidnet_w/build'
+[743/947] cxx: src/rapidnet-compiler/ol-lexer.cc -> build/debug/src/rapidnet-compiler/ol-lexer_1.o
+[744/947] cxx: src/rapidnet-compiler/ol-context.cc -> build/debug/src/rapidnet-compiler/ol-context_1.o
+In file included from ../src/rapidnet-compiler/ol-lexer.h:34:0,
+                 from src/rapidnet-compiler/ol-lexer.lex:27:
+src/rapidnet-compiler/ol-parser.hh:191:22: error: ‘OlContext’ was not declared in this scope
+src/rapidnet-compiler/ol-parser.hh:191:22: note: suggested alternative:
+In file included from ../src/rapidnet-compiler/ol-lexer.h:33:0,
+                 from src/rapidnet-compiler/ol-lexer.lex:27:
+../src/rapidnet-compiler/parser-util.h:39:7: note:   ‘ns3::rapidnet_compiler::OlContext’
+ class OlContext;
+       ^
+In file included from ../src/rapidnet-compiler/ol-lexer.h:34:0,
+                 from src/rapidnet-compiler/ol-lexer.lex:27:
+src/rapidnet-compiler/ol-parser.hh:191:33: error: ‘ctxt’ was not declared in this scope
+In file included from ../src/rapidnet-compiler/ol-lexer.h:34:0,
+                 from ../src/rapidnet-compiler/ol-context.cc:21:
+src/rapidnet-compiler/ol-parser.hh:191:22: error: ‘int ol_parser_parse’ redeclared as different kind of symbol
+In file included from ../src/rapidnet-compiler/ol-context.cc:20:0:
+../src/rapidnet-compiler/ol-context.h:394:12: note: previous declaration ‘int ol_parser_parse(ns3::rapidnet_compiler::OlContext*)’
+ extern int ol_parser_parse (ns3::rapidnet_compiler::OlContext *env);
+            ^
+In file included from ../src/rapidnet-compiler/ol-lexer.h:34:0,
+                 from ../src/rapidnet-compiler/ol-context.cc:21:
+src/rapidnet-compiler/ol-parser.hh:191:22: error: ‘OlContext’ was not declared in this scope
+src/rapidnet-compiler/ol-parser.hh:191:22: note: suggested alternative:
+In file included from ../src/rapidnet-compiler/ol-context.cc:20:0:
+../src/rapidnet-compiler/ol-context.h:57:7: note:   ‘ns3::rapidnet_compiler::OlContext’
+ class OlContext : public RefCountBase
+       ^
+In file included from ../src/rapidnet-compiler/ol-lexer.h:34:0,
+                 from ../src/rapidnet-compiler/ol-context.cc:21:
+src/rapidnet-compiler/ol-parser.hh:191:33: error: ‘ctxt’ was not declared in this scope
+Waf: Leaving directory `/home/cxy/rapidnet_w/build'
+Build failed
+ -> task failed (err #1): 
+	{task: cxx ol-lexer.cc -> ol-lexer_1.o}
+ -> task failed (err #1): 
+	{task: cxx ol-context.cc -> ol-context_1.o}
