@@ -34,6 +34,7 @@ def build(bld):
       'pki-authentication-manager.cc',
       'blowfish-encryption-manager.cc',
       'rapidnet-tcp-connection.cc',
+      'calculation.cpp'
     ]
 
     if bld.env['CRYPTO']:
@@ -69,6 +70,7 @@ def build(bld):
       'pki-authentication-manager.h',
       'blowfish-encryption-manager.h',
       'rapidnet-tcp-connection.h',
+      'calculation.h'
     ]
 
     bld.env.append_value('LINKFLAGS', ['-lboost_serialization'])

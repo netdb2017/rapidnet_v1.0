@@ -24,6 +24,7 @@
 #include "rapidnet-application-base.h"
 #include "rapidnet-utils.h"
 #include "expression.h"
+#include "calculation.h"
 
 using namespace ns3;
 using namespace rapidnet;
@@ -72,6 +73,7 @@ FConcat::Eval (Ptr<Tuple> tuple)
     {
       result.push_back (*it);
     }
+  
   return ListValue::New (result);
 }
 
@@ -185,7 +187,7 @@ FSize::Eval (Ptr<Tuple> tuple)
   Ptr<Value> lstVal = m_listAttrName->Eval (tuple);
   NS_ASSERT_MSG (V_InstanceOf (lstVal, ListValue),
     "f_last can only be applied to a list type attribute.");
-
+  //cout<<Int32Value::New ((DynamicCast<ListValue, Value> (lstVal))->Size ());
   return Int32Value::New ((DynamicCast<ListValue, Value> (lstVal))->Size ());
 }
 
@@ -393,16 +395,25 @@ Ptr<Value>
 FPEdb::Eval(Ptr<Tuple> tuple)
 {
   string prov = m_prov->Eval (tuple)-> ToString();
+  stringstream ss;
+  //ss << prov;
+  //ss << ":";
+  //ss << "[";
+  string score= m_score->Eval (tuple)-> ToString();
+  ss << score;
+  //ss << "]";
 
-  return StrValue::New (prov);
+
+  return StrValue::New (ss.str());
 }
 
 Ptr<FunctionExpr>
-FPEdb::New (Ptr<Expression> prov, Ptr<Expression> id)
+FPEdb::New (Ptr<Expression> prov, Ptr<Expression> id, Ptr<Expression> score)
 {
   Ptr<FPEdb> retval = Create<FPEdb>();
   retval->m_prov = prov;
   retval->m_id = id;
+  retval->m_score = score;
   return retval;
 }
 
@@ -451,14 +462,14 @@ FPRule::Eval(Ptr<Tuple> tuple)
 {
   list<Ptr<Value> > provList = rn_list (m_provList->Eval (tuple));
 
-  stringstream ss;
+  stringstream ss, tt;
 
   string rule = m_rule->Eval (tuple)->ToString ();
 
   uint32_t ipaddr = (rn_ipv4 (m_rloc->Eval (tuple))).Get ();
   ipaddr = (ipaddr / 256) % 65536;
-  ss << rule << "@n" << ipaddr << "(";
-
+  //ss << rule << "@n" << ipaddr << "(";
+  ss << "(";
   int index = 0;
 
   for (rn_list_iterator it = provList.begin (); it != provList.end (); it++)
@@ -468,18 +479,40 @@ FPRule::Eval(Ptr<Tuple> tuple)
     }
 
   ss << ")";
-
-  return StrValue::New (ss.str ());
+  string weight = m_ruleweight->Eval (tuple)->ToString();
+  ss << "*";
+  ss << weight;
+  string cal = ss.str();
+  double result = calculation(cal);
+  tt << result;
+  return StrValue::New (tt.str ());
 }
 
 Ptr<FunctionExpr>
-FPRule::New (Ptr<Expression> provList, Ptr<Expression> rloc, Ptr<Expression> rule)
+FPRule::New (Ptr<Expression> provList, Ptr<Expression> rloc, Ptr<Expression> rule, Ptr<Expression>ruleweight)
 {
   Ptr<FPRule> retval = Create<FPRule>();
   retval->m_provList = provList;
   retval->m_rloc = rloc;
   retval->m_rule = rule;
+  retval->m_ruleweight = ruleweight;
 
+  return retval;
+}
+
+Ptr<Value>
+FPCal:: Eval (Ptr<Tuple> tuple)
+{
+  string cal = m_cal->Eval (tuple)->ToString ();
+  double result = calculation(cal);
+  return RealValue::New (result);
+}
+
+Ptr<FunctionExpr>
+FPCal::New (Ptr<Expression> cal)
+{
+  Ptr<FPCal> retval = Create<FPCal>();
+  retval->m_cal = cal;
   return retval;
 }
 

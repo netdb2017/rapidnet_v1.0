@@ -226,6 +226,7 @@ def configure(conf):
     conf.env['NS3_OPTIONAL_FEATURES'] = []
 
     conf.env['NS3_BUILDDIR'] = conf.blddir
+    
     conf.check_tool('compiler_cxx')
     conf.check_tool('cflags')
     try:
@@ -248,6 +249,8 @@ def configure(conf):
     if not conf.env['REGRESSION_TRACES']:
         conf.check_message("regression reference traces", '', False)
 
+    conf.env.append_value('LINKFLAGS', '-lpython2.7')
+
     # create the second environment, set the variant and set its name
     variant_env = conf.env.copy()
     variant_name = Options.options.build_profile
@@ -268,6 +271,7 @@ def configure(conf):
     env = variant_env
 
     env.append_value('CXXDEFINES', 'RUN_SELF_TESTS')
+    
     
     if env['COMPILER_CXX'] == 'g++' and 'CXXFLAGS' not in os.environ:
         if conf.check_compilation_flag('-Wno-error=deprecated-declarations'):

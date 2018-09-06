@@ -9,7 +9,7 @@
 #define FLEX_SCANNER
 #define YY_FLEX_MAJOR_VERSION 2
 #define YY_FLEX_MINOR_VERSION 5
-#define YY_FLEX_SUBMINOR_VERSION 35
+#define YY_FLEX_SUBMINOR_VERSION 39
 #if YY_FLEX_SUBMINOR_VERSION > 0
 #define FLEX_BETA
 #endif
@@ -58,7 +58,6 @@ typedef int flex_int32_t;
 typedef unsigned char flex_uint8_t; 
 typedef unsigned short int flex_uint16_t;
 typedef unsigned int flex_uint32_t;
-#endif /* ! C99 */
 
 /* Limits of integral types. */
 #ifndef INT8_MIN
@@ -89,12 +88,15 @@ typedef unsigned int flex_uint32_t;
 #define UINT32_MAX             (4294967295U)
 #endif
 
+#endif /* ! C99 */
+
 #endif /* ! FLEXINT_H */
 
 /* begin standard C++ headers. */
 #include <iostream> 
 #include <errno.h>
 #include <cstdlib>
+#include <cstdio>
 #include <cstring>
 /* end standard C++ headers. */
 
@@ -164,7 +166,12 @@ typedef unsigned int flex_uint32_t;
 typedef struct yy_buffer_state *YY_BUFFER_STATE;
 #endif
 
-extern int yyleng;
+#ifndef YY_TYPEDEF_YY_SIZE_T
+#define YY_TYPEDEF_YY_SIZE_T
+typedef size_t yy_size_t;
+#endif
+
+extern yy_size_t yyleng;
 
 #define EOB_ACT_CONTINUE_SCAN 0
 #define EOB_ACT_END_OF_FILE 1
@@ -184,6 +191,13 @@ extern int yyleng;
                     if ( yytext[yyl] == '\n' )\
                         --yylineno;\
             }while(0)
+    #define YY_LINENO_REWIND_TO(dst) \
+            do {\
+                const char *p;\
+                for ( p = yy_cp-1; p >= (dst); --p)\
+                    if ( *p == '\n' )\
+                        --yylineno;\
+            }while(0)
     
 /* Return all but the first "n" matched characters back to the input stream. */
 #define yyless(n) \
@@ -200,11 +214,6 @@ extern int yyleng;
 	while ( 0 )
 
 #define unput(c) yyunput( c, (yytext_ptr)  )
-
-#ifndef YY_TYPEDEF_YY_SIZE_T
-#define YY_TYPEDEF_YY_SIZE_T
-typedef size_t yy_size_t;
-#endif
 
 #ifndef YY_STRUCT_YY_BUFFER_STATE
 #define YY_STRUCT_YY_BUFFER_STATE
@@ -224,7 +233,7 @@ struct yy_buffer_state
 	/* Number of characters read into yy_ch_buf, not including EOB
 	 * characters.
 	 */
-	int yy_n_chars;
+	yy_size_t yy_n_chars;
 
 	/* Whether we "own" the buffer - i.e., we know we created it,
 	 * and can realloc() it to grow it, and should free() it to
@@ -622,6 +631,8 @@ goto find_rule; \
 
 #include <limits.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 using namespace std;
 using namespace ns3;
@@ -634,7 +645,7 @@ using namespace ns3::rapidnet_compiler;
 
 int dcvar = 0;
 
-#line 638 "src/rapidnet-compiler/ol-lexer.cc"
+#line 649 "src/rapidnet-compiler/ol-lexer.cc"
 
 #define INITIAL 0
 #define CCOMMENT 1
@@ -739,11 +750,6 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 56 "src/rapidnet-compiler/ol-lexer.lex"
-
-
-#line 746 "src/rapidnet-compiler/ol-lexer.cc"
-
 	if ( !(yy_init) )
 		{
 		(yy_init) = 1;
@@ -776,6 +782,12 @@ YY_DECL
 		yy_load_buffer_state(  );
 		}
 
+	{
+#line 58 "src/rapidnet-compiler/ol-lexer.lex"
+
+
+#line 790 "src/rapidnet-compiler/ol-lexer.cc"
+
 	while ( 1 )		/* loops until end-of-file is reached */
 		{
 		yy_cp = (yy_c_buf_p);
@@ -797,7 +809,7 @@ YY_DECL
 yy_match:
 		do
 			{
-			register YY_CHAR yy_c = yy_ec[YY_SC_TO_UI(*yy_cp)];
+			register YY_CHAR yy_c = yy_ec[YY_SC_TO_UI(*yy_cp)] ;
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
@@ -833,7 +845,7 @@ find_rule: /* we branch to this label when backing up */
 
 		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
 			{
-			int yyl;
+			yy_size_t yyl;
 			for ( yyl = 0; yyl < yyleng; ++yyl )
 				if ( yytext[yyl] == '\n' )
 					   
@@ -846,33 +858,33 @@ do_action:	/* This label is used only to access EOF actions. */
 		switch ( yy_act )
 	{ /* beginning of action switch */
 case YY_STATE_EOF(INITIAL):
-#line 58 "src/rapidnet-compiler/ol-lexer.lex"
+#line 60 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_EOF; }
 	YY_BREAK
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 59 "src/rapidnet-compiler/ol-lexer.lex"
+#line 61 "src/rapidnet-compiler/ol-lexer.lex"
 ;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 60 "src/rapidnet-compiler/ol-lexer.lex"
+#line 62 "src/rapidnet-compiler/ol-lexer.lex"
 ; // Ignore %% comments
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 61 "src/rapidnet-compiler/ol-lexer.lex"
+#line 63 "src/rapidnet-compiler/ol-lexer.lex"
 ; // Ignore // comments
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 62 "src/rapidnet-compiler/ol-lexer.lex"
+#line 64 "src/rapidnet-compiler/ol-lexer.lex"
 ; // Ignore '#' directives
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 64 "src/rapidnet-compiler/ol-lexer.lex"
+#line 66 "src/rapidnet-compiler/ol-lexer.lex"
 { 
   if ( comment_depth == 0 ) {
     BEGIN(CCOMMENT); 
@@ -883,12 +895,12 @@ YY_RULE_SETUP
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 71 "src/rapidnet-compiler/ol-lexer.lex"
+#line 73 "src/rapidnet-compiler/ol-lexer.lex"
 ;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 72 "src/rapidnet-compiler/ol-lexer.lex"
+#line 74 "src/rapidnet-compiler/ol-lexer.lex"
 {
   if ( comment_depth > 0 ) {
    if( --comment_depth == 0 ) {
@@ -901,7 +913,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 81 "src/rapidnet-compiler/ol-lexer.lex"
+#line 83 "src/rapidnet-compiler/ol-lexer.lex"
 { 
   assert(cstring == NULL);
   cstring = new ostringstream();
@@ -910,7 +922,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 86 "src/rapidnet-compiler/ol-lexer.lex"
+#line 88 "src/rapidnet-compiler/ol-lexer.lex"
 { 
   assert(cstring != NULL);
   lvalp->v = new ParseVal(ValStr::New(cstring->str()));
@@ -922,7 +934,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 94 "src/rapidnet-compiler/ol-lexer.lex"
+#line 96 "src/rapidnet-compiler/ol-lexer.lex"
 {
   assert(cstring != NULL);
   // An escaped character literal
@@ -938,7 +950,7 @@ YY_RULE_SETUP
 case 11:
 /* rule 11 can match eol */
 YY_RULE_SETUP
-#line 105 "src/rapidnet-compiler/ol-lexer.lex"
+#line 107 "src/rapidnet-compiler/ol-lexer.lex"
 { 
     assert(cstring != NULL);
     (*cstring) << yytext; 
@@ -946,252 +958,252 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 110 "src/rapidnet-compiler/ol-lexer.lex"
+#line 112 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_MATERIALIZE; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 111 "src/rapidnet-compiler/ol-lexer.lex"
+#line 113 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_KEYS; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 112 "src/rapidnet-compiler/ol-lexer.lex"
+#line 114 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_SAYS; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 113 "src/rapidnet-compiler/ol-lexer.lex"
+#line 115 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_ENCRYPTS; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 114 "src/rapidnet-compiler/ol-lexer.lex"
+#line 116 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_CONTEXT; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 115 "src/rapidnet-compiler/ol-lexer.lex"
+#line 117 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_IN; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 116 "src/rapidnet-compiler/ol-lexer.lex"
+#line 118 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_ID; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 117 "src/rapidnet-compiler/ol-lexer.lex"
+#line 119 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_AT; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 118 "src/rapidnet-compiler/ol-lexer.lex"
+#line 120 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_COMMA; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 119 "src/rapidnet-compiler/ol-lexer.lex"
+#line 121 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_LPAR; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 120 "src/rapidnet-compiler/ol-lexer.lex"
+#line 122 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_RPAR; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 121 "src/rapidnet-compiler/ol-lexer.lex"
+#line 123 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_LSQUB; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 122 "src/rapidnet-compiler/ol-lexer.lex"
+#line 124 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_RSQUB; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 123 "src/rapidnet-compiler/ol-lexer.lex"
+#line 125 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_LCURB; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 124 "src/rapidnet-compiler/ol-lexer.lex"
+#line 126 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_RCURB; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 125 "src/rapidnet-compiler/ol-lexer.lex"
+#line 127 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_COLON; }
 	YY_BREAK
 /* Relational operators */
 case 28:
 YY_RULE_SETUP
-#line 128 "src/rapidnet-compiler/ol-lexer.lex"
+#line 130 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_LT; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 129 "src/rapidnet-compiler/ol-lexer.lex"
+#line 131 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_GT; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 130 "src/rapidnet-compiler/ol-lexer.lex"
+#line 132 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_LTE; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 131 "src/rapidnet-compiler/ol-lexer.lex"
+#line 133 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_GTE; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 132 "src/rapidnet-compiler/ol-lexer.lex"
+#line 134 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_NEQ; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 133 "src/rapidnet-compiler/ol-lexer.lex"
+#line 135 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_NEQ; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 134 "src/rapidnet-compiler/ol-lexer.lex"
+#line 136 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_EQ; }
 	YY_BREAK
 /* Arithmetic operations */
 case 35:
 YY_RULE_SETUP
-#line 137 "src/rapidnet-compiler/ol-lexer.lex"
+#line 139 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_PLUS; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 138 "src/rapidnet-compiler/ol-lexer.lex"
+#line 140 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_MINUS; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 139 "src/rapidnet-compiler/ol-lexer.lex"
+#line 141 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_TIMES; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 140 "src/rapidnet-compiler/ol-lexer.lex"
+#line 142 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_DIVIDE; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 141 "src/rapidnet-compiler/ol-lexer.lex"
+#line 143 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_MODULUS; }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 142 "src/rapidnet-compiler/ol-lexer.lex"
+#line 144 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_BITXOR; }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 143 "src/rapidnet-compiler/ol-lexer.lex"
+#line 145 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_BITAND; }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 144 "src/rapidnet-compiler/ol-lexer.lex"
+#line 146 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_BITOR; }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 145 "src/rapidnet-compiler/ol-lexer.lex"
+#line 147 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_BITNOT; }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 146 "src/rapidnet-compiler/ol-lexer.lex"
+#line 148 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_RSHIFT; }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 147 "src/rapidnet-compiler/ol-lexer.lex"
+#line 149 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_LSHIFT; }
 	YY_BREAK
 /* Boolean operations */
 case 46:
 YY_RULE_SETUP
-#line 150 "src/rapidnet-compiler/ol-lexer.lex"
+#line 152 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_NOT; }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 151 "src/rapidnet-compiler/ol-lexer.lex"
+#line 153 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_AND; }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 152 "src/rapidnet-compiler/ol-lexer.lex"
+#line 154 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_OR; } 
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 154 "src/rapidnet-compiler/ol-lexer.lex"
+#line 156 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_ASSIGN; }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 155 "src/rapidnet-compiler/ol-lexer.lex"
+#line 157 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_DOT; }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 156 "src/rapidnet-compiler/ol-lexer.lex"
+#line 158 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_IF; }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 157 "src/rapidnet-compiler/ol-lexer.lex"
+#line 159 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_WATCH; }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 158 "src/rapidnet-compiler/ol-lexer.lex"
+#line 160 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_WATCHFINE; }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 159 "src/rapidnet-compiler/ol-lexer.lex"
+#line 161 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_STAGE; }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 160 "src/rapidnet-compiler/ol-lexer.lex"
+#line 162 "src/rapidnet-compiler/ol-lexer.lex"
 {return OL_TRACETABLE;}
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 161 "src/rapidnet-compiler/ol-lexer.lex"
+#line 163 "src/rapidnet-compiler/ol-lexer.lex"
 {return OL_TRACE;}
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 162 "src/rapidnet-compiler/ol-lexer.lex"
+#line 164 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_DEL; }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 163 "src/rapidnet-compiler/ol-lexer.lex"
+#line 165 "src/rapidnet-compiler/ol-lexer.lex"
 { return OL_QUERY; }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 164 "src/rapidnet-compiler/ol-lexer.lex"
+#line 166 "src/rapidnet-compiler/ol-lexer.lex"
 { 
   lvalp->v = new ParseVal(ValNull::New()); 
   return OL_NULL; }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 168 "src/rapidnet-compiler/ol-lexer.lex"
+#line 170 "src/rapidnet-compiler/ol-lexer.lex"
 { 
   string aggName(yytext);
   lvalp->v = new ParseVar(ValStr::New(aggName.substr(2))); 
@@ -1200,21 +1212,21 @@ YY_RULE_SETUP
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 174 "src/rapidnet-compiler/ol-lexer.lex"
+#line 176 "src/rapidnet-compiler/ol-lexer.lex"
 { 
   lvalp->v = new ParseVar(ValStr::New(yytext)); 
   return OL_FUNCTION; }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 178 "src/rapidnet-compiler/ol-lexer.lex"
+#line 180 "src/rapidnet-compiler/ol-lexer.lex"
 { 
   lvalp->v = new ParseVar(ValStr::New(yytext)); 
   return OL_VAR; }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 182 "src/rapidnet-compiler/ol-lexer.lex"
+#line 184 "src/rapidnet-compiler/ol-lexer.lex"
 { 
   ostringstream oss;
   oss << "$_" << dcvar++; 
@@ -1223,7 +1235,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 188 "src/rapidnet-compiler/ol-lexer.lex"
+#line 190 "src/rapidnet-compiler/ol-lexer.lex"
 {
   // Unsigned integer literal (including octal and/or hex)
   lvalp->v = new ParseVal(ValInt32::New(-1));
@@ -1232,7 +1244,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 194 "src/rapidnet-compiler/ol-lexer.lex"
+#line 196 "src/rapidnet-compiler/ol-lexer.lex"
 { 
   lvalp->v = new ParseVal(ValStr::New(yytext)); 
   return OL_NAME; 
@@ -1240,7 +1252,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 199 "src/rapidnet-compiler/ol-lexer.lex"
+#line 201 "src/rapidnet-compiler/ol-lexer.lex"
 {
   // Unsigned integer literal (including octal and/or hex)
   lvalp->v = new ParseVal(ValUInt32::New(strtoull(yytext,NULL,0)));
@@ -1249,7 +1261,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 205 "src/rapidnet-compiler/ol-lexer.lex"
+#line 207 "src/rapidnet-compiler/ol-lexer.lex"
 {
   // Some integer literal (including octal and/or hex)
   lvalp->v = new ParseVal(ValInt32::New(strtoll(yytext,NULL,0)));
@@ -1258,7 +1270,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 211 "src/rapidnet-compiler/ol-lexer.lex"
+#line 213 "src/rapidnet-compiler/ol-lexer.lex"
 {
   // Double-precision literal
   lvalp->v = new ParseVal(ValDouble::New(strtod(yytext,NULL)));
@@ -1267,7 +1279,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 217 "src/rapidnet-compiler/ol-lexer.lex"
+#line 219 "src/rapidnet-compiler/ol-lexer.lex"
 {
   // IDs are read in only in hexadecimal with an I appended to the end
   string hex(yytext);
@@ -1280,10 +1292,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 227 "src/rapidnet-compiler/ol-lexer.lex"
+#line 229 "src/rapidnet-compiler/ol-lexer.lex"
 ECHO;
 	YY_BREAK
-#line 1287 "src/rapidnet-compiler/ol-lexer.cc"
+#line 1299 "src/rapidnet-compiler/ol-lexer.cc"
 			case YY_STATE_EOF(CCOMMENT):
 			case YY_STATE_EOF(CSTRING):
 				yyterminate();
@@ -1415,6 +1427,7 @@ ECHO;
 			"fatal flex scanner internal error--no action found" );
 	} /* end of action switch */
 		} /* end of scanning one token */
+	} /* end of user's declarations */
 } /* end of yylex */
 
 /* The contents of this function are C++ specific, so the () macro is not used.
@@ -1559,7 +1572,7 @@ int yyFlexLexer::yy_get_next_buffer()
 
 	else
 		{
-			int num_to_read =
+			yy_size_t num_to_read =
 			YY_CURRENT_BUFFER_LVALUE->yy_buf_size - number_to_move - 1;
 
 		while ( num_to_read <= 0 )
@@ -1575,7 +1588,7 @@ int yyFlexLexer::yy_get_next_buffer()
 
 		/* Read in more data. */
 		YY_INPUT( (&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move]),
-			(yy_n_chars), (size_t) num_to_read );
+			(yy_n_chars), num_to_read );
 
 		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
 		}
@@ -1666,7 +1679,7 @@ int yyFlexLexer::yy_get_next_buffer()
 	if ( ! yy_is_jam )
 		*(yy_state_ptr)++ = yy_current_state;
 
-	return yy_is_jam ? 0 : yy_current_state;
+		return yy_is_jam ? 0 : yy_current_state;
 }
 
     void yyFlexLexer::yyunput( int c, register char* yy_bp)
@@ -1681,7 +1694,7 @@ int yyFlexLexer::yy_get_next_buffer()
 	if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
 		{ /* need to shift things up to make room */
 		/* +2 for EOB chars. */
-		register int number_to_move = (yy_n_chars) + 2;
+		register yy_size_t number_to_move = (yy_n_chars) + 2;
 		register char *dest = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[
 					YY_CURRENT_BUFFER_LVALUE->yy_buf_size + 2];
 		register char *source =
@@ -1728,7 +1741,7 @@ int yyFlexLexer::yy_get_next_buffer()
 
 		else
 			{ /* need more input */
-			int offset = (yy_c_buf_p) - (yytext_ptr);
+			yy_size_t offset = (yy_c_buf_p) - (yytext_ptr);
 			++(yy_c_buf_p);
 
 			switch ( yy_get_next_buffer(  ) )
@@ -1893,8 +1906,6 @@ int yyFlexLexer::yy_get_next_buffer()
 	OLBasefree((void *) b  );
 }
 
-extern "C" int isatty (int );
-
 /* Initializes or reinitializes a buffer.
  * This function is sometimes called more than once on the same buffer,
  * such as during a yyrestart() or at EOF.
@@ -2006,7 +2017,7 @@ void yyFlexLexer::yypop_buffer_state (void)
  */
 void yyFlexLexer::yyensure_buffer_stack(void)
 {
-	int num_to_alloc;
+	yy_size_t num_to_alloc;
     
 	if (!(yy_buffer_stack)) {
 
@@ -2161,7 +2172,7 @@ void OLBasefree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 227 "src/rapidnet-compiler/ol-lexer.lex"
+#line 229 "src/rapidnet-compiler/ol-lexer.lex"
 
 
 
