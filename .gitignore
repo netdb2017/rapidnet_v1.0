@@ -1,3 +1,6 @@
+# Rapidnet test files
+*.pcap
+
 # Compiled Object files
 *.slo
 *.lo
