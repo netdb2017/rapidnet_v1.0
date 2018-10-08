@@ -30,8 +30,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_OL_PARSER_OL_PARSER_HH_INCLUDED
-# define YY_OL_PARSER_OL_PARSER_HH_INCLUDED
+#ifndef YY_OL_PARSER_SRC_RAPIDNET_COMPILER_OL_PARSER_HH_INCLUDED
+# define YY_OL_PARSER_SRC_RAPIDNET_COMPILER_OL_PARSER_HH_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 1
@@ -162,7 +162,7 @@ extern int ol_parser_debug;
 
 union YYSTYPE
 {
-#line 96 "ol-parser.y" /* yacc.c:1909  */
+#line 96 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1909  */
 
 
   ns3::rapidnet_compiler::ParseBool::Operator  u_boper;
@@ -178,7 +178,7 @@ union YYSTYPE
   ns3::rapidnet_compiler::ParseKey             *u_key;
   ns3::rapidnet_compiler::ParseRule            *u_rule;
 
-#line 182 "ol-parser.hh" /* yacc.c:1909  */
+#line 182 "src/rapidnet-compiler/ol-parser.hh" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -188,6 +188,6 @@ typedef union YYSTYPE YYSTYPE;
 
 
 
-int ol_parser_parse (ns3::rapidnet_compiler::OlContext *ctxt);
+//int ol_parser_parse (OlContext *ctxt);
 
-#endif /* !YY_OL_PARSER_OL_PARSER_HH_INCLUDED  */
+#endif /* !YY_OL_PARSER_SRC_RAPIDNET_COMPILER_OL_PARSER_HH_INCLUDED  */

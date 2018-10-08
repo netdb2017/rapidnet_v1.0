@@ -814,6 +814,11 @@ LookupFunction (string functionName)
     { 
       return "FPRule";
     }
+  
+  else if (functionName == "f_pCAL")
+    {
+      return "FPCal";
+    }
   /*
    * Summary Vector (SV) related functions
    */
@@ -837,6 +842,7 @@ LookupFunction (string functionName)
     {
       return "FSvRemove";
     }
+  
   // no functions found, return error
   else
     {

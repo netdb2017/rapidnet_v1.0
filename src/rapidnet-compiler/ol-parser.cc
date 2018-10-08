@@ -68,7 +68,7 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 1 "ol-parser.y" /* yacc.c:339  */
+#line 1 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:339  */
 
 /* -*-  Mode: C++; c-file-style: "gnu"; indent-tabs-mode:nil; -*- */
 /*
@@ -104,7 +104,7 @@
   static void ol_parser_error(OlContext *ctxt, string msg);
 
 
-#line 108 "ol-parser.cc" /* yacc.c:339  */
+#line 108 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -124,8 +124,8 @@
 
 /* In a future release of Bison, this section will be replaced
    by #include "ol-parser.hh".  */
-#ifndef YY_OL_PARSER_OL_PARSER_HH_INCLUDED
-# define YY_OL_PARSER_OL_PARSER_HH_INCLUDED
+#ifndef YY_OL_PARSER_SRC_RAPIDNET_COMPILER_OL_PARSER_HH_INCLUDED
+# define YY_OL_PARSER_SRC_RAPIDNET_COMPILER_OL_PARSER_HH_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 1
@@ -256,7 +256,7 @@ extern int ol_parser_debug;
 
 union YYSTYPE
 {
-#line 96 "ol-parser.y" /* yacc.c:355  */
+#line 96 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:355  */
 
 
   ns3::rapidnet_compiler::ParseBool::Operator  u_boper;
@@ -272,7 +272,7 @@ union YYSTYPE
   ns3::rapidnet_compiler::ParseKey             *u_key;
   ns3::rapidnet_compiler::ParseRule            *u_rule;
 
-#line 276 "ol-parser.cc" /* yacc.c:355  */
+#line 276 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -284,11 +284,11 @@ typedef union YYSTYPE YYSTYPE;
 
 int ol_parser_parse (OlContext *ctxt);
 
-#endif /* !YY_OL_PARSER_OL_PARSER_HH_INCLUDED  */
+#endif /* !YY_OL_PARSER_SRC_RAPIDNET_COMPILER_OL_PARSER_HH_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
 
-#line 292 "ol-parser.cc" /* yacc.c:358  */
+#line 292 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -1563,309 +1563,309 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 125 "ol-parser.y" /* yacc.c:1646  */
+#line 125 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { YYACCEPT; }
-#line 1569 "ol-parser.cc" /* yacc.c:1646  */
+#line 1569 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 126 "ol-parser.y" /* yacc.c:1646  */
+#line 126 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { YYACCEPT; }
-#line 1575 "ol-parser.cc" /* yacc.c:1646  */
+#line 1575 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 147 "ol-parser.y" /* yacc.c:1646  */
+#line 147 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { ctxt->table((yyvsp[-8].v), (yyvsp[-6].v), (yyvsp[-4].v), (yyvsp[-2].u_exprlist)); }
-#line 1581 "ol-parser.cc" /* yacc.c:1646  */
+#line 1581 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 151 "ol-parser.y" /* yacc.c:1646  */
+#line 151 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = (yyvsp[0].v); }
-#line 1587 "ol-parser.cc" /* yacc.c:1646  */
+#line 1587 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 154 "ol-parser.y" /* yacc.c:1646  */
+#line 154 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
 			(yyval.u_exprlist) = (yyvsp[-1].u_exprlist);
 		}
-#line 1595 "ol-parser.cc" /* yacc.c:1646  */
+#line 1595 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 157 "ol-parser.y" /* yacc.c:1646  */
+#line 157 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
 			(yyval.u_exprlist) = NULL; // This is going to be KeyID
 		}
-#line 1603 "ol-parser.cc" /* yacc.c:1646  */
+#line 1603 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 162 "ol-parser.y" /* yacc.c:1646  */
+#line 162 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_exprlist) = new ParseExprList(); (yyval.u_exprlist)->push_front((yyvsp[0].u_key)); }
-#line 1609 "ol-parser.cc" /* yacc.c:1646  */
+#line 1609 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 164 "ol-parser.y" /* yacc.c:1646  */
+#line 164 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyvsp[0].u_exprlist)->push_front((yyvsp[-2].u_key)); (yyval.u_exprlist)=(yyvsp[0].u_exprlist); }
-#line 1615 "ol-parser.cc" /* yacc.c:1646  */
+#line 1615 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 167 "ol-parser.y" /* yacc.c:1646  */
+#line 167 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_key) = new ParseKey ((yyvsp[-2].v), (yyvsp[0].v)); }
-#line 1621 "ol-parser.cc" /* yacc.c:1646  */
+#line 1621 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 169 "ol-parser.y" /* yacc.c:1646  */
+#line 169 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_key) = new ParseKey ((yyvsp[0].v)); }
-#line 1627 "ol-parser.cc" /* yacc.c:1646  */
+#line 1627 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 172 "ol-parser.y" /* yacc.c:1646  */
+#line 172 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
                 ctxt->Watch((yyvsp[-2].v), ""); /* no modifiers */
 		}
-#line 1635 "ol-parser.cc" /* yacc.c:1646  */
+#line 1635 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 177 "ol-parser.y" /* yacc.c:1646  */
+#line 177 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
                 ctxt->Watch((yyvsp[-4].v), (yyvsp[-2].v)->ToString()); /* With modifiers */
 		}
-#line 1643 "ol-parser.cc" /* yacc.c:1646  */
+#line 1643 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 182 "ol-parser.y" /* yacc.c:1646  */
+#line 182 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
 			ctxt->Stage((yyvsp[-6].v),(yyvsp[-4].v),(yyvsp[-2].v));
 		}
-#line 1651 "ol-parser.cc" /* yacc.c:1646  */
+#line 1651 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 187 "ol-parser.y" /* yacc.c:1646  */
+#line 187 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
 			ctxt->TraceTuple((yyvsp[-2].v));
 		}
-#line 1659 "ol-parser.cc" /* yacc.c:1646  */
+#line 1659 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 192 "ol-parser.y" /* yacc.c:1646  */
+#line 192 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
 			ctxt->TraceTable((yyvsp[-2].v));
 		}
-#line 1667 "ol-parser.cc" /* yacc.c:1646  */
+#line 1667 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 197 "ol-parser.y" /* yacc.c:1646  */
+#line 197 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { ctxt->Fact((yyvsp[-1].u_term)); }
-#line 1673 "ol-parser.cc" /* yacc.c:1646  */
+#line 1673 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 201 "ol-parser.y" /* yacc.c:1646  */
+#line 201 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { ctxt->AddRule ((yyvsp[0].u_rule)); }
-#line 1679 "ol-parser.cc" /* yacc.c:1646  */
+#line 1679 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 204 "ol-parser.y" /* yacc.c:1646  */
+#line 204 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { ctxt->AddRule ((yyvsp[0].u_rule)); }
-#line 1685 "ol-parser.cc" /* yacc.c:1646  */
+#line 1685 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 208 "ol-parser.y" /* yacc.c:1646  */
+#line 208 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { ((OlContext::Rule*) (yyvsp[0].u_rule)->GetRule ())->SetName ((yyvsp[-1].v)); (yyval.u_rule) = (yyvsp[0].u_rule); }
-#line 1691 "ol-parser.cc" /* yacc.c:1646  */
+#line 1691 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 211 "ol-parser.y" /* yacc.c:1646  */
+#line 211 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_rule) = (yyvsp[0].u_rule); }
-#line 1697 "ol-parser.cc" /* yacc.c:1646  */
+#line 1697 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 214 "ol-parser.y" /* yacc.c:1646  */
+#line 214 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_rule) = (yyvsp[0].u_rule); }
-#line 1703 "ol-parser.cc" /* yacc.c:1646  */
+#line 1703 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 218 "ol-parser.y" /* yacc.c:1646  */
+#line 218 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { ((OlContext::Rule*) (yyvsp[0].u_rule)->GetRule ())->SetWeight ((yyvsp[-1].v)); (yyval.u_rule) = (yyvsp[0].u_rule); }
-#line 1709 "ol-parser.cc" /* yacc.c:1646  */
+#line 1709 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 222 "ol-parser.y" /* yacc.c:1646  */
+#line 222 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_rule) = new ParseRule (ctxt->CreateRule((yyvsp[-3].u_term), (yyvsp[-1].u_termlist), false)); }
-#line 1715 "ol-parser.cc" /* yacc.c:1646  */
+#line 1715 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 225 "ol-parser.y" /* yacc.c:1646  */
+#line 225 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_rule) = new ParseRule (ctxt->CreateRule((yyvsp[-3].u_term), (yyvsp[-1].u_termlist), true)); }
-#line 1721 "ol-parser.cc" /* yacc.c:1646  */
+#line 1721 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 228 "ol-parser.y" /* yacc.c:1646  */
+#line 228 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_rule) = new ParseRule (ctxt->CreateRule((yyvsp[-4].u_term), (yyvsp[-1].u_termlist), false, NULL, NULL, true)); }
-#line 1727 "ol-parser.cc" /* yacc.c:1646  */
+#line 1727 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 231 "ol-parser.y" /* yacc.c:1646  */
+#line 231 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_rule) = new ParseRule (ctxt->CreateRule((yyvsp[-4].u_term), (yyvsp[-1].u_termlist), true, NULL, NULL, true)); }
-#line 1733 "ol-parser.cc" /* yacc.c:1646  */
+#line 1733 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 234 "ol-parser.y" /* yacc.c:1646  */
+#line 234 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_rule) = new ParseRule (ctxt->CreateAggRule((yyvsp[-3].u_term), (yyvsp[-1].u_aggterm), false)); }
-#line 1739 "ol-parser.cc" /* yacc.c:1646  */
+#line 1739 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 238 "ol-parser.y" /* yacc.c:1646  */
+#line 238 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { ctxt->SetContext((yyvsp[-1].v)); }
-#line 1745 "ol-parser.cc" /* yacc.c:1646  */
+#line 1745 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 241 "ol-parser.y" /* yacc.c:1646  */
+#line 241 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
                   ctxt->Query(new ParseFunctor((yyvsp[-2].u_functorname), (yyvsp[-1].u_exprlist))); }
-#line 1752 "ol-parser.cc" /* yacc.c:1646  */
+#line 1752 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 245 "ol-parser.y" /* yacc.c:1646  */
+#line 245 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_termlist) = new ParseTermList(); (yyval.u_termlist)->push_front((yyvsp[0].u_term)); }
-#line 1758 "ol-parser.cc" /* yacc.c:1646  */
+#line 1758 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 246 "ol-parser.y" /* yacc.c:1646  */
+#line 246 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyvsp[0].u_termlist)->push_front((yyvsp[-2].u_term)); (yyval.u_termlist)=(yyvsp[0].u_termlist); }
-#line 1764 "ol-parser.cc" /* yacc.c:1646  */
+#line 1764 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 249 "ol-parser.y" /* yacc.c:1646  */
+#line 249 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_term)=(yyvsp[0].u_term); }
-#line 1770 "ol-parser.cc" /* yacc.c:1646  */
+#line 1770 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 253 "ol-parser.y" /* yacc.c:1646  */
+#line 253 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_term)=new ParseFunctor((yyvsp[-1].u_functorname), (yyvsp[0].u_exprlist)); }
-#line 1776 "ol-parser.cc" /* yacc.c:1646  */
+#line 1776 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 255 "ol-parser.y" /* yacc.c:1646  */
+#line 255 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
 			(yyval.u_term)=new ParseFunctor((yyvsp[-1].u_functorname), (yyvsp[0].u_exprlist), NULL, (yyvsp[-3].v), true); }
-#line 1783 "ol-parser.cc" /* yacc.c:1646  */
+#line 1783 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 258 "ol-parser.y" /* yacc.c:1646  */
+#line 258 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
 		  (yyval.u_term)=new ParseFunctor((yyvsp[-1].u_functorname), (yyvsp[0].u_exprlist), NULL, NULL, false, true); }
-#line 1790 "ol-parser.cc" /* yacc.c:1646  */
+#line 1790 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 261 "ol-parser.y" /* yacc.c:1646  */
+#line 261 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
       			(yyval.u_term)=new ParseFunctor((yyvsp[-1].u_functorname), (yyvsp[0].u_exprlist), NULL, (yyvsp[-3].v), true, true); }
-#line 1797 "ol-parser.cc" /* yacc.c:1646  */
+#line 1797 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 265 "ol-parser.y" /* yacc.c:1646  */
+#line 265 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_term)=new ParseFunctor((yyvsp[-3].u_functorname), (yyvsp[-2].u_exprlist), (yyvsp[0].v)); }
-#line 1803 "ol-parser.cc" /* yacc.c:1646  */
+#line 1803 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 267 "ol-parser.y" /* yacc.c:1646  */
+#line 267 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
 			(yyval.u_term)=new ParseFunctor((yyvsp[-3].u_functorname), (yyvsp[-2].u_exprlist), (yyvsp[0].v), (yyvsp[-5].v), true); }
-#line 1810 "ol-parser.cc" /* yacc.c:1646  */
+#line 1810 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 270 "ol-parser.y" /* yacc.c:1646  */
+#line 270 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
 		  (yyval.u_term)=new ParseFunctor((yyvsp[-3].u_functorname), (yyvsp[-2].u_exprlist), (yyvsp[0].v), NULL, false, true); }
-#line 1817 "ol-parser.cc" /* yacc.c:1646  */
+#line 1817 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 273 "ol-parser.y" /* yacc.c:1646  */
+#line 273 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
       			(yyval.u_term)=new ParseFunctor((yyvsp[-3].u_functorname), (yyvsp[-2].u_exprlist), (yyvsp[0].v), (yyvsp[-5].v), true, true); }
-#line 1824 "ol-parser.cc" /* yacc.c:1646  */
+#line 1824 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 278 "ol-parser.y" /* yacc.c:1646  */
+#line 278 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_aggterm) = new ParseAggTerm((yyvsp[-7].u_aoper), (yyvsp[-5].u_exprlist), (yyvsp[-3].u_exprlist), (yyvsp[-1].u_term)); }
-#line 1830 "ol-parser.cc" /* yacc.c:1646  */
+#line 1830 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 282 "ol-parser.y" /* yacc.c:1646  */
+#line 282 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_functorname) = new ParseFunctorName((yyvsp[0].v)); }
-#line 1836 "ol-parser.cc" /* yacc.c:1646  */
+#line 1836 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 286 "ol-parser.y" /* yacc.c:1646  */
+#line 286 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_exprlist)=new ParseExprList(); }
-#line 1842 "ol-parser.cc" /* yacc.c:1646  */
+#line 1842 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 288 "ol-parser.y" /* yacc.c:1646  */
+#line 288 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_exprlist)=(yyvsp[-1].u_exprlist); }
-#line 1848 "ol-parser.cc" /* yacc.c:1646  */
+#line 1848 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 291 "ol-parser.y" /* yacc.c:1646  */
+#line 291 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { 
                           (yyval.u_exprlist) = new ParseExprList(); 
                           (yyval.u_exprlist)->push_front((yyvsp[0].v));
                         }
-#line 1857 "ol-parser.cc" /* yacc.c:1646  */
+#line 1857 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 295 "ol-parser.y" /* yacc.c:1646  */
+#line 295 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
 			(yyvsp[0].u_exprlist)->push_front((yyvsp[-2].v)); 
 			(yyval.u_exprlist)=(yyvsp[0].u_exprlist); }
-#line 1865 "ol-parser.cc" /* yacc.c:1646  */
+#line 1865 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 299 "ol-parser.y" /* yacc.c:1646  */
+#line 299 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
                           (yyval.u_exprlist) = new ParseExprList(); 
                           ParseVar *pv = dynamic_cast<ParseVar*>((yyvsp[0].v));
@@ -1879,11 +1879,11 @@ yyreduce:
                             (yyval.u_exprlist)->push_front((yyvsp[0].v)); 
                           }
                         }
-#line 1883 "ol-parser.cc" /* yacc.c:1646  */
+#line 1883 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 313 "ol-parser.y" /* yacc.c:1646  */
+#line 313 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
                           ParseVar *pv = dynamic_cast<ParseVar*>((yyvsp[-2].v));
                           if (!pv) {
@@ -1897,342 +1897,342 @@ yyreduce:
                             (yyval.u_exprlist)=(yyvsp[0].u_exprlist); 
                           }
                         }
-#line 1901 "ol-parser.cc" /* yacc.c:1646  */
+#line 1901 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 329 "ol-parser.y" /* yacc.c:1646  */
+#line 329 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = (yyvsp[0].v); }
-#line 1907 "ol-parser.cc" /* yacc.c:1646  */
+#line 1907 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 331 "ol-parser.y" /* yacc.c:1646  */
+#line 331 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
                           (yyval.v) = (yyvsp[0].v);
                         }
-#line 1915 "ol-parser.cc" /* yacc.c:1646  */
+#line 1915 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 338 "ol-parser.y" /* yacc.c:1646  */
+#line 338 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = new ParseFunction((yyvsp[-3].v), (yyvsp[-1].u_exprlist)); }
-#line 1921 "ol-parser.cc" /* yacc.c:1646  */
+#line 1921 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 340 "ol-parser.y" /* yacc.c:1646  */
+#line 340 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = new ParseFunction((yyvsp[-2].v), new ParseExprList()); }
-#line 1927 "ol-parser.cc" /* yacc.c:1646  */
+#line 1927 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 343 "ol-parser.y" /* yacc.c:1646  */
+#line 343 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { 
 			(yyval.u_exprlist) = new ParseExprList(); 
 			(yyval.u_exprlist)->push_front((yyvsp[0].v)); }
-#line 1935 "ol-parser.cc" /* yacc.c:1646  */
+#line 1935 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 346 "ol-parser.y" /* yacc.c:1646  */
+#line 346 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { 
 			(yyvsp[0].u_exprlist)->push_front((yyvsp[-2].v)); 
 			(yyval.u_exprlist)=(yyvsp[0].u_exprlist); }
-#line 1943 "ol-parser.cc" /* yacc.c:1646  */
+#line 1943 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 352 "ol-parser.y" /* yacc.c:1646  */
+#line 352 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = (yyvsp[0].v); }
-#line 1949 "ol-parser.cc" /* yacc.c:1646  */
+#line 1949 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 354 "ol-parser.y" /* yacc.c:1646  */
+#line 354 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = (yyvsp[0].v); }
-#line 1955 "ol-parser.cc" /* yacc.c:1646  */
+#line 1955 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 358 "ol-parser.y" /* yacc.c:1646  */
+#line 358 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_term) = new ParseSelect((yyvsp[0].v)); }
-#line 1961 "ol-parser.cc" /* yacc.c:1646  */
+#line 1961 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 362 "ol-parser.y" /* yacc.c:1646  */
+#line 362 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_term) = new ParseAssign((yyvsp[-2].v), (yyvsp[0].v)); }
-#line 1967 "ol-parser.cc" /* yacc.c:1646  */
+#line 1967 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 364 "ol-parser.y" /* yacc.c:1646  */
+#line 364 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_term) = new ParseAssign((yyvsp[-2].v), (yyvsp[0].v)); }
-#line 1973 "ol-parser.cc" /* yacc.c:1646  */
+#line 1973 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 75:
-#line 368 "ol-parser.y" /* yacc.c:1646  */
+#line 368 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = (yyvsp[-1].v); }
-#line 1979 "ol-parser.cc" /* yacc.c:1646  */
+#line 1979 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 76:
-#line 370 "ol-parser.y" /* yacc.c:1646  */
+#line 370 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = new ParseBool(ParseBool::RANGE, (yyvsp[-2].v), (yyvsp[0].v)); }
-#line 1985 "ol-parser.cc" /* yacc.c:1646  */
+#line 1985 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 372 "ol-parser.y" /* yacc.c:1646  */
+#line 372 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = new ParseBool(ParseBool::NOT, (yyvsp[0].v) ); }
-#line 1991 "ol-parser.cc" /* yacc.c:1646  */
+#line 1991 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 374 "ol-parser.y" /* yacc.c:1646  */
+#line 374 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = new ParseBool(ParseBool::OR, (yyvsp[-2].v), (yyvsp[0].v) ); }
-#line 1997 "ol-parser.cc" /* yacc.c:1646  */
+#line 1997 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 376 "ol-parser.y" /* yacc.c:1646  */
+#line 376 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = new ParseBool(ParseBool::AND, (yyvsp[-2].v), (yyvsp[0].v) ); }
-#line 2003 "ol-parser.cc" /* yacc.c:1646  */
+#line 2003 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 378 "ol-parser.y" /* yacc.c:1646  */
+#line 378 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = new ParseBool((yyvsp[-1].u_boper), (yyvsp[-2].v), (yyvsp[0].v) ); }
-#line 2009 "ol-parser.cc" /* yacc.c:1646  */
+#line 2009 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 382 "ol-parser.y" /* yacc.c:1646  */
+#line 382 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = (yyvsp[0].v); }
-#line 2015 "ol-parser.cc" /* yacc.c:1646  */
+#line 2015 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 384 "ol-parser.y" /* yacc.c:1646  */
+#line 384 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = (yyvsp[0].v); }
-#line 2021 "ol-parser.cc" /* yacc.c:1646  */
+#line 2021 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 386 "ol-parser.y" /* yacc.c:1646  */
+#line 386 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = (yyvsp[0].v); }
-#line 2027 "ol-parser.cc" /* yacc.c:1646  */
+#line 2027 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 389 "ol-parser.y" /* yacc.c:1646  */
+#line 389 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_boper) = ParseBool::EQ; }
-#line 2033 "ol-parser.cc" /* yacc.c:1646  */
+#line 2033 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 390 "ol-parser.y" /* yacc.c:1646  */
+#line 390 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_boper) = ParseBool::NEQ; }
-#line 2039 "ol-parser.cc" /* yacc.c:1646  */
+#line 2039 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 391 "ol-parser.y" /* yacc.c:1646  */
+#line 391 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_boper) = ParseBool::GT; }
-#line 2045 "ol-parser.cc" /* yacc.c:1646  */
+#line 2045 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 392 "ol-parser.y" /* yacc.c:1646  */
+#line 392 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_boper) = ParseBool::LT; }
-#line 2051 "ol-parser.cc" /* yacc.c:1646  */
+#line 2051 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 393 "ol-parser.y" /* yacc.c:1646  */
+#line 393 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_boper) = ParseBool::GTE; }
-#line 2057 "ol-parser.cc" /* yacc.c:1646  */
+#line 2057 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 89:
-#line 394 "ol-parser.y" /* yacc.c:1646  */
+#line 394 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_boper) = ParseBool::LTE; }
-#line 2063 "ol-parser.cc" /* yacc.c:1646  */
+#line 2063 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 398 "ol-parser.y" /* yacc.c:1646  */
+#line 398 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = new ParseMath((yyvsp[-1].u_moper), (yyvsp[-2].v), (yyvsp[0].v) ); }
-#line 2069 "ol-parser.cc" /* yacc.c:1646  */
+#line 2069 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 400 "ol-parser.y" /* yacc.c:1646  */
+#line 400 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = new ParseMath((yyvsp[-1].u_moper), (yyvsp[-2].v), (yyvsp[0].v) ); }
-#line 2075 "ol-parser.cc" /* yacc.c:1646  */
+#line 2075 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 404 "ol-parser.y" /* yacc.c:1646  */
+#line 404 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = (yyvsp[0].v); }
-#line 2081 "ol-parser.cc" /* yacc.c:1646  */
+#line 2081 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 406 "ol-parser.y" /* yacc.c:1646  */
+#line 406 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = (yyvsp[0].v); }
-#line 2087 "ol-parser.cc" /* yacc.c:1646  */
+#line 2087 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 408 "ol-parser.y" /* yacc.c:1646  */
+#line 408 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = (yyvsp[-1].v); }
-#line 2093 "ol-parser.cc" /* yacc.c:1646  */
+#line 2093 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 95:
-#line 411 "ol-parser.y" /* yacc.c:1646  */
+#line 411 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_moper) = ParseMath::LSHIFT; }
-#line 2099 "ol-parser.cc" /* yacc.c:1646  */
+#line 2099 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 96:
-#line 412 "ol-parser.y" /* yacc.c:1646  */
+#line 412 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_moper) = ParseMath::RSHIFT; }
-#line 2105 "ol-parser.cc" /* yacc.c:1646  */
+#line 2105 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 413 "ol-parser.y" /* yacc.c:1646  */
+#line 413 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_moper) = ParseMath::PLUS; }
-#line 2111 "ol-parser.cc" /* yacc.c:1646  */
+#line 2111 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 414 "ol-parser.y" /* yacc.c:1646  */
+#line 414 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_moper) = ParseMath::MINUS; }
-#line 2117 "ol-parser.cc" /* yacc.c:1646  */
+#line 2117 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 99:
-#line 415 "ol-parser.y" /* yacc.c:1646  */
+#line 415 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_moper) = ParseMath::TIMES; }
-#line 2123 "ol-parser.cc" /* yacc.c:1646  */
+#line 2123 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 100:
-#line 416 "ol-parser.y" /* yacc.c:1646  */
+#line 416 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_moper) = ParseMath::DIVIDE; }
-#line 2129 "ol-parser.cc" /* yacc.c:1646  */
+#line 2129 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 101:
-#line 417 "ol-parser.y" /* yacc.c:1646  */
+#line 417 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_moper) = ParseMath::MODULUS; }
-#line 2135 "ol-parser.cc" /* yacc.c:1646  */
+#line 2135 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 102:
-#line 418 "ol-parser.y" /* yacc.c:1646  */
+#line 418 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_moper) = ParseMath::BIT_XOR; }
-#line 2141 "ol-parser.cc" /* yacc.c:1646  */
+#line 2141 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 103:
-#line 419 "ol-parser.y" /* yacc.c:1646  */
+#line 419 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_moper) = ParseMath::BIT_AND; }
-#line 2147 "ol-parser.cc" /* yacc.c:1646  */
+#line 2147 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 104:
-#line 420 "ol-parser.y" /* yacc.c:1646  */
+#line 420 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_moper) = ParseMath::BIT_OR; }
-#line 2153 "ol-parser.cc" /* yacc.c:1646  */
+#line 2153 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 105:
-#line 421 "ol-parser.y" /* yacc.c:1646  */
+#line 421 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.u_moper) = ParseMath::BIT_NOT; }
-#line 2159 "ol-parser.cc" /* yacc.c:1646  */
+#line 2159 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 106:
-#line 426 "ol-parser.y" /* yacc.c:1646  */
+#line 426 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = new ParseRange(ParseRange::RANGEOO, (yyvsp[-3].v), (yyvsp[-1].v)); }
-#line 2165 "ol-parser.cc" /* yacc.c:1646  */
+#line 2165 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 107:
-#line 428 "ol-parser.y" /* yacc.c:1646  */
+#line 428 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = new ParseRange(ParseRange::RANGEOC, (yyvsp[-3].v), (yyvsp[-1].v)); }
-#line 2171 "ol-parser.cc" /* yacc.c:1646  */
+#line 2171 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 108:
-#line 430 "ol-parser.y" /* yacc.c:1646  */
+#line 430 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = new ParseRange(ParseRange::RANGECO, (yyvsp[-3].v), (yyvsp[-1].v)); }
-#line 2177 "ol-parser.cc" /* yacc.c:1646  */
+#line 2177 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 109:
-#line 432 "ol-parser.y" /* yacc.c:1646  */
+#line 432 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = new ParseRange(ParseRange::RANGECC, (yyvsp[-3].v), (yyvsp[-1].v)); }
-#line 2183 "ol-parser.cc" /* yacc.c:1646  */
+#line 2183 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 110:
-#line 436 "ol-parser.y" /* yacc.c:1646  */
+#line 436 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = (yyvsp[0].v); }
-#line 2189 "ol-parser.cc" /* yacc.c:1646  */
+#line 2189 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 111:
-#line 438 "ol-parser.y" /* yacc.c:1646  */
+#line 438 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = (yyvsp[0].v); }
-#line 2195 "ol-parser.cc" /* yacc.c:1646  */
+#line 2195 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 115:
-#line 442 "ol-parser.y" /* yacc.c:1646  */
+#line 442 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = (yyvsp[0].v); }
-#line 2201 "ol-parser.cc" /* yacc.c:1646  */
+#line 2201 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 116:
-#line 446 "ol-parser.y" /* yacc.c:1646  */
+#line 446 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = new ParseAgg((yyvsp[-1].v), (yyvsp[-3].u_aoper), ValuePtr()); }
-#line 2207 "ol-parser.cc" /* yacc.c:1646  */
+#line 2207 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 117:
-#line 449 "ol-parser.y" /* yacc.c:1646  */
+#line 449 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
                           // Make the variable a location specifier
                           ParseVar *pv = dynamic_cast<ParseVar*>((yyvsp[-1].v));
                           pv->SetLocSpec();
                           (yyval.v) = new ParseAgg((yyvsp[-1].v), (yyvsp[-4].u_aoper), ValuePtr());
                         }
-#line 2218 "ol-parser.cc" /* yacc.c:1646  */
+#line 2218 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 118:
-#line 457 "ol-parser.y" /* yacc.c:1646  */
+#line 457 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     { (yyval.v) = new ParseAgg(ParseAgg::DONT_CARE, (yyvsp[-3].u_aoper), ValuePtr()); }
-#line 2224 "ol-parser.cc" /* yacc.c:1646  */
+#line 2224 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
   case 119:
-#line 461 "ol-parser.y" /* yacc.c:1646  */
+#line 461 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1646  */
     {
                   (yyval.u_aoper) = (yyvsp[0].v)->value->ToString ().c_str ();
                 }
-#line 2232 "ol-parser.cc" /* yacc.c:1646  */
+#line 2232 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
     break;
 
 
-#line 2236 "ol-parser.cc" /* yacc.c:1646  */
+#line 2236 "src/rapidnet-compiler/ol-parser.cc" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2460,7 +2460,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 466 "ol-parser.y" /* yacc.c:1906  */
+#line 466 "src/rapidnet-compiler/ol-parser.y" /* yacc.c:1906  */
 
 
 // Epilog

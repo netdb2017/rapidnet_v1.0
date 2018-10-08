@@ -24,6 +24,9 @@
 #include "rapidnet-application-base.h"
 #include "rapidnet-utils.h"
 #include "expression.h"
+#include <string>
+#include <iostream>
+#include <cctype>
 
 using namespace ns3;
 using namespace rapidnet;
@@ -72,6 +75,7 @@ FConcat::Eval (Ptr<Tuple> tuple)
     {
       result.push_back (*it);
     }
+  
   return ListValue::New (result);
 }
 
@@ -392,9 +396,26 @@ FSvRemove::New (Ptr<Expression> svExpr,
 Ptr<Value>
 FPEdb::Eval(Ptr<Tuple> tuple)
 {
-  string prov = m_prov->Eval (tuple)-> ToString();
-
-  return StrValue::New (prov);
+  string prov = m_prov->Eval (tuple)-> ToString();  
+  //cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<prov<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
+  int j = 0;
+  bool numeric = true;
+  while (j < prov.size())
+  {
+    if (isalpha(prov[j])) {
+	  numeric = false;
+	  break;
+	} else {
+	  j++;
+	}
+  }
+  if (numeric)
+  {
+    double score = atof (prov.c_str());
+    return RealValue::New (score);
+  } else {
+    return StrValue::New (prov);
+  }
 }
 
 Ptr<FunctionExpr>
@@ -410,31 +431,62 @@ Ptr<Value>
 FPIdb::Eval(Ptr<Tuple> tuple)
 {
   list<Ptr<Value> > provList = rn_list (m_provList->Eval (tuple));
+  
+  rn_list_iterator i = provList.begin ();
+  string s = (*i)->ToString ();
+  int j = 0;
+  bool numeric = true;
+  while (j < s.size())
+  {
+    if (isalpha(s[j])) {
+	  numeric = false;
+	  break;
+	} else {
+	  j++;
+	}
+  }
+  //cout<<"++++++++++++++++++++++++++"<<s<<"+++++++++++++++++++++++++++++++++"<<endl;
+  if (numeric) {
+    
+	int index = 0;
+	
+	double sum = 0.0;
+	
+	for (rn_list_iterator it = provList.begin (); it != provList.end (); it++)
+	{
+	  sum += atof (((*it)->ToString ()).c_str());
+	}
+	
+	return RealValue::New (sum);
+    
+  } else {
+    
+    stringstream ss;
 
-  stringstream ss;
-
-  if (provList.size() != 1)
+    if (provList.size() != 1)
     {
 	  ss << "(";
     }
 
-  int index = 0;
+    int index = 0;
 
-  for (rn_list_iterator it = provList.begin (); it != provList.end (); it++)
+    for (rn_list_iterator it = provList.begin (); it != provList.end (); it++)
     {
       if (index++!=0) ss << "+";
       ss << (*it)->ToString ();
     }
 
-//  string loc = m_loc->Eval (tuple)->ToString ();
-//  ss << ")@[" << loc << "]";
+  //  string loc = m_loc->Eval (tuple)->ToString ();
+  //  ss << ")@[" << loc << "]";
 
-  if (provList.size() != 1) 
+    if (provList.size() != 1) 
     {
 	  ss << ")";
     }
 
-  return StrValue::New (ss.str ());
+    return StrValue::New (ss.str ());
+	
+  }  
 }
 
 Ptr<FunctionExpr>
@@ -450,36 +502,96 @@ Ptr<Value>
 FPRule::Eval(Ptr<Tuple> tuple)
 {
   list<Ptr<Value> > provList = rn_list (m_provList->Eval (tuple));
+  rn_list_iterator i = provList.begin ();
+  string s = (*i)->ToString ();
+  int j = 0;
+  bool numeric = true;
+  while (j < s.size())
+  {
+    if (isalpha(s[j])) {
+	  numeric = false;
+	  break;
+	} else {
+	  j++;
+	}
+  }
+  //cout<<"**************************************"<<s<<"*****************************"<<endl;
+  if (numeric) {
+    int index = 0;
+    double product = 1.0;
+    for (rn_list_iterator it = provList.begin (); it != provList.end (); it++)
+    {
+      product *= atof (((*it)->ToString ()).c_str());
+    }
+	product *= atof((m_rwght->Eval (tuple)->ToString()).c_str());
+	return RealValue::New (product);
+	
+  } else {
+    
+    stringstream ss;
 
-  stringstream ss;
+    string rule = m_rule->Eval (tuple)->ToString ();
 
-  string rule = m_rule->Eval (tuple)->ToString ();
+    uint32_t ipaddr = (rn_ipv4 (m_rloc->Eval (tuple))).Get ();
+    ipaddr = (ipaddr / 256) % 65536;
+    ss << rule << "@n" << ipaddr << "(";
+  
+    int index = 0;
 
-  uint32_t ipaddr = (rn_ipv4 (m_rloc->Eval (tuple))).Get ();
-  ipaddr = (ipaddr / 256) % 65536;
-  ss << rule << "@n" << ipaddr << "(";
-
-  int index = 0;
-
-  for (rn_list_iterator it = provList.begin (); it != provList.end (); it++)
+    for (rn_list_iterator it = provList.begin (); it != provList.end (); it++)
     {
       if (index++!=0) ss << "*";
       ss << (*it)->ToString ();
     }
 
-  ss << ")";
-
-  return StrValue::New (ss.str ());
+    ss << ")";
+	
+    return StrValue::New (ss.str ());
+  }
+  
 }
 
 Ptr<FunctionExpr>
-FPRule::New (Ptr<Expression> provList, Ptr<Expression> rloc, Ptr<Expression> rule)
+FPRule::New (Ptr<Expression> provList, Ptr<Expression> rloc, Ptr<Expression> rule, Ptr<Expression> rwght)
 {
   Ptr<FPRule> retval = Create<FPRule>();
   retval->m_provList = provList;
   retval->m_rloc = rloc;
   retval->m_rule = rule;
+  retval->m_rwght = rwght;
 
+  return retval;
+}
+
+Ptr<Value>
+FPCal:: Eval (Ptr<Tuple> tuple)
+{
+  string cal = m_cal->Eval (tuple)->ToString ();
+  
+  int i = 0;
+  bool numeric = true;
+  while (i < cal.size())
+  {
+    if (isalpha(cal[i])) {
+	  numeric = false;
+	  break;
+	} else {
+	  i++;
+	}
+  }
+  if (numeric) {
+    double result = atof(cal.c_str());
+    return RealValue::New (result); 
+  } else {
+    return StrValue::New (cal);  
+  }
+}
+
+Ptr<FunctionExpr>
+FPCal::New (Ptr<Expression> cal)
+{
+  Ptr<FPCal> retval = Create<FPCal>();
+  retval->m_cal = cal;
   return retval;
 }
 

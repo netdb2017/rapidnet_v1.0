@@ -5,7 +5,7 @@ Terminals unused in grammar
    OL_RCURB
 
 
-Grammar
+语法
 
     0 $accept: program $end
 
@@ -236,98 +236,97 @@ OL_TRACETABLE (311) 27
 Nonterminals, with rules where they appear
 
 $accept (57)
-    on left: 0
+    左： 0
 program (58)
-    on left: 1 2, on right: 0
+    左： 1 2, 右： 0
 clauselist (59)
-    on left: 3 4, on right: 2 4
+    左： 3 4, 右： 2 4
 clause (60)
-    on left: 5 6 7 8 9 10 11 12 13 14, on right: 3 4
+    左： 5 6 7 8 9 10 11 12 13 14, 右： 3 4
 materialize (61)
-    on left: 15, on right: 7
+    左： 15, 右： 7
 tablearg (62)
-    on left: 16, on right: 15
+    左： 16, 右： 15
 primarykeys (63)
-    on left: 17 18, on right: 15
+    左： 17 18, 右： 15
 keylist (64)
-    on left: 19 20, on right: 17 20
+    左： 19 20, 右： 17 20
 key (65)
-    on left: 21 22, on right: 19 20
+    左： 21 22, 右： 19 20
 watch (66)
-    on left: 23, on right: 8
+    左： 23, 右： 8
 watchfine (67)
-    on left: 24, on right: 9
+    左： 24, 右： 9
 stage (68)
-    on left: 25, on right: 13
+    左： 25, 右： 13
 trace (69)
-    on left: 26, on right: 10
+    左： 26, 右： 10
 TraceTable (70)
-    on left: 27, on right: 11
+    左： 27, 右： 11
 fact (71)
-    on left: 28, on right: 6
+    左： 28, 右： 6
 rule (72)
-    on left: 29 30, on right: 5
+    左： 29 30, 右： 5
 namedRule (73)
-    on left: 31, on right: 29
+    左： 31, 右： 29
 unnamedRule (74)
-    on left: 32 33, on right: 30 31
+    左： 32 33, 右： 30 31
 weightedRule (75)
-    on left: 34, on right: 32
+    左： 34, 右： 32
 unweightedRule (76)
-    on left: 35 36 37 38 39, on right: 33 34
+    左： 35 36 37 38 39, 右： 33 34
 context (77)
-    on left: 40, on right: 14
+    左： 40, 右： 14
 query (78)
-    on left: 41, on right: 12
+    左： 41, 右： 12
 termlist (79)
-    on left: 42 43, on right: 35 36 37 38 43
+    左： 42 43, 右： 35 36 37 38 43
 term (80)
-    on left: 44 45 46, on right: 42 43
+    左： 44 45 46, 右： 42 43
 functor (81)
-    on left: 47 48 49 50 51 52 53 54, on right: 28 35 36 37 38 39 44
-    55
+    左： 47 48 49 50 51 52 53 54, 右： 28 35 36 37 38 39 44 55
 aggview (82)
-    on left: 55, on right: 39
+    左： 55, 右： 39
 functorname (83)
-    on left: 56, on right: 41 47 48 49 50 51 52 53 54
+    左： 56, 右： 41 47 48 49 50 51 52 53 54
 functorbody (84)
-    on left: 57 58, on right: 41 47 48 49 50 51 52 53 54 55
+    左： 57 58, 右： 41 47 48 49 50 51 52 53 54 55
 functorargs (85)
-    on left: 59 60 61 62, on right: 58 60 62
+    左： 59 60 61 62, 右： 58 60 62
 functorarg (86)
-    on left: 63 64, on right: 59 60
+    左： 63 64, 右： 59 60
 function (87)
-    on left: 65 66, on right: 81 92
+    左： 65 66, 右： 81 92
 functionargs (88)
-    on left: 67 68, on right: 65 68
+    左： 67 68, 右： 65 68
 functionarg (89)
-    on left: 69 70, on right: 67 68
+    左： 69 70, 右： 67 68
 select (90)
-    on left: 71, on right: 46
+    左： 71, 右： 46
 assign (91)
-    on left: 72 73, on right: 45
+    左： 72 73, 右： 45
 bool_expr (92)
-    on left: 74 75 76 77 78 79, on right: 71 73 74 76 77 78
+    左： 74 75 76 77 78 79, 右： 71 73 74 76 77 78
 rel_atom (93)
-    on left: 80 81 82, on right: 72 79
+    左： 80 81 82, 右： 72 79
 rel_oper (94)
-    on left: 83 84 85 86 87 88, on right: 79
+    左： 83 84 85 86 87 88, 右： 79
 math_expr (95)
-    on left: 89 90, on right: 69 80 89 93 109
+    左： 89 90, 右： 69 80 89 93 109
 math_atom (96)
-    on left: 91 92 93, on right: 89 90
+    左： 91 92 93, 右： 89 90
 math_oper (97)
-    on left: 94 95 96 97 98 99 100 101 102 103 104, on right: 89 90
+    左： 94 95 96 97 98 99 100 101 102 103 104, 右： 89 90
 range_expr (98)
-    on left: 105 106 107 108, on right: 75
+    左： 105 106 107 108, 右： 75
 range_atom (99)
-    on left: 109 110, on right: 105 106 107 108
+    左： 109 110, 右： 105 106 107 108
 atom (100)
-    on left: 111 112 113 114, on right: 61 62 63 70 82 91 110
+    左： 111 112 113 114, 右： 61 62 63 70 82 91 110
 aggregate (101)
-    on left: 115 116 117, on right: 64
+    左： 115 116 117, 右： 64
 agg_oper (102)
-    on left: 118, on right: 55 115 116 117
+    左： 118, 右： 55 115 116 117
 
 
 State 0
@@ -349,25 +348,25 @@ State 0
     OL_TRACE        shift, and go to state 13
     OL_TRACETABLE   shift, and go to state 14
 
-    program         go to state 15
-    clauselist      go to state 16
-    clause          go to state 17
-    materialize     go to state 18
-    watch           go to state 19
-    watchfine       go to state 20
-    stage           go to state 21
-    trace           go to state 22
-    TraceTable      go to state 23
-    fact            go to state 24
-    rule            go to state 25
-    namedRule       go to state 26
-    unnamedRule     go to state 27
-    weightedRule    go to state 28
-    unweightedRule  go to state 29
-    context         go to state 30
-    query           go to state 31
-    functor         go to state 32
-    functorname     go to state 33
+    program         转到状态 15
+    clauselist      转到状态 16
+    clause          转到状态 17
+    materialize     转到状态 18
+    watch           转到状态 19
+    watchfine       转到状态 20
+    stage           转到状态 21
+    trace           转到状态 22
+    TraceTable      转到状态 23
+    fact            转到状态 24
+    rule            转到状态 25
+    namedRule       转到状态 26
+    unnamedRule     转到状态 27
+    weightedRule    转到状态 28
+    unweightedRule  转到状态 29
+    context         转到状态 30
+    query           转到状态 31
+    functor         转到状态 32
+    functorname     转到状态 33
 
 
 State 1
@@ -383,11 +382,11 @@ State 1
 
     $default  reduce using rule 56 (functorname)
 
-    unnamedRule     go to state 35
-    weightedRule    go to state 28
-    unweightedRule  go to state 29
-    functor         go to state 36
-    functorname     go to state 33
+    unnamedRule     转到状态 35
+    weightedRule    转到状态 28
+    unweightedRule  转到状态 29
+    functor         转到状态 36
+    functorname     转到状态 33
 
 
 State 2
@@ -406,9 +405,9 @@ State 3
     OL_DEL       shift, and go to state 5
     OL_ENCRYPTS  shift, and go to state 8
 
-    unweightedRule  go to state 37
-    functor         go to state 36
-    functorname     go to state 33
+    unweightedRule  转到状态 37
+    functor         转到状态 36
+    functorname     转到状态 33
 
 
 State 4
@@ -428,8 +427,8 @@ State 5
     OL_VAR       shift, and go to state 4
     OL_ENCRYPTS  shift, and go to state 8
 
-    functor      go to state 39
-    functorname  go to state 33
+    functor      转到状态 39
+    functorname  转到状态 33
 
 
 State 6
@@ -438,7 +437,7 @@ State 6
 
     OL_NAME  shift, and go to state 34
 
-    functorname  go to state 40
+    functorname  转到状态 40
 
 
 State 7
@@ -458,7 +457,7 @@ State 8
     OL_NAME  shift, and go to state 34
     OL_VAR   shift, and go to state 42
 
-    functorname  go to state 43
+    functorname  转到状态 43
 
 
 State 9
@@ -538,24 +537,24 @@ State 17
 
     $default  reduce using rule 3 (clauselist)
 
-    clauselist      go to state 52
-    clause          go to state 17
-    materialize     go to state 18
-    watch           go to state 19
-    watchfine       go to state 20
-    stage           go to state 21
-    trace           go to state 22
-    TraceTable      go to state 23
-    fact            go to state 24
-    rule            go to state 25
-    namedRule       go to state 26
-    unnamedRule     go to state 27
-    weightedRule    go to state 28
-    unweightedRule  go to state 29
-    context         go to state 30
-    query           go to state 31
-    functor         go to state 32
-    functorname     go to state 33
+    clauselist      转到状态 52
+    clause          转到状态 17
+    materialize     转到状态 18
+    watch           转到状态 19
+    watchfine       转到状态 20
+    stage           转到状态 21
+    trace           转到状态 22
+    TraceTable      转到状态 23
+    fact            转到状态 24
+    rule            转到状态 25
+    namedRule       转到状态 26
+    unnamedRule     转到状态 27
+    weightedRule    转到状态 28
+    unweightedRule  转到状态 29
+    context         转到状态 30
+    query           转到状态 31
+    functor         转到状态 32
+    functorname     转到状态 33
 
 
 State 18
@@ -674,7 +673,7 @@ State 33
 
     OL_LPAR  shift, and go to state 55
 
-    functorbody  go to state 56
+    functorbody  转到状态 56
 
 
 State 34
@@ -714,7 +713,7 @@ State 38
 
     OL_NAME  shift, and go to state 34
 
-    functorname  go to state 57
+    functorname  转到状态 57
 
 
 State 39
@@ -732,7 +731,7 @@ State 40
 
     OL_LPAR  shift, and go to state 55
 
-    functorbody  go to state 60
+    functorbody  转到状态 60
 
 
 State 41
@@ -757,7 +756,7 @@ State 43
 
     OL_LPAR  shift, and go to state 55
 
-    functorbody  go to state 63
+    functorbody  转到状态 63
 
 
 State 44
@@ -806,7 +805,7 @@ State 50
 
     0 $accept: program $end .
 
-    $default  accept
+    $default  接受
 
 
 State 51
@@ -848,20 +847,20 @@ State 54
     OL_DEL          shift, and go to state 78
     OL_ENCRYPTS     shift, and go to state 8
 
-    termlist     go to state 79
-    term         go to state 80
-    functor      go to state 81
-    aggview      go to state 82
-    functorname  go to state 33
-    function     go to state 83
-    select       go to state 84
-    assign       go to state 85
-    bool_expr    go to state 86
-    rel_atom     go to state 87
-    math_expr    go to state 88
-    math_atom    go to state 89
-    atom         go to state 90
-    agg_oper     go to state 91
+    termlist     转到状态 79
+    term         转到状态 80
+    functor      转到状态 81
+    aggview      转到状态 82
+    functorname  转到状态 33
+    function     转到状态 83
+    select       转到状态 84
+    assign       转到状态 85
+    bool_expr    转到状态 86
+    rel_atom     转到状态 87
+    math_expr    转到状态 88
+    math_atom    转到状态 89
+    atom         转到状态 90
+    agg_oper     转到状态 91
 
 
 State 55
@@ -877,11 +876,11 @@ State 55
     OL_NULL         shift, and go to state 76
     OL_RPAR         shift, and go to state 94
 
-    functorargs  go to state 95
-    functorarg   go to state 96
-    atom         go to state 97
-    aggregate    go to state 98
-    agg_oper     go to state 99
+    functorargs  转到状态 95
+    functorarg   转到状态 96
+    atom         转到状态 97
+    aggregate    转到状态 98
+    agg_oper     转到状态 99
 
 
 State 56
@@ -901,7 +900,7 @@ State 57
 
     OL_LPAR  shift, and go to state 55
 
-    functorbody  go to state 101
+    functorbody  转到状态 101
 
 
 State 58
@@ -918,18 +917,18 @@ State 58
     OL_LPAR      shift, and go to state 77
     OL_ENCRYPTS  shift, and go to state 8
 
-    termlist     go to state 102
-    term         go to state 80
-    functor      go to state 81
-    functorname  go to state 33
-    function     go to state 83
-    select       go to state 84
-    assign       go to state 85
-    bool_expr    go to state 86
-    rel_atom     go to state 87
-    math_expr    go to state 88
-    math_atom    go to state 89
-    atom         go to state 90
+    termlist     转到状态 102
+    term         转到状态 80
+    functor      转到状态 81
+    functorname  转到状态 33
+    function     转到状态 83
+    select       转到状态 84
+    assign       转到状态 85
+    bool_expr    转到状态 86
+    rel_atom     转到状态 87
+    math_expr    转到状态 88
+    math_atom    转到状态 89
+    atom         转到状态 90
 
 
 State 59
@@ -960,7 +959,7 @@ State 62
 
     OL_NAME  shift, and go to state 34
 
-    functorname  go to state 106
+    functorname  转到状态 106
 
 
 State 63
@@ -1027,12 +1026,12 @@ State 70
     OL_NULL      shift, and go to state 76
     OL_LPAR      shift, and go to state 77
 
-    function   go to state 83
-    bool_expr  go to state 114
-    rel_atom   go to state 87
-    math_expr  go to state 88
-    math_atom  go to state 89
-    atom       go to state 90
+    function   转到状态 83
+    bool_expr  转到状态 114
+    rel_atom   转到状态 87
+    math_expr  转到状态 88
+    math_atom  转到状态 89
+    atom       转到状态 90
 
 
 State 71
@@ -1100,12 +1099,12 @@ State 77
     OL_NULL      shift, and go to state 76
     OL_LPAR      shift, and go to state 77
 
-    function   go to state 83
-    bool_expr  go to state 118
-    rel_atom   go to state 87
-    math_expr  go to state 119
-    math_atom  go to state 89
-    atom       go to state 90
+    function   转到状态 83
+    bool_expr  转到状态 118
+    rel_atom   转到状态 87
+    math_expr  转到状态 119
+    math_atom  转到状态 89
+    atom       转到状态 90
 
 
 State 78
@@ -1122,18 +1121,18 @@ State 78
     OL_LPAR      shift, and go to state 77
     OL_ENCRYPTS  shift, and go to state 8
 
-    termlist     go to state 120
-    term         go to state 80
-    functor      go to state 81
-    functorname  go to state 33
-    function     go to state 83
-    select       go to state 84
-    assign       go to state 85
-    bool_expr    go to state 86
-    rel_atom     go to state 87
-    math_expr    go to state 88
-    math_atom    go to state 89
-    atom         go to state 90
+    termlist     转到状态 120
+    term         转到状态 80
+    functor      转到状态 81
+    functorname  转到状态 33
+    function     转到状态 83
+    select       转到状态 84
+    assign       转到状态 85
+    bool_expr    转到状态 86
+    rel_atom     转到状态 87
+    math_expr    转到状态 88
+    math_atom    转到状态 89
+    atom         转到状态 90
 
 
 State 79
@@ -1223,7 +1222,7 @@ State 87
     OL_LT   shift, and go to state 130
     OL_LTE  shift, and go to state 131
 
-    rel_oper  go to state 132
+    rel_oper  转到状态 132
 
 
 State 88
@@ -1245,7 +1244,7 @@ State 88
 
     $default  reduce using rule 80 (rel_atom)
 
-    math_oper  go to state 144
+    math_oper  转到状态 144
 
 
 State 89
@@ -1264,7 +1263,7 @@ State 89
     OL_DIVIDE   shift, and go to state 142
     OL_MODULUS  shift, and go to state 143
 
-    math_oper  go to state 145
+    math_oper  转到状态 145
 
 
 State 90
@@ -1303,7 +1302,7 @@ State 92
     OL_VAR     shift, and go to state 93
     OL_NULL    shift, and go to state 76
 
-    atom  go to state 147
+    atom  转到状态 147
 
 
 State 93
@@ -1398,18 +1397,18 @@ State 103
     OL_LPAR      shift, and go to state 77
     OL_ENCRYPTS  shift, and go to state 8
 
-    termlist     go to state 154
-    term         go to state 80
-    functor      go to state 81
-    functorname  go to state 33
-    function     go to state 83
-    select       go to state 84
-    assign       go to state 85
-    bool_expr    go to state 86
-    rel_atom     go to state 87
-    math_expr    go to state 88
-    math_atom    go to state 89
-    atom         go to state 90
+    termlist     转到状态 154
+    term         转到状态 80
+    functor      转到状态 81
+    functorname  转到状态 33
+    function     转到状态 83
+    select       转到状态 84
+    assign       转到状态 85
+    bool_expr    转到状态 86
+    rel_atom     转到状态 87
+    math_expr    转到状态 88
+    math_atom    转到状态 89
+    atom         转到状态 90
 
 
 State 104
@@ -1425,7 +1424,7 @@ State 105
 
     OL_VALUE  shift, and go to state 155
 
-    tablearg  go to state 156
+    tablearg  转到状态 156
 
 
 State 106
@@ -1435,7 +1434,7 @@ State 106
 
     OL_LPAR  shift, and go to state 55
 
-    functorbody  go to state 157
+    functorbody  转到状态 157
 
 
 State 107
@@ -1506,7 +1505,7 @@ State 115
     OL_LPAR   shift, and go to state 164
     OL_LSQUB  shift, and go to state 165
 
-    range_expr  go to state 166
+    range_expr  转到状态 166
 
 
 State 116
@@ -1522,12 +1521,12 @@ State 116
     OL_NULL      shift, and go to state 76
     OL_LPAR      shift, and go to state 77
 
-    function   go to state 83
-    bool_expr  go to state 167
-    rel_atom   go to state 168
-    math_expr  go to state 88
-    math_atom  go to state 89
-    atom       go to state 90
+    function   转到状态 83
+    bool_expr  转到状态 167
+    rel_atom   转到状态 168
+    math_expr  转到状态 88
+    math_atom  转到状态 89
+    atom       转到状态 90
 
 
 State 117
@@ -1543,12 +1542,12 @@ State 117
     OL_RPAR      shift, and go to state 169
     OL_LPAR      shift, and go to state 170
 
-    function      go to state 171
-    functionargs  go to state 172
-    functionarg   go to state 173
-    math_expr     go to state 174
-    math_atom     go to state 89
-    atom          go to state 175
+    function      转到状态 171
+    functionargs  转到状态 172
+    functionarg   转到状态 173
+    math_expr     转到状态 174
+    math_atom     转到状态 89
+    atom          转到状态 175
 
 
 State 118
@@ -1583,7 +1582,7 @@ State 119
 
     $default  reduce using rule 80 (rel_atom)
 
-    math_oper  go to state 144
+    math_oper  转到状态 144
 
 
 State 120
@@ -1614,18 +1613,18 @@ State 122
     OL_LPAR      shift, and go to state 77
     OL_ENCRYPTS  shift, and go to state 8
 
-    termlist     go to state 179
-    term         go to state 80
-    functor      go to state 81
-    functorname  go to state 33
-    function     go to state 83
-    select       go to state 84
-    assign       go to state 85
-    bool_expr    go to state 86
-    rel_atom     go to state 87
-    math_expr    go to state 88
-    math_atom    go to state 89
-    atom         go to state 90
+    termlist     转到状态 179
+    term         转到状态 80
+    functor      转到状态 81
+    functorname  转到状态 33
+    function     转到状态 83
+    select       转到状态 84
+    assign       转到状态 85
+    bool_expr    转到状态 86
+    rel_atom     转到状态 87
+    math_expr    转到状态 88
+    math_atom    转到状态 89
+    atom         转到状态 90
 
 
 State 123
@@ -1647,12 +1646,12 @@ State 124
     OL_NULL      shift, and go to state 76
     OL_LPAR      shift, and go to state 77
 
-    function   go to state 83
-    bool_expr  go to state 180
-    rel_atom   go to state 87
-    math_expr  go to state 88
-    math_atom  go to state 89
-    atom       go to state 90
+    function   转到状态 83
+    bool_expr  转到状态 180
+    rel_atom   转到状态 87
+    math_expr  转到状态 88
+    math_atom  转到状态 89
+    atom       转到状态 90
 
 
 State 125
@@ -1667,12 +1666,12 @@ State 125
     OL_NULL      shift, and go to state 76
     OL_LPAR      shift, and go to state 77
 
-    function   go to state 83
-    bool_expr  go to state 181
-    rel_atom   go to state 87
-    math_expr  go to state 88
-    math_atom  go to state 89
-    atom       go to state 90
+    function   转到状态 83
+    bool_expr  转到状态 181
+    rel_atom   转到状态 87
+    math_expr  转到状态 88
+    math_atom  转到状态 89
+    atom       转到状态 90
 
 
 State 126
@@ -1728,11 +1727,11 @@ State 132
     OL_NULL      shift, and go to state 76
     OL_LPAR      shift, and go to state 170
 
-    function   go to state 83
-    rel_atom   go to state 182
-    math_expr  go to state 88
-    math_atom  go to state 89
-    atom       go to state 90
+    function   转到状态 83
+    rel_atom   转到状态 182
+    math_expr  转到状态 88
+    math_atom  转到状态 89
+    atom       转到状态 90
 
 
 State 133
@@ -1823,9 +1822,9 @@ State 144
     OL_NULL      shift, and go to state 76
     OL_LPAR      shift, and go to state 170
 
-    function   go to state 171
-    math_atom  go to state 183
-    atom       go to state 184
+    function   转到状态 171
+    math_atom  转到状态 183
+    atom       转到状态 184
 
 
 State 145
@@ -1839,9 +1838,9 @@ State 145
     OL_NULL      shift, and go to state 76
     OL_LPAR      shift, and go to state 170
 
-    function   go to state 171
-    math_atom  go to state 185
-    atom       go to state 184
+    function   转到状态 171
+    math_atom  转到状态 185
+    atom       转到状态 184
 
 
 State 146
@@ -1850,7 +1849,7 @@ State 146
 
     OL_LPAR  shift, and go to state 55
 
-    functorbody  go to state 186
+    functorbody  转到状态 186
 
 
 State 147
@@ -1881,11 +1880,11 @@ State 149
     OL_AGGFUNCNAME  shift, and go to state 74
     OL_NULL         shift, and go to state 76
 
-    functorargs  go to state 188
-    functorarg   go to state 96
-    atom         go to state 97
-    aggregate    go to state 98
-    agg_oper     go to state 99
+    functorargs  转到状态 188
+    functorarg   转到状态 96
+    atom         转到状态 97
+    aggregate    转到状态 98
+    agg_oper     转到状态 99
 
 
 State 150
@@ -2005,11 +2004,11 @@ State 164
     OL_NULL      shift, and go to state 76
     OL_LPAR      shift, and go to state 170
 
-    function    go to state 171
-    math_expr   go to state 198
-    math_atom   go to state 89
-    range_atom  go to state 199
-    atom        go to state 200
+    function    转到状态 171
+    math_expr   转到状态 198
+    math_atom   转到状态 89
+    range_atom  转到状态 199
+    atom        转到状态 200
 
 
 State 165
@@ -2024,11 +2023,11 @@ State 165
     OL_NULL      shift, and go to state 76
     OL_LPAR      shift, and go to state 170
 
-    function    go to state 171
-    math_expr   go to state 198
-    math_atom   go to state 89
-    range_atom  go to state 201
-    atom        go to state 200
+    function    转到状态 171
+    math_expr   转到状态 198
+    math_atom   转到状态 89
+    range_atom  转到状态 201
+    atom        转到状态 200
 
 
 State 166
@@ -2064,7 +2063,7 @@ State 168
 
     $default  reduce using rule 72 (assign)
 
-    rel_oper  go to state 132
+    rel_oper  转到状态 132
 
 
 State 169
@@ -2085,10 +2084,10 @@ State 170
     OL_NULL      shift, and go to state 76
     OL_LPAR      shift, and go to state 170
 
-    function   go to state 171
-    math_expr  go to state 202
-    math_atom  go to state 89
-    atom       go to state 184
+    function   转到状态 171
+    math_expr  转到状态 202
+    math_atom  转到状态 89
+    atom       转到状态 184
 
 
 State 171
@@ -2134,7 +2133,7 @@ State 174
 
     $default  reduce using rule 69 (functionarg)
 
-    math_oper  go to state 144
+    math_oper  转到状态 144
 
 
 State 175
@@ -2241,11 +2240,11 @@ State 187
     OL_AGGFUNCNAME  shift, and go to state 74
     OL_NULL         shift, and go to state 76
 
-    functorargs  go to state 206
-    functorarg   go to state 96
-    atom         go to state 97
-    aggregate    go to state 98
-    agg_oper     go to state 99
+    functorargs  转到状态 206
+    functorarg   转到状态 96
+    atom         转到状态 97
+    aggregate    转到状态 98
+    agg_oper     转到状态 99
 
 
 State 188
@@ -2296,7 +2295,7 @@ State 194
 
     OL_VALUE  shift, and go to state 155
 
-    tablearg  go to state 210
+    tablearg  转到状态 210
 
 
 State 195
@@ -2339,7 +2338,7 @@ State 198
 
     $default  reduce using rule 109 (range_atom)
 
-    math_oper  go to state 144
+    math_oper  转到状态 144
 
 
 State 199
@@ -2387,7 +2386,7 @@ State 202
     OL_MODULUS  shift, and go to state 143
     OL_RPAR     shift, and go to state 177
 
-    math_oper  go to state 144
+    math_oper  转到状态 144
 
 
 State 203
@@ -2408,12 +2407,12 @@ State 204
     OL_NULL      shift, and go to state 76
     OL_LPAR      shift, and go to state 170
 
-    function      go to state 171
-    functionargs  go to state 216
-    functionarg   go to state 173
-    math_expr     go to state 174
-    math_atom     go to state 89
-    atom          go to state 175
+    function      转到状态 171
+    functionargs  转到状态 216
+    functionarg   转到状态 173
+    math_expr     转到状态 174
+    math_atom     转到状态 89
+    atom          转到状态 175
 
 
 State 205
@@ -2422,7 +2421,7 @@ State 205
 
     OL_LPAR  shift, and go to state 55
 
-    functorbody  go to state 217
+    functorbody  转到状态 217
 
 
 State 206
@@ -2493,11 +2492,11 @@ State 214
     OL_NULL      shift, and go to state 76
     OL_LPAR      shift, and go to state 170
 
-    function    go to state 171
-    math_expr   go to state 198
-    math_atom   go to state 89
-    range_atom  go to state 221
-    atom        go to state 200
+    function    转到状态 171
+    math_expr   转到状态 198
+    math_atom   转到状态 89
+    range_atom  转到状态 221
+    atom        转到状态 200
 
 
 State 215
@@ -2512,11 +2511,11 @@ State 215
     OL_NULL      shift, and go to state 76
     OL_LPAR      shift, and go to state 170
 
-    function    go to state 171
-    math_expr   go to state 198
-    math_atom   go to state 89
-    range_atom  go to state 222
-    atom        go to state 200
+    function    转到状态 171
+    math_expr   转到状态 198
+    math_atom   转到状态 89
+    range_atom  转到状态 222
+    atom        转到状态 200
 
 
 State 216
@@ -2546,7 +2545,7 @@ State 219
 
     OL_KEYS  shift, and go to state 224
 
-    primarykeys  go to state 225
+    primarykeys  转到状态 225
 
 
 State 220
@@ -2582,8 +2581,8 @@ State 223
     OL_VAR       shift, and go to state 4
     OL_ENCRYPTS  shift, and go to state 8
 
-    functor      go to state 231
-    functorname  go to state 33
+    functor      转到状态 231
+    functorname  转到状态 33
 
 
 State 224
@@ -2651,8 +2650,8 @@ State 232
     OL_VALUE  shift, and go to state 235
     OL_RPAR   shift, and go to state 236
 
-    keylist  go to state 237
-    key      go to state 238
+    keylist  转到状态 237
+    key      转到状态 238
 
 
 State 233
@@ -2730,8 +2729,8 @@ State 242
 
     OL_VALUE  shift, and go to state 235
 
-    keylist  go to state 244
-    key      go to state 238
+    keylist  转到状态 244
+    key      转到状态 238
 
 
 State 243

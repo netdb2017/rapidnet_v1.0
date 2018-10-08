@@ -33,7 +33,7 @@ def build(bld):
       'sendlog-encryption-manager.cc',
       'pki-authentication-manager.cc',
       'blowfish-encryption-manager.cc',
-      'rapidnet-tcp-connection.cc',
+      'rapidnet-tcp-connection.cc'
     ]
 
     if bld.env['CRYPTO']:
@@ -68,7 +68,7 @@ def build(bld):
       'sendlog-encryption-manager.h',
       'pki-authentication-manager.h',
       'blowfish-encryption-manager.h',
-      'rapidnet-tcp-connection.h',
+      'rapidnet-tcp-connection.h'
     ]
 
     bld.env.append_value('LINKFLAGS', ['-lboost_serialization'])

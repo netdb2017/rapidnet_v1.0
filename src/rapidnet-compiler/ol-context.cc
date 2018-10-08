@@ -1079,6 +1079,10 @@ OlContext::GenerateCreateRemoveProvEntryRule (Rule* rule, ParseFunctor* eH)
 {
   // 5th rule: prov(@H1,VID,RID,RLoc) :- eH(@H1,...,Ho,RID,RWeight,RLoc),
   //                                     VID = f_sha1(h + H1 + ... + Ho).
+   
+  // modified 5th rule: prov(@H1,VID,RID,RLoc,Score) :- eH(@H1,...,Ho,RID,RWeight,RLoc),
+  //                                     VID = f_sha1(h + H1 + ... + Ho). 
+  // Set Score to -1 since the derived tuples don't have score. Only base tuples have score
 
   //new rule id
   ParseExpr* rID = new ParseVal (ValStr::New (PROVENANCE_RULE_PREFIX + (rule->ruleID)
@@ -1094,6 +1098,7 @@ OlContext::GenerateCreateRemoveProvEntryRule (Rule* rule, ParseFunctor* eH)
   ParseExpr * H1 = new ParseVar (rule->head->GetLocSpecValue ());
   dynamic_cast<ParseVar*> (H1)->SetLocSpec ();
   ParseExpr * VID = new ParseVar ("VID");
+  ParseExpr * Score = new ParseVar ("Score");
 
   ParseExprList * hArgs5 = new ParseExprList ();
   hArgs5->push_front (H1);
@@ -1101,6 +1106,7 @@ OlContext::GenerateCreateRemoveProvEntryRule (Rule* rule, ParseFunctor* eH)
   int n = eH->Args ();
   hArgs5->push_back (eH->Arg (n - 3));  // RID in eH
   hArgs5->push_back (eH->Arg (n - 1));  // RLoc in eH
+  hArgs5->push_back (Score);
   ParseFunctor* h5 = new ParseFunctor (hName, hArgs5);
 
   //new rule body:
@@ -1129,8 +1135,13 @@ OlContext::GenerateCreateRemoveProvEntryRule (Rule* rule, ParseFunctor* eH)
   ParseExprList * VIDagList = new ParseExprList ();
   VIDagList->push_front (VIDag);
   ParseExpr * func3 = new ParseFunction (new ParseVar ("f_sha1"), VIDagList);
-  ParseTerm * VID_AS = new ParseAssign (VID, func3);
-  rBody5->push_back (VID_AS);
+  ParseTerm * AS1 = new ParseAssign (VID, func3);
+  rBody5->push_back (AS1);
+
+  ValuePtr scoreVal = ValDouble::New (-1.0);
+  ParseExpr * orig_score = new ParseVal (scoreVal);
+  ParseTerm * AS2 = new ParseAssign (Score, orig_score);
+  rBody5->push_back (AS2);
 
   Rule * r5 = CreateRule (h5, rBody5, false, rID, NULL, false);
   r5->isProvenanceRule = true;
@@ -1180,12 +1191,14 @@ OlContext::AddEdbProvenanceRule ()
           ParseExpr * VID = new ParseVar ("VID");
           ParseExpr * RID = new ParseVar ("RID");
           ParseExpr * RLoc = new ParseVar ("RLoc");
+          ParseExpr * Score = new ParseVar ("Score");
 
           ParseExprList * hArgs = new ParseExprList ();
           hArgs->push_front (X);
           hArgs->push_back (VID);
           hArgs->push_back (RID);
           hArgs->push_back (RLoc);
+          hArgs->push_back (Score);
           ParseFunctor* h = new ParseFunctor (hName, hArgs);
 
           //new rule body:
@@ -1200,6 +1213,7 @@ OlContext::AddEdbProvenanceRule ()
           ParseExprList::iterator b = f->m_args->begin ();
           ParseExpr* VIDag = new ParseMath (ParseMath::PLUS, hNameExpr, (*b));
           b++;
+          
           for (; b != f->m_args->end (); b++)
             {
               ParseAgg * a = NULL;
@@ -1222,6 +1236,9 @@ OlContext::AddEdbProvenanceRule ()
           rBody->push_back (VID_AS);
           ParseTerm * RID_AS = new ParseAssign (RID, VID);
           rBody->push_back (RID_AS);
+		  int n = f->Args ();
+          ParseTerm * Score_AS = new ParseAssign (Score, f->Arg (n-1));
+		  rBody->push_back (Score_AS);
 
           Rule * rule = CreateRule (h, rBody, false, rID, NULL, false);  //set rWeight to NULL
           mRules->push_back (rule);

@@ -23,9 +23,9 @@
 #include "ns3/ipv4-value.h"
 #include "pki-authentication-manager.h"
 #include "blowfish-encryption-manager.h"
-#include "ns3/udp-transport-socket-impl.h"
+//#include "ns3/udp-transport-socket-impl.h"
 #include "ns3/udp-socket-factory.h"
-#include "ns3/udp-transport-socket-factory-impl.h"
+//#include "ns3/udp-transport-socket-factory-impl.h"
 #include "ns3/uinteger.h"
 
 #include <fstream> // add-on

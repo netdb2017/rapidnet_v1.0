@@ -186,26 +186,20 @@ def build(bld):
     obj = bld.create_ns3_program('emu-ping-pong-test')
     obj.source = 'emu-ping-pong-test.cc'
     
-    obj = bld.create_ns3_program('pathvector-prov-test')
-    obj.source = 'pathvector-prov-test.cc'
-
-    obj = bld.create_ns3_program('pktfwd-prov-test')
-    obj.source = 'pktfwd-prov-test.cc'
-
+    
     obj = bld.create_ns3_program('mincost-prov-test')
     obj.source = 'mincost-prov-test.cc'  
 
     obj = bld.create_ns3_program('mincost-query-test')
     obj.source = 'mincost-query-test.cc'
+    
+    obj = bld.create_ns3_program('messf-test')
+    obj.source = 'messf-test.cc'
+   
+    obj = bld.create_ns3_program('messf-query-test')
+    obj.source = 'messf-query-test.cc'
+  
+   
 
-    obj = bld.create_ns3_program('secure-pathvector-test')
-    obj.source = 'secure-pathvector-test.cc'
-
-    obj = bld.create_ns3_program('secure-simple-bgp-test')
-    obj.source = 'secure-simple-bgp-test.cc'
-
-    obj = bld.create_ns3_program('secure-pingpong-test')
-    obj.source = 'secure-pingpong-test.cc'
-
-    obj = bld.create_ns3_program('pingpong-l4-test')
-    obj.source = 'pingpong-l4-test.cc'
+    
+   
