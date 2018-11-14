@@ -12,7 +12,7 @@ prov_r1_2 ruleExec(@RLOC, RID, RWeight, R, List) :- emsgTemp(@RLOC, X, CONTENT, 
 prov_r1_3 emsg(@X, CONTENT, S, TTL, RID, RWeight, RLOC) :- emsgTemp(@RLOC, X, CONTENT, S, TTL, RID, RWeight, R, List).
 prov_r1_4 msg(@X, CONTENT, S, TTL) :- emsg(@X, CONTENT, S, TTL, RID, RWeight, RLOC).
 prov_r1_5 prov(@X, VID, RID, RLOC, Score) :- emsg(@X, CONTENT, S, TTL, RID, RWeight, RLOC), VID := f_sha1((((msg+ X)+ CONTENT)+ S)+ TTL), Score := -1.
-prov_r2_1 emsgTemp(@RLOC, Y, CONTENT, S, TTL1, RID, RWeight, R, List) :- link(@X, Y, S1), PID1 := f_sha1(((link+ X)+ Y)+ S1), List := f_append(PID1), msg(@X, CONTENT, S2, TTL), PID2 := f_sha1((((msg+ X)+ CONTENT)+ S2)+ TTL), List2 := f_append(PID2), List := f_concat(List, List2), TTL < 5, TTL1 := TTL+ 1, S := S1* S2, RLOC := X, RWeight := 0.9, R := r2, RID := f_sha1((R+ RLOC)+ List).
+prov_r2_1 emsgTemp(@RLOC, Y, CONTENT, S, TTL1, RID, RWeight, R, List) :- link(@X, Y, S1), PID1 := f_sha1(((link+ X)+ Y)+ S1), List := f_append(PID1), msg(@X, CONTENT, S2, TTL), PID2 := f_sha1((((msg+ X)+ CONTENT)+ S2)+ TTL), List2 := f_append(PID2), List := f_concat(List, List2), TTL < 2, TTL1 := TTL+ 1, S := S1* S2, RLOC := X, RWeight := 0.9, R := r2, RID := f_sha1((R+ RLOC)+ List).
 prov_r3_1 efinalTemp(@RLOC, Y, CONTENT, RID, RWeight, R, List) :- msg(@Y, CONTENT, S, TTL), PID1 := f_sha1((((msg+ Y)+ CONTENT)+ S)+ TTL), List := f_append(PID1), RLOC := Y, RWeight := 1, R := r3, RID := f_sha1((R+ RLOC)+ List).
 prov_r3_2 ruleExec(@RLOC, RID, RWeight, R, List) :- efinalTemp(@RLOC, Y, CONTENT, RID, RWeight, R, List).
 prov_r3_3 efinal(@Y, CONTENT, RID, RWeight, RLOC) :- efinalTemp(@RLOC, Y, CONTENT, RID, RWeight, R, List).

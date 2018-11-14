@@ -12,8 +12,8 @@ prov_r1_2 ruleExec(@RLOC, RID, RWeight, R, List) :- epathTemp(@RLOC, X, Y, C, RI
 prov_r1_3 epath(@X, Y, C, RID, RWeight, RLOC) :- epathTemp(@RLOC, X, Y, C, RID, RWeight, R, List).
 prov_r1_4 path(@X, Y, C) :- epath(@X, Y, C, RID, RWeight, RLOC).
 prov_r1_5 prov(@X, VID, RID, RLOC, Score) :- epath(@X, Y, C, RID, RWeight, RLOC), VID := f_sha1(((path+ X)+ Y)+ C), Score := -1.
-prov_r2_1 epathTemp(@RLOC, Z, Y, C, RID, RWeight, R, List) :- link(@X, Z, C1), PID1 := f_sha1(((link+ X)+ Z)+ C1), List := f_append(PID1), bestPath(@X, Y, C2), PID2 := f_sha1(((bestPath+ X)+ Y)+ C2), List2 := f_append(PID2), List := f_concat(List, List2), C := C1+ C2, Z != Y, RLOC := X, RWeight := 2, R := r2, RID := f_sha1((R+ RLOC)+ List).
-prov_r3_1 ebestPathTemp(@RLOC, X, Y, C, RID, RWeight, R, List) :- bestPath(@X, Y, C), PID1 := f_sha1(((path+ X)+ Y)+ C), List := f_append(PID1), RLOC := X, RWeight := 3, R := r3, RID := f_sha1((R+ RLOC)+ List).
+prov_r2_1 epathTemp(@RLOC, Z, Y, C, RID, RWeight, R, List) :- link(@X, Z, C1), PID1 := f_sha1(((link+ X)+ Z)+ C1), List := f_append(PID1), bestPath(@X, Y, C2), PID2 := f_sha1(((bestPath+ X)+ Y)+ C2), List2 := f_append(PID2), List := f_concat(List, List2), C := C1+ C2, Z != Y, RLOC := X, RWeight := 1, R := r2, RID := f_sha1((R+ RLOC)+ List).
+prov_r3_1 ebestPathTemp(@RLOC, X, Y, C, RID, RWeight, R, List) :- bestPath(@X, Y, C), PID1 := f_sha1(((path+ X)+ Y)+ C), List := f_append(PID1), RLOC := X, RWeight := 1, R := r3, RID := f_sha1((R+ RLOC)+ List).
 prov_r3_2 ruleExec(@RLOC, RID, RWeight, R, List) :- ebestPathTemp(@RLOC, X, Y, C, RID, RWeight, R, List).
 prov_r3_3 ebestPath(@X, Y, C, RID, RWeight, RLOC) :- ebestPathTemp(@RLOC, X, Y, C, RID, RWeight, R, List).
 r3 bestPath(@X, Y, MIN< C >) :- path(@X, Y, C).

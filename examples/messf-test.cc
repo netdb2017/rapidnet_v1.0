@@ -127,7 +127,7 @@ main (int argc, char *arhv[])
 {
   //LogComponentEnable("Messf", LOG_LEVEL_INFO); 
   //LogComponentEnable("RapidNetApplicationBase", LOG_LEVEL_INFO); 
-
+  clock_t begintime = clock();
   apps = InitRapidNetApps (10, Create<MessfHelper> ());
   apps.Start (Seconds (0.0));
   apps.Stop (Seconds (2000.0));
@@ -140,6 +140,8 @@ main (int argc, char *arhv[])
 
   Simulator::Run ();
   Simulator::Destroy ();
+  clock_t t = clock() - begintime;
+  cout<<((float)t)/CLOCKS_PER_SEC<<endl;  
 
   return 0;
 }

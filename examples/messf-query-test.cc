@@ -29,9 +29,6 @@ ns3::rapidnet::tuple (Messf::FINAL, \
 attr ("final_attr1", Ipv4Value, node), \
 attr ("final_attr2", StrValue, content))
 
-
-
-
    
 #define link(node1, node2, score) \
 ns3::rapidnet::tuple (Messf::LINK, \
@@ -39,12 +36,12 @@ attr ("link_attr1", Ipv4Value, node1), \
 attr ("link_attr2", Ipv4Value, node2), \
 attr ("link_attr3", RealValue, score))
 
-#define insertsource(node, content,score) \
-app(node)->Insert (source(addr(node), content,score));
+#define insertsource(node, content, score) \
+app(node)->Insert (source(addr(node), content, score));
 
 
 #define insertlink(node1, node2,score) \
-app(node1)->Insert (link(addr(node1), addr(node2),score)); 
+app(node1)->Insert (link(addr(node1), addr(node2), score)); 
 
 #define tupleQuery(loc, name, attr1, attr2)	\
 	tuple (MessfQuery::TUPLE, \
@@ -99,6 +96,7 @@ initApps()
   SetMaxJitter (apps, 0.001);
   SetMaxJitter (queryapps, 0.001);
 }
+/*
 NodeContainer mainAppNodes;
 NodeContainer queryAppNodes;
 void 
@@ -194,11 +192,13 @@ initp2pApps()
   SetMaxJitter (apps, 0.001);
   SetMaxJitter (queryapps, 0.001);
 }
-
+*/
 
 void
 TupleToQuery1 ()
 {
+  clock_t begintime = clock();
+
   Ptr<RapidNetApplicationBase> queryNode = queryapps.Get(0)->GetObject<RapidNetApplicationBase>();
   
   inserttuple(1, "final", 5, "Hello");
@@ -207,6 +207,8 @@ TupleToQuery1 ()
   inserttuple(1, "final", 2, "Hello");
   inserttuple(1, "final", 1, "Hello");
   
+  clock_t t = clock() - begintime;
+  cout<<"Insert query tuple time: "<<((float) t)/CLOCKS_PER_SEC<<endl;
   
 }
 
@@ -214,6 +216,8 @@ TupleToQuery1 ()
 void
 UpdateTables1 ()
 {
+  clock_t begintime = clock();
+
   insertsource(1,"Hello",1.0);
   ifstream myfile;
   myfile.open("examples/messf_tables/try50.csv");
@@ -238,7 +242,8 @@ UpdateTables1 ()
     insertlink(node2,node1,lossy1);
   }
   
-  
+  clock_t t = clock() - begintime;
+  cout<<"Update table time: "<<((float) t)/CLOCKS_PER_SEC<<endl;
 }
 void 
 UpdateTables2()
@@ -250,31 +255,37 @@ insertsource(1,"Hello",1.0);
 
 void Print()
 {
+  clock_t begintime = clock();
   //PrintRelation (apps, Messf::PROV);
   //PrintRelation (apps, Messf::RULEEXEC);
-  //PrintRelation (apps, Messf::MSG);
-    //PrintRelation (apps, Messf::FINAL);
+  PrintRelation (apps, Messf::MSG);
+  PrintRelation (apps, Messf::FINAL);
   
   //PrintRelation (apps, Messf::RQLIST);
   //PrintRelation (apps, Messf::PQLIST);
 
   PrintRelation (queryapps, MessfQuery::TUPLE);
-  //PrintRelation (queryapps, MessfQuery::PROVQUERY);
-  //PrintRelation (queryapps, MessfQuery::RECORDS);
-  PrintRelation (queryapps, MessfQuery::RESULTS);
+  PrintRelation (queryapps, MessfQuery::PROVQUERY);
+  PrintRelation (queryapps, MessfQuery::RECORDS);
+  //PrintRelation (queryapps, MessfQuery::RESULTS);
   //PrintRelation (apps, Messf::LINK);
+
+  clock_t t = clock() - begintime;
+  cout<<"Print time: "<<((float) t)/CLOCKS_PER_SEC<<endl;
 }
 
 int main (int argc, char *argv[])
 {
 	
   //LogComponentEnable("Messf", LOG_LEVEL_INFO);
-  //LogComponentEnable("MessfQuery", LOG_LEVEL_INFO);
+  LogComponentEnable("MessfQuery", LOG_LEVEL_INFO);
   //LogComponentEnable("RapidNetApplicationBase", LOG_LEVEL_INFO);
   clock_t begintime = clock();
   initApps();
+  clock_t t1 = clock() - begintime;
+  cout<<"Initial time: "<<((float) t1)/CLOCKS_PER_SEC<<endl;
   //initp2pApps();
-  string storepath = "output/";
+  //string storepath = "output/";
 
   apps.Start (Seconds (0.0));
   apps.Stop (Seconds (10000.0));
@@ -282,18 +293,21 @@ int main (int argc, char *argv[])
   queryapps.Stop (Seconds (10000.0));
 
   schedule (1.0, TupleToQuery1);
+  
   schedule (2.0, UpdateTables1);
+  
   //schedule (4.0, UpdateTables2);
   //schedule (500.0, TupleToQuery1);
   
-  
   schedule (8000.0, Print);
   //Simulator::Schedule (Seconds(1500.0), SerializeProv, storepath); 
-
+  clock_t simrun = clock();
   Simulator::Run ();
+  clock_t t2 = clock() - simrun;
+  cout<<"Sim time:"<<((float) t2)/CLOCKS_PER_SEC<<endl;
   Simulator::Destroy ();
-  clock_t t = clock() - begintime;
-  cout<<((float)t)/CLOCKS_PER_SEC<<endl;
+  clock_t t3 = clock() - begintime;
+  cout<<"Total running time:"<<((float) t3)/CLOCKS_PER_SEC<<endl;
 
   return 0;
 

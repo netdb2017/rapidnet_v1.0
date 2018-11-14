@@ -39,7 +39,7 @@ materialize(rResultTmp,infinity,infinity,keys(1,2:cid)).
 /* Querying */
 /* EDB vertex */
 edb1 pReturn(@Ret,QID,VID,Prov) :- provQuery(@X,QID,VID,Ret),
-       prov(@X,VID,RID,RLoc,Score), RID==VID, Prov:=f_pEDB(Score,X).
+       prov(@X,VID,RID,RLoc,Score), RID==VID, Prov:=f_pEDB(VID,X).
 /* IDB vertex */
 idb1 pQList(@X,QID,a_LIST<RID>) :- provQuery(@X,QID,VID,Ret),
        prov(@X,VID,RID,RLoc,Score), RID!=VID.

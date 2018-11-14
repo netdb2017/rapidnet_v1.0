@@ -21,7 +21,6 @@ const string MessfQuery::PERIODIC = "periodic";
 const string MessfQuery::PROVQUERY = "provQuery";
 const string MessfQuery::Q1_ECAPERIODIC = "q1_ecaperiodic";
 const string MessfQuery::RECORDS = "records";
-const string MessfQuery::RESULTS = "results";
 const string MessfQuery::TUPLE = "tuple";
 
 NS_LOG_COMPONENT_DEFINE ("MessfQuery");
@@ -87,11 +86,6 @@ MessfQuery::InitDatabase ()
     attrdef ("records_attr2", ID),
     attrdef ("records_attr3", ID)));
 
-  AddRelationWithKeys (RESULTS, attrdeflist (
-    attrdef ("results_attr1", IPV4),
-    attrdef ("results_attr2", ID),
-    attrdef ("results_attr3", ID)));
-
   AddRelationWithKeys (TUPLE, attrdeflist (
     attrdef ("tuple_attr1", IPV4),
     attrdef ("tuple_attr2", STR)));
@@ -110,14 +104,6 @@ MessfQuery::DemuxRecv (Ptr<Tuple> tuple)
   if (IsRecvEvent (tuple, PRETURN))
     {
       Q2_eca (tuple);
-    }
-  if (IsInsertEvent (tuple, RECORDS))
-    {
-      Q3Eca0Ins (tuple);
-    }
-  if (IsDeleteEvent (tuple, RECORDS))
-    {
-      Q3Eca0Del (tuple);
     }
 }
 
@@ -204,55 +190,5 @@ MessfQuery::Q2_eca (Ptr<Tuple> pReturn)
       "records_attr4"));
 
   Insert (result);
-}
-
-void
-MessfQuery::Q3Eca0Ins (Ptr<Tuple> records)
-{
-  RAPIDNET_LOG_INFO ("Q3Eca0Ins triggered");
-
-  Ptr<Tuple> result = records;
-
-  result->Assign (Assignor::New ("Scores",
-    FPCal::New (
-      VarExpr::New ("records_attr4"))));
-
-  result = result->Project (
-    RESULTS,
-    strlist ("records_attr1",
-      "records_attr2",
-      "records_attr3",
-      "Scores"),
-    strlist ("results_attr1",
-      "results_attr2",
-      "results_attr3",
-      "results_attr4"));
-
-  Insert (result);
-}
-
-void
-MessfQuery::Q3Eca0Del (Ptr<Tuple> records)
-{
-  RAPIDNET_LOG_INFO ("Q3Eca0Del triggered");
-
-  Ptr<Tuple> result = records;
-
-  result->Assign (Assignor::New ("Scores",
-    FPCal::New (
-      VarExpr::New ("records_attr4"))));
-
-  result = result->Project (
-    RESULTS,
-    strlist ("records_attr1",
-      "records_attr2",
-      "records_attr3",
-      "Scores"),
-    strlist ("results_attr1",
-      "results_attr2",
-      "results_attr3",
-      "results_attr4"));
-
-  Delete (result);
 }
 

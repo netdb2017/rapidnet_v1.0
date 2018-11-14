@@ -729,7 +729,7 @@ MincostProv::Prov_r2_1Eca0Ins (Ptr<Tuple> link)
     VarExpr::New ("link_attr1")));
 
   result->Assign (Assignor::New ("RWeight",
-    ValueExpr::New (RealValue::New (2))));
+    ValueExpr::New (RealValue::New (1))));
 
   result->Assign (Assignor::New ("R",
     ValueExpr::New (StrValue::New ("r2"))));
@@ -825,7 +825,7 @@ MincostProv::Prov_r2_1Eca0Del (Ptr<Tuple> link)
     VarExpr::New ("link_attr1")));
 
   result->Assign (Assignor::New ("RWeight",
-    ValueExpr::New (RealValue::New (2))));
+    ValueExpr::New (RealValue::New (1))));
 
   result->Assign (Assignor::New ("R",
     ValueExpr::New (StrValue::New ("r2"))));
@@ -921,7 +921,7 @@ MincostProv::Prov_r2_1Eca3Ins (Ptr<Tuple> bestPath)
     VarExpr::New ("bestPath_attr1")));
 
   result->Assign (Assignor::New ("RWeight",
-    ValueExpr::New (RealValue::New (2))));
+    ValueExpr::New (RealValue::New (1))));
 
   result->Assign (Assignor::New ("R",
     ValueExpr::New (StrValue::New ("r2"))));
@@ -1017,7 +1017,7 @@ MincostProv::Prov_r2_1Eca3Del (Ptr<Tuple> bestPath)
     VarExpr::New ("bestPath_attr1")));
 
   result->Assign (Assignor::New ("RWeight",
-    ValueExpr::New (RealValue::New (2))));
+    ValueExpr::New (RealValue::New (1))));
 
   result->Assign (Assignor::New ("R",
     ValueExpr::New (StrValue::New ("r2"))));
@@ -1084,7 +1084,7 @@ MincostProv::Prov_r3_1Eca0Ins (Ptr<Tuple> bestPath)
     VarExpr::New ("bestPath_attr1")));
 
   result->Assign (Assignor::New ("RWeight",
-    ValueExpr::New (RealValue::New (3))));
+    ValueExpr::New (RealValue::New (1))));
 
   result->Assign (Assignor::New ("R",
     ValueExpr::New (StrValue::New ("r3"))));
@@ -1146,7 +1146,7 @@ MincostProv::Prov_r3_1Eca0Del (Ptr<Tuple> bestPath)
     VarExpr::New ("bestPath_attr1")));
 
   result->Assign (Assignor::New ("RWeight",
-    ValueExpr::New (RealValue::New (3))));
+    ValueExpr::New (RealValue::New (1))));
 
   result->Assign (Assignor::New ("R",
     ValueExpr::New (StrValue::New ("r3"))));

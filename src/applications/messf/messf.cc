@@ -767,7 +767,7 @@ Messf::Prov_r2_1_ecaAdd (Ptr<Tuple> msg)
   result = result->Select (Selector::New (
     Operation::New (RN_LT,
       VarExpr::New ("msg_attr4"),
-      ValueExpr::New (Int32Value::New (5)))));
+      ValueExpr::New (Int32Value::New (2)))));
 
   result = result->Project (
     EMSGTEMP,
@@ -872,7 +872,7 @@ Messf::Prov_r2_1_ecaDel (Ptr<Tuple> msgDelete)
   result = result->Select (Selector::New (
     Operation::New (RN_LT,
       VarExpr::New ("msgDelete_attr4"),
-      ValueExpr::New (Int32Value::New (5)))));
+      ValueExpr::New (Int32Value::New (2)))));
 
   result = result->Project (
     EMSGTEMPDELETE,

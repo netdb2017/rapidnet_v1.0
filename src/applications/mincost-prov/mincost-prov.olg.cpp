@@ -35,5 +35,5 @@ materialize(link,infinity,infinity,keys(1,2)).
 materialize(path,infinity,infinity,keys(1,2,3:int32)).
 materialize(bestPath,infinity,infinity,keys(1,2)).
 r1 1.0 path(@X,Y,C) :- link(@X,Y,C).
-r2 2.0 path(@Z,Y,C) :- link(@X,Z,C1), bestPath(@X,Y,C2), C:=C1+C2, Z!=Y.
-r3 3.0 bestPath(@X,Y,a_MIN<C>) :- path(@X,Y,C).
+r2 1.0 path(@Z,Y,C) :- link(@X,Z,C1), bestPath(@X,Y,C2), C:=C1+C2, Z!=Y.
+r3 1.0 bestPath(@X,Y,a_MIN<C>) :- path(@X,Y,C).

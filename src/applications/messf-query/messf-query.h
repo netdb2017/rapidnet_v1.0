@@ -34,7 +34,6 @@ public:
   static const string PROVQUERY;
   static const string Q1_ECAPERIODIC;
   static const string RECORDS;
-  static const string RESULTS;
   static const string TUPLE;
 
   static TypeId GetTypeId (void);
@@ -60,10 +59,6 @@ protected:
   virtual void Q1_eca (Ptr<Tuple> q1_ecaperiodic);
 
   virtual void Q2_eca (Ptr<Tuple> pReturn);
-
-  virtual void Q3Eca0Ins (Ptr<Tuple> records);
-
-  virtual void Q3Eca0Del (Ptr<Tuple> records);
 
   uint32_t m_count_q1_ecaperiodic;
   EventId m_event_q1_ecaperiodic;

@@ -33,8 +33,6 @@
 /* We do not support C11 <threads.h>.  */
 materialize(records,infinity,infinity,keys(1,2:cid,3:cid)).
 materialize(tuple, infinity, infinity, keys(1,2:str)).
-materialize(results,infinity,infinity,keys(1,2:cid,3:cid)).
 q1 1.0 provQuery(@X, QID, UID, ME):- periodic(@ME,E,4,2), tuple(@ME, Name, X, Y), UID:=f_sha1(Name+X+Y),
                                  Time := f_now(), QID:=f_sha1(""+UID+Time).
 q2 1.0 records(@ME, QID, RID, Prov) :- pReturn(@ME, QID, RID, Prov).
-q3 1.0 results(@ME, QID, RID, Scores) :- records(@ME, QID, RID, Prov), Scores := f_pCAL(Prov).

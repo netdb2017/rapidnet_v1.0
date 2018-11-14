@@ -35,5 +35,5 @@ materialize(source,infinity,infinity,keys(1,2)).
 materialize(link,infinity,infinity,keys(1,2)).
 materialize(final,infinity,infinity,keys(1,2:str)).
 r1 1.0 msg(@X,CONTENT,S,TTL) :- source(@X,CONTENT,S), TTL:=0.
-r2 0.9 msg(@Y,CONTENT,S,TTL1) :- link(@X,Y,S1), msg(@X,CONTENT,S2,TTL), TTL<5, TTL1:=TTL+1, S:=S1*S2.
-r3 1.0 final(@Y,CONTENT) :-msg(@Y,CONTENT,S,TTL).
+r2 0.9 msg(@Y,CONTENT,S,TTL1) :- link(@X,Y,S1), msg(@X,CONTENT,S2,TTL), TTL<2, TTL1:=TTL+1, S:=S1*S2.
+r3 1.0 final(@Y,CONTENT) :- msg(@Y,CONTENT,S,TTL).
