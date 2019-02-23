@@ -1,0 +1,4 @@
+church
+barn
+hotel
+horse

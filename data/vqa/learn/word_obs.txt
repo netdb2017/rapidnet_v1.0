@@ -1,0 +1,4 @@
+church	0.32
+barn	0.27
+hotel	0.12
+horse	0.12

@@ -47,9 +47,9 @@ r2 knowEvent(@Local, A, B, S) :- likeEvent(@Local, A, C), like(@Local, B, C), A!
 r4 knowEvent(@Local, A, B, S) :- relation(@Local, A, B), A!=B, S:=0.
 r5 knowEvent(@Local, A, B, S) :- liveEvent(@Local, A, C1), live(@Local, B, C2), C1!=C2, A!=B, S:=0.
 r6 shaResult(@Local, VID, Content) :- liveEvent(@Local, A, C), VID := f_sha1("liveEvent"+Local+A+C), Name := "liveEvent", Content := Name+A+C.
-r7 shaResult(@Local, VID, Content) :- likeEvent(@Local, A, C), VID := f_sha1("likeEvent"+Local+A+C), Name := "likeEvent",Content := Name+A+C.
-r8 shaResult(@Local, VID, Content) :- knowEvent(@Local, A, B, S), VID := f_sha1("knowEvent"+Local+A+B+S), Name := "knowEvent",Content := Name+A+B+S.
-r9 shaResult(@Local, VID, Content) :- relation(@Local, A, B), VID := f_sha1("relation"+Local+A+C), Name := "relation",Content := Name+A+B.
-r10 shaResult(@Local, VID, Content) :- live(@Local, A, C), VID := f_sha1("live"+Local+A+C), Name := "live",Content := Name+A+C.
-r11 shaResult(@Local, VID, Content) :- like(@Local, A, C), VID := f_sha1("like"+Local+A+C), Name := "like",Content := Name+A+C.
-r12 shaResult(@Local, VID, Content) :- know(@Local, A, B, S), VID := f_sha1("know"+Local+A+B+S), Name := "know",Content := Name+A+B+S.
+r7 shaResult(@Local, VID, Content) :- likeEvent(@Local, A, C), VID := f_sha1("likeEvent"+Local+A+C), Name := "likeEvent", Content := Name+A+C.
+r8 shaResult(@Local, VID, Content) :- knowEvent(@Local, A, B, S), VID := f_sha1("knowEvent"+Local+A+B+S), Name := "knowEvent", Content := Name+A+B+S.
+r9 shaResult(@Local, VID, Content) :- relation(@Local, A, B), VID := f_sha1("relation"+Local+A+C), Name := "relation", Content := Name+A+B.
+r10 shaResult(@Local, VID, Content) :- live(@Local, A, C), VID := f_sha1("live"+Local+A+C), Name := "live", Content := Name+A+C.
+r11 shaResult(@Local, VID, Content) :- like(@Local, A, C), VID := f_sha1("like"+Local+A+C), Name := "like", Content := Name+A+C.
+r12 shaResult(@Local, VID, Content) :- know(@Local, A, B, S), VID := f_sha1("know"+Local+A+B+S), Name := "know", Content := Name+A+B+S.

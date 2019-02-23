@@ -68,7 +68,7 @@ main (int argc, char *argv[])
 {
   //LogComponentEnable("MincostProv", LOG_LEVEL_INFO);
   //LogComponentEnable("RapidNetApplicationBase", LOG_LEVEL_INFO);
-
+  
   apps = InitRapidNetApps (3, Create<MincostProvHelper> ());
   SetMaxJitter (apps, 0.001);
 

@@ -4751,7 +4751,7 @@ Acquaintance::Prov_edb_1Eca1Ins (Ptr<Tuple> likeEvent)
     VarExpr::New ("VID")));
 
   result->Assign (Assignor::New ("Score",
-    VarExpr::New ("likeEvent_attr3")));
+    ValueExpr::New (RealValue::New (-1))));
 
   result->Assign (Assignor::New ("Local",
     LOCAL_ADDRESS));
@@ -4796,7 +4796,7 @@ Acquaintance::Prov_edb_1Eca1Del (Ptr<Tuple> likeEvent)
     VarExpr::New ("VID")));
 
   result->Assign (Assignor::New ("Score",
-    VarExpr::New ("likeEvent_attr3")));
+    ValueExpr::New (RealValue::New (-1))));
 
   result->Assign (Assignor::New ("Local",
     LOCAL_ADDRESS));
@@ -4841,7 +4841,7 @@ Acquaintance::Prov_edb_2Eca1Ins (Ptr<Tuple> liveEvent)
     VarExpr::New ("VID")));
 
   result->Assign (Assignor::New ("Score",
-    VarExpr::New ("liveEvent_attr3")));
+    ValueExpr::New (RealValue::New (-1))));
 
   result->Assign (Assignor::New ("Local",
     LOCAL_ADDRESS));
@@ -4886,7 +4886,7 @@ Acquaintance::Prov_edb_2Eca1Del (Ptr<Tuple> liveEvent)
     VarExpr::New ("VID")));
 
   result->Assign (Assignor::New ("Score",
-    VarExpr::New ("liveEvent_attr3")));
+    ValueExpr::New (RealValue::New (-1))));
 
   result->Assign (Assignor::New ("Local",
     LOCAL_ADDRESS));
@@ -4931,7 +4931,7 @@ Acquaintance::Prov_edb_3Eca1Ins (Ptr<Tuple> relation)
     VarExpr::New ("VID")));
 
   result->Assign (Assignor::New ("Score",
-    VarExpr::New ("relation_attr3")));
+    ValueExpr::New (RealValue::New (-1))));
 
   result->Assign (Assignor::New ("Local",
     LOCAL_ADDRESS));
@@ -4976,7 +4976,7 @@ Acquaintance::Prov_edb_3Eca1Del (Ptr<Tuple> relation)
     VarExpr::New ("VID")));
 
   result->Assign (Assignor::New ("Score",
-    VarExpr::New ("relation_attr3")));
+    ValueExpr::New (RealValue::New (-1))));
 
   result->Assign (Assignor::New ("Local",
     LOCAL_ADDRESS));

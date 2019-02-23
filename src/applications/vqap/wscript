@@ -1,0 +1,13 @@
+## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def build(bld):
+    module = bld.create_ns3_module('vqap', ['internet-stack'])
+    module.source = [
+        'vqap.cc',
+        ]
+    headers = bld.new_task_gen('ns3header')
+    headers.module = 'vqap'
+    headers.source = [
+        'vqap.h',
+        'vqap-helper.h',
+        ]

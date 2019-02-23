@@ -198,6 +198,26 @@ def build(bld):
    
     obj = bld.create_ns3_program('messf-query-test')
     obj.source = 'messf-query-test.cc'
+
+    obj = bld.create_ns3_program('acquaintance-test')
+    obj.source = 'acquaintance-test.cc'
+
+    obj = bld.create_ns3_program('acquaintance-query-test')
+    obj.source = 'acquaintance-query-test.cc'
+
+    obj = bld.create_ns3_program('vqa-test')
+    obj.source = 'vqa-test.cc'
+
+    obj = bld.create_ns3_program('vqa-query-test')
+    obj.source = 'vqa-query-test.cc'
+
+    obj = bld.create_ns3_program('vqap-test')
+    obj.source = 'vqap-test.cc'
+
+    obj = bld.create_ns3_program('vqap-query-test')
+    obj.source = 'vqap-query-test.cc'
+
+
   
    
 

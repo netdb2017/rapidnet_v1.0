@@ -1236,9 +1236,16 @@ OlContext::AddEdbProvenanceRule ()
           rBody->push_back (VID_AS);
           ParseTerm * RID_AS = new ParseAssign (RID, VID);
           rBody->push_back (RID_AS);
-		  int n = f->Args ();
+		  
+          int n = f->Args (); //return the last col as score
           ParseTerm * Score_AS = new ParseAssign (Score, f->Arg (n-1));
-		  rBody->push_back (Score_AS);
+          
+          /*
+          ValuePtr scoreVal = ValDouble::New (-1.0); //return -1.0 as score
+          ParseExpr * orig_score = new ParseVal (scoreVal);          
+          ParseTerm * Score_AS = new ParseAssign (Score, orig_score);          
+		  */
+          rBody->push_back (Score_AS);
 
           Rule * rule = CreateRule (h, rBody, false, rID, NULL, false);  //set rWeight to NULL
           mRules->push_back (rule);

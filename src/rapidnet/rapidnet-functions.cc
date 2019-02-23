@@ -414,6 +414,8 @@ FPEdb::Eval(Ptr<Tuple> tuple)
     double score = atof (prov.c_str());
     return RealValue::New (score);
   } else {
+    //cout<<"testing"<<endl;
+    //cout<<prov<<endl;
     return StrValue::New (prov);
   }
 }
@@ -562,7 +564,7 @@ FPRule::New (Ptr<Expression> provList, Ptr<Expression> rloc, Ptr<Expression> rul
 
   return retval;
 }
-
+/*
 Ptr<Value>
 FPCal:: Eval (Ptr<Tuple> tuple)
 {
@@ -593,5 +595,4 @@ FPCal::New (Ptr<Expression> cal)
   Ptr<FPCal> retval = Create<FPCal>();
   retval->m_cal = cal;
   return retval;
-}
-
+}*/

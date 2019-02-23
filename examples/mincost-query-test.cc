@@ -126,8 +126,9 @@ Print ()
   //PrintRelation (apps, MincostProv::BESTPATH);
   //PrintRelation (apps, MincostProv::PROV);
   //PrintRelation (apps, MincostProv::RULEEXEC);
+  PrintRelation (apps, MincostProv::LINK);
 
-  //PrintRelation (queryapps, MincostQuery::TUPLE);
+  PrintRelation (queryapps, MincostQuery::TUPLE);
   PrintRelation (queryapps, MincostQuery::RECORDS);
 }
 
@@ -135,10 +136,11 @@ Print ()
 int
 main (int argc, char *argv[])
 {
+  /*
   LogComponentEnable("MincostProv", LOG_LEVEL_INFO);
   LogComponentEnable("MincostQuery", LOG_LEVEL_INFO);
   LogComponentEnable("RapidNetApplicationBase", LOG_LEVEL_INFO);
-
+  */
   initApps();
 
   apps.Start (Seconds (0.0));
@@ -147,7 +149,7 @@ main (int argc, char *argv[])
   queryapps.Stop (Seconds (10.0));
 
   schedule (1.0, TupleToQuery);
-  schedule (2.0, UpdateLinks1);
+  schedule (2.0, UpdateLinks1);  
   schedule (5.0, Print);
 
   Simulator::Run ();

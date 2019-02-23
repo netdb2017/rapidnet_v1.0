@@ -46,9 +46,9 @@ prov_r9_1 eshaResultTemp(@RLOC, Local, VID, Content, RID, RWeight, R, List) :- r
 prov_r10_1 eshaResultTemp(@RLOC, Local, VID, Content, RID, RWeight, R, List) :- live(@Local, A, C), PID1 := f_sha1(((live+ Local)+ A)+ C), List := f_append(PID1), VID := f_sha1(((live+ Local)+ A)+ C), Name := live, Content := (Name+ A)+ C, RLOC := Local, RWeight := 1, R := r10, RID := f_sha1((R+ RLOC)+ List).
 prov_r11_1 eshaResultTemp(@RLOC, Local, VID, Content, RID, RWeight, R, List) :- like(@Local, A, C), PID1 := f_sha1(((like+ Local)+ A)+ C), List := f_append(PID1), VID := f_sha1(((like+ Local)+ A)+ C), Name := like, Content := (Name+ A)+ C, RLOC := Local, RWeight := 1, R := r11, RID := f_sha1((R+ RLOC)+ List).
 prov_r12_1 eshaResultTemp(@RLOC, Local, VID, Content, RID, RWeight, R, List) :- know(@Local, A, B, S), PID1 := f_sha1((((know+ Local)+ A)+ B)+ S), List := f_append(PID1), VID := f_sha1((((know+ Local)+ A)+ B)+ S), Name := know, Content := ((Name+ A)+ B)+ S, RLOC := Local, RWeight := 1, R := r12, RID := f_sha1((R+ RLOC)+ List).
-prov_edb_1 prov(@Local, VID, RID, RLoc, Score) :- RLoc := Local, likeEvent(@Local, A, C), VID := f_sha1(((likeEvent+ Local)+ A)+ C), RID := VID, Score := C.
-prov_edb_2 prov(@Local, VID, RID, RLoc, Score) :- RLoc := Local, liveEvent(@Local, A, C), VID := f_sha1(((liveEvent+ Local)+ A)+ C), RID := VID, Score := C.
-prov_edb_3 prov(@Local, VID, RID, RLoc, Score) :- RLoc := Local, relation(@Local, A, B), VID := f_sha1(((relation+ Local)+ A)+ B), RID := VID, Score := B.
+prov_edb_1 prov(@Local, VID, RID, RLoc, Score) :- RLoc := Local, likeEvent(@Local, A, C), VID := f_sha1(((likeEvent+ Local)+ A)+ C), RID := VID, Score := -1.
+prov_edb_2 prov(@Local, VID, RID, RLoc, Score) :- RLoc := Local, liveEvent(@Local, A, C), VID := f_sha1(((liveEvent+ Local)+ A)+ C), RID := VID, Score := -1.
+prov_edb_3 prov(@Local, VID, RID, RLoc, Score) :- RLoc := Local, relation(@Local, A, B), VID := f_sha1(((relation+ Local)+ A)+ B), RID := VID, Score := -1.
 edb1 pReturn(@Ret, QID, VID, Prov) :- provQuery(@X, QID, VID, Ret), prov(@X, VID, RID, RLoc, Score), RID == VID, Prov := f_pEDB(VID, X).
 idb1 pQList(@X, QID, LIST< RID >) :- provQuery(@X, QID, VID, Ret), prov(@X, VID, RID, RLoc, Score), RID != VID.
 idb2 pResultTmp(@X, QID, Ret, VID, Buf) :- provQuery(@X, QID, VID, Ret), Buf := f_empty().
