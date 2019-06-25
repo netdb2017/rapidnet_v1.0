@@ -45,7 +45,7 @@ There is an issue with building rapidnet on Ubuntu 16.04 (and higher). If one tr
 to
 
 ```
-"for incstr in Utils.cmd_output("%s --includes"%(python_config)).strip().split():
+"for incstr in Utils.cmd_output("%s --includes"%(python_config)).strip().split():"
 ```
 
 or use build.sh to build the project initially.
