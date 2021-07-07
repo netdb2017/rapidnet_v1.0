@@ -1,0 +1,66 @@
+materialize(ans, -1, 0, keys(1, 2)
+materialize(candidate, -1, 0, keys(1, 2)
+materialize(hasImg, -1, 0, keys(1, 2, 3, 4)
+materialize(hasImgAns, -1, 0, keys(1, 2, 3, 4, 5)
+materialize(hasQ, -1, 0, keys(1, 2, 3, 4)
+materialize(pQList, -1, 0, keys(1, 2)
+materialize(pResultTmp, -1, 0, keys(1, 2)
+materialize(prov, -1, 0, keys(1, 2, 3)
+materialize(rQList, -1, 0, keys(1, 2)
+materialize(rResultTmp, -1, 0, keys(1, 2)
+materialize(ruleExec, -1, 0, keys(1, 2)
+materialize(sim, -1, 0, keys(1, 2, 3)
+materialize(simRep1, -1, 0, keys(1, 2, 3)
+materialize(simRep2, -1, 0, keys(1, 2, 3)
+materialize(word, -1, 0, keys(1, 2)
+prov_ra_1 esimRep1Temp(@RLOC, Local, Z, X, RID, RWeight, R, List) :- sim(@Local, Z, X), PID1 := f_sha1(((sim+ Local)+ Z)+ X), List := f_append(PID1), RLOC := Local, RWeight := 1, R := ra, RID := f_sha1((R+ RLOC)+ List).
+prov_ra_2 ruleExec(@RLOC, RID, RWeight, R, List) :- esimRep1Temp(@RLOC, Local, Z, X, RID, RWeight, R, List).
+prov_ra_3 esimRep1(@Local, Z, X, RID, RWeight, RLOC) :- esimRep1Temp(@RLOC, Local, Z, X, RID, RWeight, R, List).
+prov_ra_4 simRep1(@Local, Z, X) :- esimRep1(@Local, Z, X, RID, RWeight, RLOC).
+prov_ra_5 prov(@Local, VID, RID, RLOC, Score) :- esimRep1(@Local, Z, X, RID, RWeight, RLOC), VID := f_sha1(((simRep1+ Local)+ Z)+ X), Score := -1.
+prov_rb_1 esimRep2Temp(@RLOC, Local, Z, X, RID, RWeight, R, List) :- sim(@Local, Z, X), PID1 := f_sha1(((sim+ Local)+ Z)+ X), List := f_append(PID1), RLOC := Local, RWeight := 1, R := rb, RID := f_sha1((R+ RLOC)+ List).
+prov_rb_2 ruleExec(@RLOC, RID, RWeight, R, List) :- esimRep2Temp(@RLOC, Local, Z, X, RID, RWeight, R, List).
+prov_rb_3 esimRep2(@Local, Z, X, RID, RWeight, RLOC) :- esimRep2Temp(@RLOC, Local, Z, X, RID, RWeight, R, List).
+prov_rb_4 simRep2(@Local, Z, X) :- esimRep2(@Local, Z, X, RID, RWeight, RLOC).
+prov_rb_5 prov(@Local, VID, RID, RLOC, Score) :- esimRep2(@Local, Z, X, RID, RWeight, RLOC), VID := f_sha1(((simRep2+ Local)+ Z)+ X), Score := -1.
+prov_r1_1 ehasImgAnsTemp(@RLOC, Local, Z, X, Rln, Y, RID, RWeight, R, List) :- word(@Local, Z), PID1 := f_sha1((word+ Local)+ Z), List := f_append(PID1), hasImg(@Local, X, Rln, Y), PID2 := f_sha1((((hasImg+ Local)+ X)+ Rln)+ Y), List2 := f_append(PID2), List := f_concat(List, List2), sim(@Local, Z, X), PID3 := f_sha1(((sim+ Local)+ Z)+ X), List3 := f_append(PID3), List := f_concat(List, List3), simRep1(@Local, Z, Y), PID4 := f_sha1(((simRep1+ Local)+ Z)+ Y), List4 := f_append(PID4), List := f_concat(List, List4), RLOC := Local, RWeight := 1, R := r1, RID := f_sha1((R+ RLOC)+ List).
+prov_r1_2 ruleExec(@RLOC, RID, RWeight, R, List) :- ehasImgAnsTemp(@RLOC, Local, Z, X, Rln, Y, RID, RWeight, R, List).
+prov_r1_3 ehasImgAns(@Local, Z, X, Rln, Y, RID, RWeight, RLOC) :- ehasImgAnsTemp(@RLOC, Local, Z, X, Rln, Y, RID, RWeight, R, List).
+prov_r1_4 hasImgAns(@Local, Z, X, Rln, Y) :- ehasImgAns(@Local, Z, X, Rln, Y, RID, RWeight, RLOC).
+prov_r1_5 prov(@Local, VID, RID, RLOC, Score) :- ehasImgAns(@Local, Z, X, Rln, Y, RID, RWeight, RLOC), VID := f_sha1(((((hasImgAns+ Local)+ Z)+ X)+ Rln)+ Y), Score := -1.
+prov_r2_1 ecandidateTemp(@RLOC, Local, Z, RID, RWeight, R, List) :- word(@Local, Z), PID1 := f_sha1((word+ Local)+ Z), List := f_append(PID1), RLOC := Local, RWeight := 1, R := r2, RID := f_sha1((R+ RLOC)+ List).
+prov_r2_2 ruleExec(@RLOC, RID, RWeight, R, List) :- ecandidateTemp(@RLOC, Local, Z, RID, RWeight, R, List).
+prov_r2_3 ecandidate(@Local, Z, RID, RWeight, RLOC) :- ecandidateTemp(@RLOC, Local, Z, RID, RWeight, R, List).
+prov_r2_4 candidate(@Local, Z) :- ecandidate(@Local, Z, RID, RWeight, RLOC).
+prov_r2_5 prov(@Local, VID, RID, RLOC, Score) :- ecandidate(@Local, Z, RID, RWeight, RLOC), VID := f_sha1((candidate+ Local)+ Z), Score := -1.
+prov_r3_1 ecandidateTemp(@RLOC, Local, Z, RID, RWeight, R, List) :- word(@Local, Z), PID1 := f_sha1((word+ Local)+ Z), List := f_append(PID1), hasQ(@Local, Y, Rln, X), PID2 := f_sha1((((hasQ+ Local)+ Y)+ Rln)+ X), List2 := f_append(PID2), List := f_concat(List, List2), hasImgAns(@Local, Z, X1, Rln1, Y1), PID3 := f_sha1(((((hasImgAns+ Local)+ Z)+ X1)+ Rln1)+ Y1), List3 := f_append(PID3), List := f_concat(List, List3), sim(@Local, Rln, Rln1), PID4 := f_sha1(((sim+ Local)+ Rln)+ Rln1), List4 := f_append(PID4), List := f_concat(List, List4), simRep1(@Local, Y, Y1), PID5 := f_sha1(((simRep1+ Local)+ Y)+ Y1), List5 := f_append(PID5), List := f_concat(List, List5), simRep2(@Local, X, X1), PID6 := f_sha1(((simRep2+ Local)+ X)+ X1), List6 := f_append(PID6), List := f_concat(List, List6), RLOC := Local, RWeight := 1, R := r3, RID := f_sha1((R+ RLOC)+ List).
+prov_r4_1 eansTemp(@RLOC, Local, Z, RID, RWeight, R, List) :- candidate(@Local, Z), PID1 := f_sha1((candidate+ Local)+ Z), List := f_append(PID1), hasQ(@Local, X, Rln, Qtn), PID2 := f_sha1((((hasQ+ Local)+ X)+ Rln)+ Qtn), List2 := f_append(PID2), List := f_concat(List, List2), Qtn == WHAT, hasImg(@Local, Z, Rln, X), PID3 := f_sha1((((hasImg+ Local)+ Z)+ Rln)+ X), List3 := f_append(PID3), List := f_concat(List, List3), RLOC := Local, RWeight := 1, R := r4, RID := f_sha1((R+ RLOC)+ List).
+prov_r4_2 ruleExec(@RLOC, RID, RWeight, R, List) :- eansTemp(@RLOC, Local, Z, RID, RWeight, R, List).
+prov_r4_3 eans(@Local, Z, RID, RWeight, RLOC) :- eansTemp(@RLOC, Local, Z, RID, RWeight, R, List).
+prov_r4_4 ans(@Local, Z) :- eans(@Local, Z, RID, RWeight, RLOC).
+prov_r4_5 prov(@Local, VID, RID, RLOC, Score) :- eans(@Local, Z, RID, RWeight, RLOC), VID := f_sha1((ans+ Local)+ Z), Score := -1.
+prov_r5_1 eansTemp(@RLOC, Local, Z, RID, RWeight, R, List) :- candidate(@Local, Z), PID1 := f_sha1((candidate+ Local)+ Z), List := f_append(PID1), hasQ(@Local, X, Rln, Qtn), PID2 := f_sha1((((hasQ+ Local)+ X)+ Rln)+ Qtn), List2 := f_append(PID2), List := f_concat(List, List2), Qtn == WHAT, hasImg(@Local, Z1, Rln, X), PID3 := f_sha1((((hasImg+ Local)+ Z1)+ Rln)+ X), List3 := f_append(PID3), List := f_concat(List, List3), sim(@Local, Z, Z1), PID4 := f_sha1(((sim+ Local)+ Z)+ Z1), List4 := f_append(PID4), List := f_concat(List, List4), RLOC := Local, RWeight := 1, R := r5, RID := f_sha1((R+ RLOC)+ List).
+prov_r6_1 eansTemp(@RLOC, Local, Z, RID, RWeight, R, List) :- candidate(@Local, Z), PID1 := f_sha1((candidate+ Local)+ Z), List := f_append(PID1), hasQ(@Local, X, Rln, Qtn), PID2 := f_sha1((((hasQ+ Local)+ X)+ Rln)+ Qtn), List2 := f_append(PID2), List := f_concat(List, List2), Qtn == WHAT, hasImg(@Local, Z1, Rln1, X1), PID3 := f_sha1((((hasImg+ Local)+ Z1)+ Rln1)+ X1), List3 := f_append(PID3), List := f_concat(List, List3), sim(@Local, Z, Z1), PID4 := f_sha1(((sim+ Local)+ Z)+ Z1), List4 := f_append(PID4), List := f_concat(List, List4), simRep1(@Local, Rln, Rln1), PID5 := f_sha1(((simRep1+ Local)+ Rln)+ Rln1), List5 := f_append(PID5), List := f_concat(List, List5), simRep2(@Local, X, X1), PID6 := f_sha1(((simRep2+ Local)+ X)+ X1), List6 := f_append(PID6), List := f_concat(List, List6), RLOC := Local, RWeight := 1, R := r6, RID := f_sha1((R+ RLOC)+ List).
+prov_edb_1 prov(@Local, VID, RID, RLoc, Score) :- RLoc := Local, hasImg(@Local, X, Rln, Y), VID := f_sha1((((hasImg+ Local)+ X)+ Rln)+ Y), RID := VID, Score := -1.
+prov_edb_2 prov(@Local, VID, RID, RLoc, Score) :- RLoc := Local, hasQ(@Local, Y, Rln, X), VID := f_sha1((((hasQ+ Local)+ Y)+ Rln)+ X), RID := VID, Score := -1.
+prov_edb_3 prov(@Local, VID, RID, RLoc, Score) :- RLoc := Local, sim(@Local, Z, X), VID := f_sha1(((sim+ Local)+ Z)+ X), RID := VID, Score := -1.
+prov_edb_4 prov(@Local, VID, RID, RLoc, Score) :- RLoc := Local, word(@Local, Z), VID := f_sha1((word+ Local)+ Z), RID := VID, Score := -1.
+edb1 pReturn(@Ret, QID, VID, Prov) :- provQuery(@X, QID, VID, Ret), prov(@X, VID, RID, RLoc, Score), RID == VID, Prov := f_pEDB(VID, X).
+idb1 pQList(@X, QID, LIST< RID >) :- provQuery(@X, QID, VID, Ret), prov(@X, VID, RID, RLoc, Score), RID != VID.
+idb2 pResultTmp(@X, QID, Ret, VID, Buf) :- provQuery(@X, QID, VID, Ret), Buf := f_empty().
+idb3 pIterate(@X, QID, N) :- provQuery(@X, QID, VID, Ret), N := 1.
+idb4 pIterate(@X, QID, N) :- pIterate(@X, QID, N1), pQList(@X, QID, List), N1 < f_size(List), N := N1+ 1.
+idb5 eRuleQuery(@X, NQID, RID) :- pIterate(@X, QID, N), pQList(@X, QID, List), N <= f_size(List), RID := f_item(List, N), NQID := f_sha1((+ QID)+ RID).
+idb6 ruleQuery(@RLoc, QID, RID, X) :- eRuleQuery(@X, QID, RID), prov(@X, VID, RID, RLoc, Score).
+idb7 pResultTmp(@X, QID, Ret, VID, Buf) :- rReturn(@X, NQID, RID, Prov), pResultTmp(@X, QID, Ret, VID, Buf1), NQID == f_sha1((+ QID)+ RID), Buf2 := f_append(Prov), Buf := f_concat(Buf1, Buf2).
+idb8 ePReturn(@X, QID) :- pResultTmp(@X, QID, Ret, VID, Buf), pQList(@X, QID, List), f_size(Buf) == f_size(List), f_size(Buf) != 0.
+idb9 pReturn(@Ret, QID, VID, Prov) :- ePReturn(@X, QID), pResultTmp(@X, QID, Ret, VID, Buf), Prov := f_pIDB(Buf, X).
+rv1 rQList(@X, QID, List) :- ruleQuery(@X, QID, RID, Ret), ruleExec(@X, RID, RWeight, R, List).
+rv2 rResultTmp(@X, QID, Ret, RID, Buf) :- ruleQuery(@X, QID, RID, Ret), Buf := f_empty().
+rv3 rIterate(@X, QID, N) :- ruleQuery(@X, QID, RID, Ret), N := 1.
+rv4 rIterate(@X, QID, N) :- rIterate(@X, QID, N1), rQList(@X, QID, List), N1 < f_size(List), N := N1+ 1.
+rv5 eProvQuery(@X, NQID, VID) :- rIterate(@X, QID, N), rQList(@X, QID, List), VID := f_item(List, N), NQID := f_sha1((+ QID)+ VID).
+rv6 provQuery(@X, QID, VID, $1) :- $1 := X, eProvQuery(@X, QID, VID).
+rv7 rResultTmp(@X, QID, Ret, RID, Buf) :- pReturn(@X, NQID, VID, Prov), rResultTmp(@X, QID, Ret, RID, Buf1), NQID == f_sha1((+ QID)+ VID), Buf2 := f_append(Prov), Buf := f_concat(Buf1, Buf2).
+rv8 eRReturn(@X, QID) :- rResultTmp(@X, QID, Ret, RID, Buf), rQList(@X, QID, List), f_size(Buf) == f_size(List).
+rv9 rReturn(@Ret, QID, RID, Prov) :- eRReturn(@X, QID), rResultTmp(@X, QID, Ret, RID, Buf), ruleExec(@X, RID, RWeight, R, List), Prov := f_pRULE(Buf, X, R, RWeight).

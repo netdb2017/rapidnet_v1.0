@@ -179,7 +179,7 @@ LocalizeContext::AddSendRule (OlContext::Rule* nextRule, list<
   ParseFunctor* newHead = new ParseFunctor (new ParseFunctorName (
     new ParseVar (ValStr::New (newFunctorName))), pe);
   OlContext::Rule* newRule = new OlContext::Rule (
-    nextRule->ruleID + "Local1", newHead, false);
+    nextRule->ruleID + "Local1", nextRule->ruleWeight, newHead, false);
 
   newRule->terms = newTerms;
   NS_LOG_INFO ("Localized send rule " << newRule->ToString ());
@@ -360,7 +360,7 @@ void LocalizeContext::RewriteRule (OlContext::Rule* nextRule,
     }
 
   OlContext::Rule* newRuleTwo = new OlContext::Rule (nextRule->ruleID
-      + "Local2", nextRule->head, false);
+      + "Local2", nextRule->ruleWeight, nextRule->head, false);
 
   newRuleTwo->terms = newTerms;
   RewriteRule (newRuleTwo, tableStore);

@@ -57,7 +57,7 @@ UpdateLinks1 ()
 void
 Print ()
 {
-  PrintRelation (apps, MincostProv::BESTPATH);
+  //PrintRelation (apps, MincostProv::BESTPATH);
   PrintRelation (apps, MincostProv::PROV);
   PrintRelation (apps, MincostProv::RULEEXEC);
 }
@@ -66,14 +66,14 @@ Print ()
 int
 main (int argc, char *argv[])
 {
-  LogComponentEnable("MincostProv", LOG_LEVEL_INFO);
-  LogComponentEnable("RapidNetApplicationBase", LOG_LEVEL_INFO);
-
+  //LogComponentEnable("MincostProv", LOG_LEVEL_INFO);
+  //LogComponentEnable("RapidNetApplicationBase", LOG_LEVEL_INFO);
+  
   apps = InitRapidNetApps (3, Create<MincostProvHelper> ());
   SetMaxJitter (apps, 0.001);
 
   apps.Start (Seconds (0.0));
-  apps.Stop (Seconds (5.0));
+  apps.Stop (Seconds (10.0));
 
   schedule (2.0, UpdateLinks1);
   schedule (5.0, Print);

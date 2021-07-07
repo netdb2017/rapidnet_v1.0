@@ -1,0 +1,3 @@
+horse	color	grey	1
+horse	in	background	0.88
+tree	behind	fence	0.81

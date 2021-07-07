@@ -1,0 +1,11 @@
+materialize(live, infinity, infinity, keys(2, 3)).
+materialize(like, infinity, infinity, keys(2, 3)).
+materialize(know, infinity, infinity, keys(2, 3, 4)).
+materialize(relation, infinity, infinity, keys(2, 3)).
+
+r1 0.8 know(@Local, A, B, S) :- live(@Local, A, C), live(@Local, B, C), A!=B, S:=1.
+r2 0.4 know(@Local, A, B, S) :- like(@Local, A, C), like(@Local, B, C), A!=B, S:=1.
+r3 0.2 know(@Local, A, B, S) :- know(@Local, A, C, S1), know(@Local, B, C, S2), 
+				A!=B, S1==1, S2==1, S:=1.
+r5 0.2 know(@Local, A, B, S) :- relation(@Local, A, B), A!=B, S:=0.
+r6 0.2 know(@Local, A, B, S) :- live(@Local, A, C1), live(@Local, B, C2), C1!=C2, A!=B, S:=0.

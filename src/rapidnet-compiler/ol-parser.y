@@ -36,7 +36,7 @@
 %debug
 %defines
 %verbose
-%pure_parser
+%pure-parser
 
 %left OL_OR
 %left OL_AND
@@ -89,8 +89,8 @@
 %token OL_TRACETABLE
 
 %start program
-%file-prefix="ol_parser"
-%name-prefix="ol_parser_"
+%file-prefix "ol-parser"
+%name-prefix "ol_parser_"
 %parse-param { OlContext *ctxt }
 %lex-param { OlContext *ctxt }
 %union {
@@ -119,7 +119,7 @@
 %type<u_moper>       math_oper;
 %type<u_aoper>       agg_oper;
 %type<u_key>         key;
-%type<u_rule>        rule namedRule unnamedRule;
+%type<u_rule>        rule namedRule unnamedRule weightedRule unweightedRule;
 %%
 
 program:	OL_EOF { YYACCEPT; }
@@ -203,24 +203,32 @@ rule:	        namedRule
                 unnamedRule
                 { ctxt->AddRule ($1); }
                 ;
-
-
+				
 namedRule:      OL_NAME unnamedRule
                 { ((OlContext::Rule*) $2->GetRule ())->SetName ($1); $$ = $2; }
-                ;
+                ;			
+unnamedRule:	weightedRule 
+				{ $$ = $1; }
+				|
+				unweightedRule 
+				{ $$ = $1; }
+				;
 
+weightedRule:	OL_VALUE unweightedRule 
+				{ ((OlContext::Rule*) $2->GetRule ())->SetWeight ($1); $$ = $2; }
+				;
 
-unnamedRule:    functor OL_IF termlist OL_DOT
+unweightedRule:	functor OL_IF termlist OL_DOT
                 { $$ = new ParseRule (ctxt->CreateRule($1, $3, false)); }
 
                 | OL_DEL functor OL_IF termlist OL_DOT
                 { $$ = new ParseRule (ctxt->CreateRule($2, $4, true)); }
 
                 | functor OL_IF OL_DEL termlist OL_DOT
-                { $$ = new ParseRule (ctxt->CreateRule($1, $4, false, NULL, true)); }
+                { $$ = new ParseRule (ctxt->CreateRule($1, $4, false, NULL, NULL, true)); }
       
                 | OL_DEL functor OL_DEL OL_IF termlist OL_DOT
-                { $$ = new ParseRule (ctxt->CreateRule($2, $5, true, NULL, true)); }
+                { $$ = new ParseRule (ctxt->CreateRule($2, $5, true, NULL, NULL, true)); }
 
                 | functor OL_IF aggview OL_DOT
                 { $$ = new ParseRule (ctxt->CreateAggRule($1, $3, false)); }

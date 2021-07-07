@@ -60,13 +60,15 @@ all_modules = (
     'applications/chord',
     'applications/mincost-prov',
     'applications/mincost-query',
-    'applications/pathvector-prov',
-    'applications/pktfwd-prov',
-    'applications/secure-pathvector',
-    'applications/secure-simple-bgp',
-    'applications/secure-pingpong',
-    'l4-platform',
-    'applications/pingpong-l4',
+    'applications/messf',
+    'applications/messf-query',
+    'applications/acquaintance',
+    'applications/acquaintance-query',
+    'applications/vqa',
+    'applications/vqa-query',
+    'applications/vqap',
+    'applications/vqap-query'
+    
     )
 
 def set_options(opt):

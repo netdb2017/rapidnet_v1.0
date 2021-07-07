@@ -440,13 +440,25 @@ class FPRule : public FunctionExpr
 public:
   virtual ~FPRule () {}
   virtual Ptr<Value> Eval (Ptr<Tuple> tuple);
-  static Ptr<FunctionExpr> New (Ptr<Expression> provList, Ptr<Expression> rloc,Ptr<Expression> rule);
+  static Ptr<FunctionExpr> New (Ptr<Expression> provList, Ptr<Expression> rloc, Ptr<Expression> rule, Ptr<Expression> rwght);
 
 private:
-  Ptr<Expression> m_provList, m_rloc, m_rule;
+  Ptr<Expression> m_provList, m_rloc, m_rule, m_rwght;
+};
+
+class FPCal : public FunctionExpr
+{
+public:
+  virtual ~FPCal () {}
+  virtual Ptr<Value> Eval (Ptr<Tuple> tuple);
+  static Ptr<FunctionExpr> New (Ptr<Expression> m_cal);
+
+protected:
+  Ptr<Expression> m_cal;
 };
 
 } // namespace rapidnet
 } // namespace ns3
+
 
 #endif // FUNCTIONS_H

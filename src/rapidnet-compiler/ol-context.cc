@@ -19,6 +19,10 @@
 
 #include "ol-context.h"
 #include "ol-lexer.h"
+#include <string>
+#include <string.h>
+#include <cstdlib>
+#include <stdlib.h>
 
 using namespace ns3;
 using namespace ns3::rapidnet_compiler;
@@ -124,7 +128,7 @@ OlContext::SetContext (ParseExpr *ctx)
 //
 OlContext::Rule*
 OlContext::CreateRule (ParseTerm *lhs, ParseTermList *rhs,
-  bool deleteFlag, ParseExpr *n, bool deleteEventFlag)
+  bool deleteFlag, ParseExpr *n, ParseExpr *wt, bool deleteEventFlag)
 {
   //  TRACE_FUNCTION;
 
@@ -133,6 +137,7 @@ OlContext::CreateRule (ParseTerm *lhs, ParseTermList *rhs,
 
   ParseFunctor *h = dynamic_cast<ParseFunctor*> (lhs);
   string ruleName = (n) ? n->value->ToString () : "";
+  double ruleWeight = (wt) ? atof ((wt->value->ToString ()).c_str()) : 1.0;
   int fict_varnum = 1; // Counter for inventing anonymous variables.
 
 
@@ -143,7 +148,7 @@ OlContext::CreateRule (ParseTerm *lhs, ParseTermList *rhs,
   // below.
 
   // Create a new rule and register it.
-  Rule *r = new Rule (ruleName, h, deleteFlag, deleteEventFlag);
+  Rule *r = new Rule (ruleName, ruleWeight, h, deleteFlag, deleteEventFlag);
 
   // Next, we canonicalize all the args in the rule head.  We build up
   // a list of argument names - the first 'arity' of these will be the
@@ -440,11 +445,12 @@ OlContext::AddRule (ParseRule* rule)
 
 OlContext::Rule*
 OlContext::CreateAggRule (ParseTerm *lhs, ParseAggTerm *rhs,
-  bool deleteFlag, ParseExpr *n)
+  bool deleteFlag, ParseExpr *n, ParseExpr *wt)
 {
   ParseFunctor *h = dynamic_cast<ParseFunctor*> (lhs);
   string ruleName = (n) ? n->value->ToString () : "";
-  Rule *r = new Rule (ruleName, h, deleteFlag);
+  double ruleWeight = (wt) ? atof ((wt->value->ToString ()).c_str()) : 1.0;
+  Rule *r = new Rule (ruleName, ruleWeight, h, deleteFlag);
   r->terms.push_back (rhs);
   return r;
 }
@@ -505,8 +511,12 @@ OlContext::ParseStream (istream *str, bool provenanceEnabled)
 
   assert (lexer == NULL);
   lexer = new OlLexer (str);
+
+  std::cout << "Lexer Completed" << std::endl;
   ol_parser_parse (this);
 
+  std::cout << "Parser Completed" << std::endl;
+  
   if (isProvenanceEnabled)
     {
       AddEdbProvenanceRule ();
@@ -694,9 +704,9 @@ OlContext::ProvenanceRewrite (Rule * rule)
 ParseFunctor*
 OlContext::GenerateLocalEHTempEventRule (Rule* rule)
 {
-  //  1st rule: eHTemp(@RLoc,H1,..., Ho,RID,R,List) :-
+  //  1st rule: eHTemp(@RLoc,H1,..., Ho,RID,RWeight,R,List) :-
   //            t1(@X,P11,...,Po11), ..., tn(@X,P1n,...Pnon),
-  //            c1, ..., cp, RLoc = X, R = rid,
+  //            c1, ..., cp, RLoc = X, RWeight = weight, R = rid,
   //            PID1 = f_sha1(t1 + X, + P11 + ... + P1o1),
   //            ...,
   //            PIDn = f_sha1(tn + X, + Pn1 + ... + Pnon),
@@ -706,6 +716,9 @@ OlContext::GenerateLocalEHTempEventRule (Rule* rule)
   //new rule id
   ParseExpr * rID = new ParseVal (ValStr::New (PROVENANCE_RULE_PREFIX + (rule->ruleID)
       + "_1"));
+	  
+  //new rule weight: weight is not required for prov rules. 
+  //ParseExpr * rWeight = new ParseVal (ValDouble::New (rule->ruleWeight));
 
   //new rule header
   ParseExpr * hN = new ParseVal (ValStr::New ("e" + rule->head->fName->name
@@ -780,6 +793,8 @@ OlContext::GenerateLocalEHTempEventRule (Rule* rule)
   hArgs1->push_front (RLOC_loc);
   ParseExpr *RID = new ParseVar ("RID");
   hArgs1->push_back (RID);
+  ParseExpr *RWeight = new ParseVar ("RWeight");
+  hArgs1->push_back (RWeight);
   ParseExpr *R = new ParseVar ("R");
   hArgs1->push_back (R);
   ParseExpr *List = new ParseVar ("List");
@@ -891,10 +906,15 @@ OlContext::GenerateLocalEHTempEventRule (Rule* rule)
   ParseTerm * AS1 = new ParseAssign (RLOC_loc, X);
   rBody1->push_back (AS1);
 
+  ValuePtr rWeightVal = ValDouble::New (rule->ruleWeight);
+  ParseExpr * orig_rule_weight = new ParseVal (rWeightVal);
+  ParseTerm * AS2 = new ParseAssign (RWeight, orig_rule_weight);
+  rBody1->push_back (AS2);
+  
   ValuePtr rIDVal = ValStr::New (rule->ruleID);
   ParseExpr * orig_rule_ID = new ParseVal (rIDVal);
-  ParseTerm * AS2 = new ParseAssign (R, orig_rule_ID);
-  rBody1->push_back (AS2);
+  ParseTerm * AS3 = new ParseAssign (R, orig_rule_ID);
+  rBody1->push_back (AS3);  
 
   ParseExprList * RIDagList = new ParseExprList ();
   ParseExpr* RIDag = new ParseMath (ParseMath::PLUS, R, RLOC_loc);
@@ -904,7 +924,7 @@ OlContext::GenerateLocalEHTempEventRule (Rule* rule)
   ParseTerm * RID_AS = new ParseAssign (RID, RID_func);
   rBody1->push_back (RID_AS);
 
-  Rule * r1 = CreateRule (h1, rBody1, false, rID, false);
+  Rule * r1 = CreateRule (h1, rBody1, false, rID, NULL, false); // set NULL to rWeight if need weight for prov rules
   r1->isProvenanceRule = true;
   r1->isPeriodic = rule->isPeriodic;
   mRules->push_back (r1);
@@ -915,11 +935,14 @@ OlContext::GenerateLocalEHTempEventRule (Rule* rule)
 void OlContext::GenerateLocalRuleExecEntryRule (Rule* rule,
   ParseFunctor* eHTemp)
 {
-  // 2nd rule: ruleExec(@RLoc,RID,R,List) :- eHTemp(@RLoc,H1,...,Ho,RID,R,List).
+  // 2nd rule: ruleExec(@RLoc,RID,RWeight,R,List) :- eHTemp(@RLoc,H1,...,Ho,RID,RWeight,R,List).
 
   //new rule id
   ParseExpr * rID = new ParseVal (ValStr::New (PROVENANCE_RULE_PREFIX + (rule->ruleID)
       + "_2"));
+	  
+  //new rule weight
+  //ParseExpr * rWeight = new ParseVal (ValDouble::New (rule->ruleWeight));
 
   //new rule header
   ParseExpr *hN = new ParseVal (ValStr::New ("ruleExec")); //header name
@@ -929,7 +952,9 @@ void OlContext::GenerateLocalRuleExecEntryRule (Rule* rule,
   //	dynamic_cast<ParseVar*> (RLOC_loc)->SetLocSpec();
   //	hArgs1->push_front(RLOC_loc);
   //	ParseExpr *RID = new ParseVar ("RID");
-  //	hArgs1->push_back(RID);
+  //	hArgs1->push_back(RID);  
+  //	ParseExpr *RWeight = new ParseVar ("RWeight"):
+  //	hArgs1->push_back (RWeight)
   //	ParseExpr *R = new ParseVar ("R");
   //	hArgs1->push_back(R);
   //	ParseExpr *List = new ParseVar ("List");
@@ -939,6 +964,7 @@ void OlContext::GenerateLocalRuleExecEntryRule (Rule* rule,
   ParseExprList * hArgs2 = new ParseExprList ();
   hArgs2 ->push_front (eHTemp->Arg (0));
   int n = eHTemp ->Args ();
+  hArgs2->push_back (eHTemp->Arg (n - 4));
   hArgs2->push_back (eHTemp->Arg (n - 3));
   hArgs2->push_back (eHTemp->Arg (n - 2));
   hArgs2->push_back (eHTemp->Arg (n - 1));
@@ -948,7 +974,7 @@ void OlContext::GenerateLocalRuleExecEntryRule (Rule* rule,
   ParseTermList * rBody2 = new ParseTermList ();
   rBody2 ->push_front (eHTemp);
 
-  Rule * r2 = CreateRule (h2, rBody2, false, rID, false);
+  Rule * r2 = CreateRule (h2, rBody2, false, rID, NULL, false);
   r2->isProvenanceRule = true;
   r2->isPeriodic = rule->isPeriodic;
   mRules->push_back (r2);
@@ -968,11 +994,14 @@ void OlContext::GenerateLocalRuleExecEntryRule (Rule* rule,
 ParseFunctor*
 OlContext::GenerateSendEventMsgEHRule (Rule * rule, ParseFunctor* eHTemp)
 {
-  // 3rd rule: eH(@H1,...Ho,RID,RLoc) :- eHTemp(@RLoc,H1,..., Ho,RID,R,List).
+  // 3rd rule: eH(@H1,...Ho,RID,RWeight,RLoc) :- eHTemp(@RLoc,H1,..., Ho,RID,RWeight,R,List).
 
   //new rule id
   ParseExpr * rID = new ParseVal (ValStr::New (PROVENANCE_RULE_PREFIX + (rule->ruleID)
       + "_3"));
+	  
+  //new rule weight
+  //ParseExpr * rWeight = new ParseVal (ValDouble::New (rule->ruleWeight));
 
   //new rule header
   ParseExpr * hN = new ParseVal (ValStr::New ("e" + rule->head->fName->name)); //header name
@@ -1008,7 +1037,7 @@ OlContext::GenerateSendEventMsgEHRule (Rule * rule, ParseFunctor* eHTemp)
   ParseTermList * rBody3 = new ParseTermList ();
   rBody3 ->push_front (eHTemp);
 
-  Rule* r3 = CreateRule (h3, rBody3, false, rID, false);
+  Rule* r3 = CreateRule (h3, rBody3, false, rID, NULL, false);
   r3->isProvenanceRule = true;
   r3->isPeriodic = rule->isPeriodic;
   mRules->push_back (r3);
@@ -1019,7 +1048,7 @@ OlContext::GenerateSendEventMsgEHRule (Rule * rule, ParseFunctor* eHTemp)
 void
 OlContext::GenerateCreateResultTupleHRule (Rule* rule, ParseFunctor* eH)
 {
-  // 4th rule: h(@H1,...,Ho) :- eH(@H,...Ho,R,RID).
+  // 4th rule: h(@H1,...,Ho) :- eH(@H,...Ho,RID,RWeight,RLoc).
   //new rule body:
   if (rule->isAggregate)
     {
@@ -1031,10 +1060,14 @@ OlContext::GenerateCreateResultTupleHRule (Rule* rule, ParseFunctor* eH)
       //new rule id
       ParseExpr * rID = new ParseVal (ValStr::New (PROVENANCE_RULE_PREFIX + (rule->ruleID)
           + "_4"));
+		  
+	  //new rule weight
+  	  //ParseExpr * rWeight = new ParseVal (ValDouble::New (rule->ruleWeight));
+	  
       //new rule header is the original rule header
       ParseTermList * rBody4 = new ParseTermList ();
       rBody4 ->push_front (eH);
-      Rule * r4 = CreateRule (rule->head, rBody4, false, rID, false);
+      Rule * r4 = CreateRule (rule->head, rBody4, false, rID, NULL, false);
       r4->isProvenanceRule = true;
       r4->isPeriodic = rule->isPeriodic;
       mRules->push_back (r4);
@@ -1044,12 +1077,19 @@ OlContext::GenerateCreateResultTupleHRule (Rule* rule, ParseFunctor* eH)
 void
 OlContext::GenerateCreateRemoveProvEntryRule (Rule* rule, ParseFunctor* eH)
 {
-  // 5th rule: prov(@H1,VID,RID,RLoc) :- eH(@H1,...,Ho,R,RID,RLoc),
+  // 5th rule: prov(@H1,VID,RID,RLoc) :- eH(@H1,...,Ho,RID,RWeight,RLoc),
   //                                     VID = f_sha1(h + H1 + ... + Ho).
+   
+  // modified 5th rule: prov(@H1,VID,RID,RLoc,Score) :- eH(@H1,...,Ho,RID,RWeight,RLoc),
+  //                                     VID = f_sha1(h + H1 + ... + Ho). 
+  // Set Score to -1 since the derived tuples don't have score. Only base tuples have score
 
   //new rule id
   ParseExpr* rID = new ParseVal (ValStr::New (PROVENANCE_RULE_PREFIX + (rule->ruleID)
       + "_5"));
+	  
+  //new rule weight
+  //ParseExpr * rWeight = new ParseVal (ValDouble::New (rule->ruleWeight));
 
   //new rule header
   ParseExpr* hN = new ParseVal (ValStr::New ("prov")); //header name
@@ -1058,13 +1098,15 @@ OlContext::GenerateCreateRemoveProvEntryRule (Rule* rule, ParseFunctor* eH)
   ParseExpr * H1 = new ParseVar (rule->head->GetLocSpecValue ());
   dynamic_cast<ParseVar*> (H1)->SetLocSpec ();
   ParseExpr * VID = new ParseVar ("VID");
+  ParseExpr * Score = new ParseVar ("Score");
 
   ParseExprList * hArgs5 = new ParseExprList ();
   hArgs5->push_front (H1);
   hArgs5->push_back (VID);
   int n = eH->Args ();
-  hArgs5->push_back (eH->Arg (n - 2));
-  hArgs5->push_back (eH->Arg (n - 1));
+  hArgs5->push_back (eH->Arg (n - 3));  // RID in eH
+  hArgs5->push_back (eH->Arg (n - 1));  // RLoc in eH
+  hArgs5->push_back (Score);
   ParseFunctor* h5 = new ParseFunctor (hName, hArgs5);
 
   //new rule body:
@@ -1093,10 +1135,15 @@ OlContext::GenerateCreateRemoveProvEntryRule (Rule* rule, ParseFunctor* eH)
   ParseExprList * VIDagList = new ParseExprList ();
   VIDagList->push_front (VIDag);
   ParseExpr * func3 = new ParseFunction (new ParseVar ("f_sha1"), VIDagList);
-  ParseTerm * VID_AS = new ParseAssign (VID, func3);
-  rBody5->push_back (VID_AS);
+  ParseTerm * AS1 = new ParseAssign (VID, func3);
+  rBody5->push_back (AS1);
 
-  Rule * r5 = CreateRule (h5, rBody5, false, rID, false);
+  ValuePtr scoreVal = ValDouble::New (-1.0);
+  ParseExpr * orig_score = new ParseVal (scoreVal);
+  ParseTerm * AS2 = new ParseAssign (Score, orig_score);
+  rBody5->push_back (AS2);
+
+  Rule * r5 = CreateRule (h5, rBody5, false, rID, NULL, false);
   r5->isProvenanceRule = true;
   r5->isPeriodic = rule->isPeriodic;
   mRules->push_back (r5);
@@ -1131,6 +1178,9 @@ OlContext::AddEdbProvenanceRule ()
           ostringstream tmp;
           tmp << "prov_edb_" << (++n);
           ParseExpr* rID = new ParseVal (ValStr::New (tmp.str ()));
+		  
+		  //new rule weight
+  		  //ParseExpr * rWeight = new ParseVal (ValDouble::New (1.0)); 
 
           //new rule header
           ParseExpr * hN = new ParseVal (ValStr::New ("prov")); //header name
@@ -1140,24 +1190,30 @@ OlContext::AddEdbProvenanceRule ()
           dynamic_cast<ParseVar*> (X)->SetLocSpec ();
           ParseExpr * VID = new ParseVar ("VID");
           ParseExpr * RID = new ParseVar ("RID");
-          ParseExpr * RLoc = new ParseVar (f->GetLocSpecValue ());
+          ParseExpr * RLoc = new ParseVar ("RLoc");
+          ParseExpr * Score = new ParseVar ("Score");
 
           ParseExprList * hArgs = new ParseExprList ();
           hArgs->push_front (X);
           hArgs->push_back (VID);
           hArgs->push_back (RID);
           hArgs->push_back (RLoc);
+          hArgs->push_back (Score);
           ParseFunctor* h = new ParseFunctor (hName, hArgs);
 
           //new rule body:
           ParseTermList * rBody = new ParseTermList ();
-          rBody ->push_front (f);
-
+		  ParseExpr * RT = new ParseVar (f->GetLocSpecValue ());
+		  ParseTerm * RLoc_AS = new ParseAssign (RLoc, RT);
+		  rBody->push_front (RLoc_AS);
+		  rBody->push_back (f);
+		  
           ValuePtr hNameVal = ValStr::New (f->fName->name);
           ParseExpr * hNameExpr = new ParseVal (hNameVal);
           ParseExprList::iterator b = f->m_args->begin ();
           ParseExpr* VIDag = new ParseMath (ParseMath::PLUS, hNameExpr, (*b));
           b++;
+          
           for (; b != f->m_args->end (); b++)
             {
               ParseAgg * a = NULL;
@@ -1180,8 +1236,18 @@ OlContext::AddEdbProvenanceRule ()
           rBody->push_back (VID_AS);
           ParseTerm * RID_AS = new ParseAssign (RID, VID);
           rBody->push_back (RID_AS);
+		  
+          int n = f->Args (); //return the last col as score
+          ParseTerm * Score_AS = new ParseAssign (Score, f->Arg (n-1));
+          
+          /*
+          ValuePtr scoreVal = ValDouble::New (-1.0); //return -1.0 as score
+          ParseExpr * orig_score = new ParseVal (scoreVal);          
+          ParseTerm * Score_AS = new ParseAssign (Score, orig_score);          
+		  */
+          rBody->push_back (Score_AS);
 
-          Rule * rule = CreateRule (h, rBody, false, rID, false);
+          Rule * rule = CreateRule (h, rBody, false, rID, NULL, false);  //set rWeight to NULL
           mRules->push_back (rule);
         }
     }
